@@ -99,6 +99,286 @@
 
     </article>
   
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/03/07/ttazk/">Ttazk</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-03-07T01:12:11+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>1:12 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><pre><code>* 泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。
+* 在增加泛型之前，泛型程序是利用继承实现的。
+</code></pre>
+
+<p>public class ArrayList{
+     private Object[] data;
+     &hellip;
+     public Object get(int i){}
+     public void add(Object o){}
+}
+     这种方法有两个问题：
+     1.当获取一个值时必须进行强制类型转换。
+     2.没有错误检查，可以向数组列表中添加任何类的对象。</p>
+
+<pre><code>* 泛型提供了一个更好的解决方法：类型参数，用来指示存储元素的类型。如：ArrayList&lt;String&gt; arl=new ArrayList&lt;&gt;();   (jdk1.7之后，构造函数中可以省略泛型类型)。
+* 对此编译器可以进行检查，避免插入错误的类型，同时在获取对象时不需要进行强制类型转换。
+* 一个泛型类(generic class)就是具有一个或多个类型变量的类。
+</code></pre>
+
+<p>public class Pair<T> {
+    private T first;
+    private T second;</p>
+
+<pre><code>public Pair(){
+     this.first=null;
+     this.second=null;
+}
+public Pair(T first,T second){
+     this.first=first;
+     this.second=second;
+}
+
+public T getFirst(){
+     return first;
+}
+public T getSecond(){
+     return second;
+}
+public void setFirst(T first){
+     this.first=first;
+}
+public void setSecond(T second){
+     this.second=second;
+}
+</code></pre>
+
+<p>}</p>
+
+<pre><code>* 如上所示，Pair类引入了一个类型变量T,用&lt;&gt;括起来，并放在类名之后。泛型类可以有多个类型变量。例如可以定义Pair类，两个域分别使用不同的类型变量：public class Pair&lt;T,V&gt;{...}.
+* 类中定义的泛型变量指定方法的返回类型，以及域和局部变量的类型。（一般来说，K,V分别表示关键字与值的类型，T表示任意类型）。
+* 用具体的类型替换类型变量就可以实例化泛型类型，如Pair&lt;String&gt;。换句话来说，泛型类可以看做普通类的工厂。
+
+
+
+
+* 泛型方法
+* 可以在一个普通类中定义一个带有类型参数的简单方法。
+</code></pre>
+
+<p>public class Generic {
+    public static <T> void print(T t){
+         System.out.println(t);
+    }
+}</p>
+
+<pre><code>* 注意：类型变量放在修饰符的后面，返回类型的前面。
+* 泛型方法可以定义在普通类中，也可以定义在泛型类中。
+* 当调用一个泛型方法时，可以在方法名前的&lt;&gt;中放入具体的类型，也可以省略&lt;&gt;类型参数。
+</code></pre>
+
+<p>Generic.print(&ldquo;no&rdquo;);
+Generic.<String>print(&ldquo;nothing&rdquo;);</p>
+
+<pre><code>* 类型变量的限定
+* 有时，需要对类或泛型方法中的类型变量加以限定。
+</code></pre>
+
+<p>public static <T extends Comparable> void sys(T t){
+         System.out.println(t);
+    }</p>
+
+<pre><code>* 可以对泛型变量T进行限定，将其限定为实现了Comparable接口的类。
+* &lt;T extends BoundingType&gt; 表示：T应该是绑定类型的子类型。T和绑定类型可以是类，也可以是接口。
+* 一个类型变量或通配符可以有多个限定，如：T extends Comaprable &amp; Serializable
+* 在Java的继承中，可以根据需要有多个接口的父类型，但是限定中至多只能有一个类，且必须是限定列表中的第一个。
+
+
+
+
+* 类型擦除
+* 在虚拟机中，没有泛型类型对象----所有的对象都属于普通类。
+* 无论何时定义一个泛型类型，都会自动提供一个相应的原始类型(raw type)。原始类型的名字就是删去类型参数后的泛型类型名。擦除类型变量，并替换为限定类型（没有限定类型就用Object）。
+* 例如，Pair&lt;T&gt;的原始类型为：
+</code></pre>
+
+<p>public class Pair{
+    private Object first;
+    private Object second;</p>
+
+<pre><code>public Pair(){
+     this.first=null;
+     this.second=null;
+}
+public Pair(Object first,Object second){
+     this.first=first;
+     this.second=second;
+}
+
+public Object getFirst(){
+     return first;
+}
+public Object getSecond(){
+     return second;
+}
+public void setFirst(Object first){
+     this.first=first;
+}
+public void setSecond(Object second){
+     this.second=second;
+}
+</code></pre>
+
+<p>}</p>
+
+<pre><code>* 在程序中可以包含不同类型的Pair，如Pair&lt;String&gt;,Pair&lt;LocalDate&gt;，但是类型擦除后就变成了原始的Pair类型了。
+* 原始类型用第一个限定类型来替换参数变量，如果没有给定限定类型，就用Object替换。
+* 为了提高效率，应该将标签接口(没有方法的接口)放在列表的末尾。
+
+
+
+
+* 翻译泛型表达式
+* 当程序调用泛型方法时，如果擦除返回类型，编译器则插入强制类型转换。
+* 
+    * Pair&lt;Employee&gt; p=new Pair&lt;&gt;();
+    * Employee e=p.getFirst();//先对原始方法调用Pair.getFirst();再将返回的Object类型强制转换成Employee类型。
+
+* 关于java泛型转换的事实：
+* 
+    * 虚拟机中没有泛型，只有普通的类与方法。
+    * 所有的参数类型都用它们的限定类型进行替换。
+    * 为了保持类型安全，必要时插入强制类型转换。
+    * 桥方法被合成来保持多态。
+
+
+
+
+
+* 约束与局限性(大多数限制都是由类型擦除引起的)
+* 不能用基本类型实例化类型参数
+* 
+    * 因此没有Pair&lt;double&gt;，只有Pair&lt;Double&gt;。原因是类型擦除，擦除之后，Pair类含有Object域，而Object域不能存储基本类型。
+
+* 运行时类型查询只适用于原始类型
+* 
+    * 虚拟机中的对象总有一个特定的非泛型类型，因此，所有的类型查询只产生原始类型。
+    * 
+</code></pre>
+
+<p>Pair<String> pair=new Pair<String>();
+if (pair instanceof Pair<String>) {    //error
+       System.out.println(true);
+    }</p>
+
+<pre><code>    * 
+</code></pre>
+
+<p>if (pair instanceof Pair) {         //true
+    System.out.println(true);
+   }</p>
+
+<pre><code>    * 同样，getClass()方法返回的是原始类型。
+    * 
+</code></pre>
+
+<p>Pair<String> pair=new Pair<String>();
+Pair<Double> pair2=new Pair<Double>();
+if (pair.getClass()==pair2.getClass()) {
+    System.out.println(true);
+   }      //输出为true</p>
+
+<pre><code>* 不能创建泛型数组
+* 
+    * 
+</code></pre>
+
+<p>Pair<String>[] pairs=new Pair<String>[10];  //error</p>
+
+<pre><code>    * 只是不能创建这些数组，但是声明类型Pair&lt;String&gt;[] 的变量仍是合法的，只能不过不能初始化。
+    * 原因也是类型擦除。
+
+* 不能实例化类型变量
+* 
+    * 即不能使用new T(...),new T[...],或T.class这样的表达式中的类型变量。
+
+* 不能创建类型变量数组
+* 
+    * 
+</code></pre>
+
+<p>private T[] ts=new T[2];   //error</p>
+
+<pre><code>* 不能在静态域或静态方法中引用类型变量
+* 
+    * private static T t;   //error
+    * public static T print(){}   //error
+
+
+
+
+
+* 泛型类型的继承规则
+* 考虑一个类与一个子类，如Object,String，那么Pair&lt;String&gt;是Pair&lt;Object&gt;的子类吗？不是
+* 无论T和S有什么关系，通常Pair&lt;S&gt;,Pair&lt;T&gt;是没有任何关系的。
+</code></pre>
+
+<p>Pair<Object>[] pair3=new Pair<String>[10];  //error</p>
+
+<pre><code>* 注意泛型与Java数组之间的区别：可以将子类数组的变量赋给父类数组变量。
+</code></pre>
+
+<p>Object[] objects=new String[10];</p>
+
+<pre><code>* 永远可以将参数化类型转换为一个原始类型。
+</code></pre>
+
+<p>Pair pair3=new Pair<String>();</p>
+
+<pre><code>* 泛型类可以扩展或者实现其他泛型类，这点而言与普通类没有区别
+* 
+    * ArrayList&lt;T&gt;类实现了List&lt;T&gt;接口。
+    * 意味着ArrayList&lt;String&gt;可以转换为List&lt;String&gt;
+
+
+
+
+* 通配符类型
+* 通配符类型中，允许类型参数变化。如  Pair&lt;? extends Comparable&gt;
+* 类型Pair&lt;String&gt;是Pair&lt;? extends Object&gt;的子类型。
+
+                                                                     &lt;---Pair&lt;Object&gt;
+</code></pre>
+
+<p>Pair(原始类型)&lt;&mdash;Pair&lt;? extends Object><---
+                                                                          <---Pair<String></p>
+
+<pre><code>* 通配符的超类型限定
+* 
+    * 可以指定一个父类型：  ? super Manager
+
+* 带有超类型限定的通配符可以向泛型对象写入，带有子类型限定的通配符可以从泛型对象读取。(P332)
+</code></pre>
+</div>
+  
+  
+
+
+    </article>
+  
   <div class="pagination">
     
     <a href="/blog/archives">Blog Archives</a>
@@ -113,6 +393,10 @@
     
       <li class="post">
         <a href="/blog/2017/03/07/love/">LOVE</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/07/ttazk/">Ttazk</a>
       </li>
     
   </ul>
