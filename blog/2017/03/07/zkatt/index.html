@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>JVM - My Octopress Blog</title>
+  <meta name="author" content="Your Name">
+
+  
+  <meta name="description" content="* Java运行时数据区分为：方法区，堆，虚拟机栈，本地方法栈，程序计数器。其中，方法区与堆为所有线程共享；虚拟机栈，本地方法栈与程序计数器为线程私有。 * 程序计数器：
+* * 所占内存空间比较小，可以看做当前线程所执行字节码的行号指数器。 &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://yoursite.com/blog/2017/03/07/zkatt/">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//libs.baidu.com/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <h1><a href="/">My Octopress Blog</a></h1>
+  
+    <h2>A blogging framework for hackers.</h2>
+  
+</hgroup>
+
+</header>
+  <nav role="navigation"><ul class="subscription" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS">RSS</a></li>
+  
+</ul>
+  
+<form action="https://www.google.com/search" method="get">
+  <fieldset role="search">
+    <input type="hidden" name="sitesearch" value="yoursite.com">
+    <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+  </fieldset>
+</form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
+
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">JVM</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-03-07T00:20:35+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>12:20 am</span></time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><pre><code>* Java运行时数据区分为：方法区，堆，虚拟机栈，本地方法栈，程序计数器。其中，方法区与堆为所有线程共享；虚拟机栈，本地方法栈与程序计数器为线程私有。
+
+
+
+* 程序计数器：
+* 
+    * 所占内存空间比较小，可以看做当前线程所执行字节码的行号指数器。字节码解释器在工作时就是通过这个计数器的值来选取下一条需要执行的字节码指令。
+    * 每个线程都有一个独立的程序计数器，各个线程的程序计数器互不影响，独立存储，为“线程私有”。
+    * 如果线程正在执行的是Java方法，那么程序计数器的值就是虚拟机字节码指令的地址；如果执行的是Native方法，那么程序计数器的值为空。
+    * 此内存区域是Java虚拟机运行规范中没有规定任何OutOfMemoryError情况的区域。
+
+
+
+
+
+* Java虚拟机栈：
+* 
+    * 与程序计数器一样，也是线程私有，它的生命周期与线程一样。
+    * Java虚拟机栈描述的是Java方法执行时的内存模型：每一个方法在执行时都会创建一个栈帧用于存储局部变量表，操作数栈，动态链接，方法出口等信息。
+    * 局部变量表存放了在编译期可知的各种基本数据类型（int,short,long,double,float,boolean），对象引用类型（reference类型，可能指向对象起始地址的指针）和returnAddress类型（指向一条字节码指令的地址）。
+    * 局部变量表的内存大小在编译期确定并完成分配，当进入一个方法时，这个方法需要在帧中分配的局部变量表的大小确定，并且在运行期不改变。
+    * Java虚拟机栈的内存大小是可以动态扩展的，在这个区域可能会发生两种异常：OutOfMemoryError与StackOverflowError。
+
+
+
+
+
+* 本地方法栈：
+* 
+    * 与虚拟机栈的作用类似，只不过虚拟机栈是为虚拟机执行Java方法（也就是字节码）服务，而本地方法栈是为虚拟机使用到的Native方法服务。有的虚拟机（如HotSpot）直接把这两个合二为一。
+    * 在这个区域可能会发生两种异常：OutOfMemoryError与StackOverflowError，与虚拟机栈相同。
+
+* Java堆：
+* 
+    * Java堆是Java虚拟机所管理的内存最大的一块区域。
+    * Java堆是所有线程共享的一块区域，随着虚拟机的启动而创建。此区域的唯一目的就是存放对象的实例，几乎所有的对象实例都在这里分配内存。Java虚拟机规范描述的是：所有的对象实例及数组都在堆上分配。
+    * Java堆是垃圾收集器管理的主要区域。
+    * Java堆可以处在物理上连续的内存空间中，也可以处于不连续的内存空间中（只要是逻辑上连续即可）。在实现时，可以是固定大小的，也可以是可扩展的。
+    * 当堆中没有内存完成实例分配时，且堆也无法扩展时，可能会发生的异常为：OutOfMemoryError。
+
+
+
+
+
+* 方法区：
+* 
+    * 方法区与Java堆一样也是线程共享的，它用于存储已被虚拟机加载的类信息，常量，静态变量，及时编译器编译后的代码等数据。
+    * 除了与Java堆一样可以不需要连续的内存，可以选择固定的大小或可扩展的外，还可以选择不实现垃圾收集。相对而言，垃圾收集在这里的行为很少（这一区域的回收主要是对常量池的回收和对类型的卸载）。
+    * 当内存无法满足要求时，会抛出：OutOfMemoryError。
+
+
+
+
+
+* 运行时常量池：
+* 
+    * 运行时常量池是方法区的一部分，Class文件中除了有类的版本，字段，方法，接口等描述信息外，还包括一项信息是常量池。
+    * 常量池用于存放编译期生成的各种字面量和符号引用。
+    * 字面量和符号引用量：字面量相当于Java语言层面常量的概念，如文本字符串，声明为final的常量值等，符号引用则属于编译原理方面的概念，包括了如下三种类型的常量：
+    * 
+        * 类和接口的全限定名
+        * 字段名称和描述符
+        * 方法名称和描述符
+
+    * 运行时常量池相对于CLass文件常量池的另外一个重要特征是具备动态性，Java语言并不要求常量一定只有编译期才能产生，也就是并非预置入CLass文件中常量池的内容才能进入方法区运行时常量池，运行期间也可能将新的常量放入池中，这种特性被开发人员利用比较多的就是String类的intern()方法。
+    * java中基本类型的包装类的大部分都实现了常量池技术，即（Byte,Short,Integer,Long,Character,Boolean）。类比于Integer类型在自动装箱时，如果值[-128,127]之间，那么就存储在常量池中。两种浮点数类型的包装类Float,Double并没有实现常量池技术。
+    * 
+        * 只有使用引号包含文本的方式创建的String对象之间使用“+”连接产生的新对象才会被加入字符串池中。
+        * 对于所有包含new方式新建对象（包括null）的“+”连接表达式，它所产生的新对象都不会被加入字符串池中。
+
+
+
+    String string1="te";
+     String string2="st";
+     String string3="test";
+     String string4=string1+string2;
+     String string5="te"+"st";
+     String string6=new StringBuilder("test").toString();
+ 　　String string7=new String("test").intern();
+
+
+    System.out.println(string3==string4);//false
+    System.out.println(string3==string5);//true
+    System.out.println(string4==string5);//false
+    System.out.println(string3==string6);//false
+</code></pre>
+
+<p>　　System.out.println(string3==string7);//true</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
+
+      
+
+
+
+
+<time class='entry-date' datetime='2017-03-07T00:20:35+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>7</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>12:20 am</span></time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://yoursite.com/blog/2017/03/07/zkatt/" data-via="" data-counturl="http://yoursite.com/blog/2017/03/07/zkatt/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+      
+        <a class="basic-alignment right" href="/blog/2017/03/07/ttazk/" title="Next Post: ttazk">ttazk &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2017/03/07/ttazk/">Ttazk</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/07/zkatt/">JVM</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Your Name -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = '//platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
