@@ -9,7 +9,8 @@
   <meta name="author" content="Your Name">
 
   
-  <meta name="description" content="Java运行时数据区分为：方法区，堆，虚拟机栈，本地方法栈，程序计数器。其中，方法区与堆为所有线程共享；虚拟机栈，本地方法栈与程序计数器为线程私有。 程序计数器： 所占内存空间比较小，可以看做当前线程所执行字节码的行号指数器。 &hellip;">
+  <meta name="description" content="类的生命周期包括：加载&ndash;>连接&ndash;>初始化&ndash;>使用&ndash;>卸载，其中连接包括，验证&ndash;>准备&ndash;>解析。
+虚拟机把描述类的数据从Class文件中加载到内存，并对数据进行校验，转换，解析和初始化，最终形成可被虚拟机直接使用的Java类型 &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -71,7 +72,46 @@
       
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2017/03/08/jvm/">虚拟机内存分配</a></h1>
+      <h1 class="entry-title"><a href="/blog/2017/03/09/jvm2/">虚拟机类加载机制</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-03-09T22:55:40+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:55 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li>类的生命周期包括：加载&ndash;>连接&ndash;>初始化&ndash;>使用&ndash;>卸载，其中连接包括，验证&ndash;>准备&ndash;>解析。</li>
+<li>虚拟机把描述类的数据从Class文件中加载到内存，并对数据进行校验，转换，解析和初始化，最终形成可被虚拟机直接使用的Java类型。</li>
+<li>在Java中，类的加载，连接，初始化都是在运行期间完成的，这种策略与C++等不同，但是这也实现了Java语言的运行期动态加载与动态连接的特点。</li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2017/03/09/jvm2/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/03/08/jvm1/">虚拟机内存分配</a></h1>
     
     
       <p class="meta">
@@ -103,7 +143,7 @@
   
   
     <footer>
-      <a rel="full-article" href="/blog/2017/03/08/jvm/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/03/08/jvm1/">Read on &rarr;</a>
     </footer>
   
 
@@ -131,7 +171,8 @@
   </header>
 
 
-  <div class="entry-content"><p><font color=#A52A2A size=100>Marry Me ?</font></p>
+  <div class="entry-content"><p><font color=#A52A2A size=100>Marry Me ?</font>
+<br/></p>
 
 </div>
   
@@ -157,7 +198,11 @@
   <ul id="recent_posts">
     
       <li class="post">
-        <a href="/blog/2017/03/08/jvm/">虚拟机内存分配</a>
+        <a href="/blog/2017/03/09/jvm2/">虚拟机类加载机制</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/08/jvm1/">虚拟机内存分配</a>
       </li>
     
       <li class="post">
