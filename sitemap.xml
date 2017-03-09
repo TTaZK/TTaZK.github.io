@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://ttazk.github.io/blog/2017/03/08/jvm/</loc>
+<lastmod>2017-03-08T15:51:45+08:00</lastmod>
+</url>
+<url>
 <loc>http://ttazk.github.io/blog/2017/03/07/love/</loc>
 <lastmod>2017-03-07T13:29:18+08:00</lastmod>
 </url>
