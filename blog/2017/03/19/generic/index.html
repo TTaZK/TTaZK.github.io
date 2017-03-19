@@ -5,7 +5,7 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>My Octopress Blog</title>
+  <title>泛型程序设计 - My Octopress Blog</title>
   <meta name="author" content="Your Name">
 
   
@@ -19,7 +19,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://ttazk.github.io/">
+  <link rel="canonical" href="http://ttazk.github.io/blog/2017/03/19/generic/">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="My Octopress Blog" type="application/atom+xml">
@@ -64,15 +64,12 @@
 </nav>
   <div id="main">
     <div id="content">
-      <div class="blog-index">
+      <div>
+<article class="hentry" role="article">
   
-  
-  
-    <article>
-      
   <header>
     
-      <h1 class="entry-title"><a href="/blog/2017/03/19/generic/">泛型程序设计</a></h1>
+      <h1 class="entry-title">泛型程序设计</h1>
     
     
       <p class="meta">
@@ -88,7 +85,7 @@
   </header>
 
 
-  <div class="entry-content"><ul>
+<div class="entry-content"><ul>
 <li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。</li>
 <li><p>在增加泛型之前，泛型程序是利用继承实现的。</br>
       public class ArrayList{
@@ -326,144 +323,46 @@ Pair pair3=new Pair<String>();</li>
 </ul>
 
 </div>
-  
-  
 
 
-    </article>
-  
-  
-    <article>
+  <footer>
+    <p class="meta">
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2017/03/14/transmission/">运输层</a></h1>
-    
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2017-03-14T10:39:03+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>14</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:39 am</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>运输层用于向它上面的应用层提供服务，它属于面向通信的最高层，同时也是用户功能的最低层。当网络的边缘部分的两个主机进行通信时，只有主机的协议栈中才有运输层，而网络核心部分在转发分组时都只用到下三层的功能。</li>
-<li>两个主机进行通信，也就是两个主机中的应用进程进行通信，通信的真正端点是主机中的进程。</li>
-<li>运输层能够“复用”与“分用”：复用是指发送方不同的应用进程都可以使用同一个运输层协议传输数据，分用是指接收方的运输层能够把接收的数据正确地交付到目的应用进程中。</li>
-<li>网络层为主机之间提供逻辑通信，运输层为应用进程间提供逻辑通信。运输层向高层用户屏蔽了下面网络的核心细节。</li>
-<li><p>运输层包括两个主要的协议：TCP（传输控制协议），UDP（用户数据报协议）。传输的数据单元分别为：TCP报文段与UDP用户数据报。</p></li>
-<li><p>UDP在传输数据之前不需要建立连接。接收方在收到报文后也不需要给出任何确认。</p></li>
-<li>TCP采用面向连接的服务，在传输数据之前先建立连接，且TCP不支持广播或者多播服务。</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2017/03/14/transmission/">Read on &rarr;</a>
-    </footer>
   
 
+<span class="byline author vcard">Posted by <span class="fn">Your Name</span></span>
 
-    </article>
-  
-  
-    <article>
       
-  <header>
-    
-      <h1 class="entry-title"><a href="/blog/2017/03/09/jvm2/">虚拟机类加载机制</a></h1>
-    
-    
-      <p class="meta">
-        
 
 
 
 
-<time class='entry-date' datetime='2017-03-09T22:55:40+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>9</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:55 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><ul>
-<li>类的生命周期包括：加载&ndash;>连接&ndash;>初始化&ndash;>使用&ndash;>卸载，其中连接包括，验证&ndash;>准备&ndash;>解析。</li>
-<li>虚拟机把描述类的数据从Class文件中加载到内存，并对数据进行校验，转换，解析和初始化，最终形成可被虚拟机直接使用的Java类型。</li>
-<li>在Java中，类的加载，连接，初始化都是在运行期间完成的，这种策略与C++等不同，但是这也实现了Java语言的运行期动态加载与动态连接的特点。</li>
-</ul>
-
-
-</div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2017/03/09/jvm2/">Read on &rarr;</a>
-    </footer>
-  
-
-
-    </article>
-  
-  
-    <article>
+<time class='entry-date' datetime='2017-03-19T10:38:05+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:38 am</span></time>
       
-  <header>
+
+
+    </p>
     
-      <h1 class="entry-title"><a href="/blog/2017/03/08/jvm1/">虚拟机内存分配</a></h1>
+      <div class="sharing">
+  
+  <a href="//twitter.com/share" class="twitter-share-button" data-url="http://ttazk.github.io/blog/2017/03/19/generic/" data-via="" data-counturl="http://ttazk.github.io/blog/2017/03/19/generic/" >Tweet</a>
+  
+  
+  
+</div>
+
     
-    
-      <p class="meta">
-        
-
-
-
-
-<time class='entry-date' datetime='2017-03-08T15:51:45+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>8</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>3:51 pm</span></time>
-        
-      </p>
-    
-  </header>
-
-
-  <div class="entry-content"><p>Java运行时数据区分为：方法区，堆，虚拟机栈，本地方法栈，程序计数器。其中，方法区与堆为所有线程共享；虚拟机栈，本地方法栈与程序计数器为线程私有。</p>
-
-<h2>程序计数器：</h2>
-
-<ol>
-<li>所占内存空间比较小，可以看做当前线程所执行字节码的行号指数器。字节码解释器在工作时就是通过这个计数器的值来选取下一条需要执行的字节码指令。</li>
-<li>每个线程都有一个独立的程序计数器，各个线程的程序计数器互不影响，独立存储，为“线程私有”。</li>
-<li>如果线程正在执行的是Java方法，那么程序计数器的值就是虚拟机字节码指令的地址；如果执行的是Native方法，那么程序计数器的值为空。</li>
-<li>此内存区域是Java虚拟机运行规范中没有规定任何OutOfMemoryError情况的区域。</li>
-</ol>
-
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2017/03/14/transmission/" title="Previous Post: 运输层">&laquo; 运输层</a>
+      
+      
+    </p>
+  </footer>
+</article>
 
 </div>
-  
-  
-    <footer>
-      <a rel="full-article" href="/blog/2017/03/08/jvm1/">Read on &rarr;</a>
-    </footer>
-  
 
-
-    </article>
-  
-  <div class="pagination">
-    
-    <a href="/blog/archives">categories</a>
-    
-  </div>
-</div>
 <aside class="sidebar">
   
     <section>
@@ -495,6 +394,7 @@ Pair pair3=new Pair<String>();</li>
 
   
 </aside>
+
 
     </div>
   </div>
