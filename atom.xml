@@ -4,7 +4,7 @@
   <title><![CDATA[Blog Of ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-03-19T12:12:15+08:00</updated>
+  <updated>2017-03-19T12:38:05+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -37,45 +37,71 @@
 <li>一个泛型类(generic class)就是具有一个或多个类型变量的类。</li>
 </ul>
 </li>
-<li><pre><code>  public class Pair&lt;T&gt; {
-  private T first;
-  private T second;
+</ul>
 
-  public Pair(){
-       this.first=null;
-       this.second=null;
-  }
-  public Pair(T first,T second){
-       this.first=first;
-       this.second=second;
-  }
 
-  public T getFirst(){
-       return first;
-  }
-  public T getSecond(){
-       return second;
-  }
-  public void setFirst(T first){
-       this.first=first;
-  }
-  public void setSecond(T second){
-       this.second=second;
-      }
-  }
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+<span class='line-number'>27</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>      public class Pair&lt;T&gt; {
+</span><span class='line'>      private T first;
+</span><span class='line'>      private T second;
+</span><span class='line'>  
+</span><span class='line'>      public Pair(){
+</span><span class='line'>           this.first=null;
+</span><span class='line'>           this.second=null;
+</span><span class='line'>      }
+</span><span class='line'>      public Pair(T first,T second){
+</span><span class='line'>           this.first=first;
+</span><span class='line'>           this.second=second;
+</span><span class='line'>      }
+</span><span class='line'>  
+</span><span class='line'>      public T getFirst(){
+</span><span class='line'>           return first;
+</span><span class='line'>      }
+</span><span class='line'>      public T getSecond(){
+</span><span class='line'>           return second;
+</span><span class='line'>      }
+</span><span class='line'>      public void setFirst(T first){
+</span><span class='line'>           this.first=first;
+</span><span class='line'>      }
+</span><span class='line'>      public void setSecond(T second){
+</span><span class='line'>           this.second=second;
+</span><span class='line'>          }
+</span><span class='line'>      }</span></code></pre></td></tr></table></div></figure>
+
+
+<pre><code>* 如上所示，Pair类引入了一个类型变量T,用&lt;&gt;括起来，并放在类名之后。泛型类可以有多个类型变量。例如可以定义Pair类，两个域分别使用不同的类型变量：public class Pair&lt;T,V&gt;{...}.
+* 类中定义的泛型变量指定方法的返回类型，以及域和局部变量的类型。（一般来说，K,V分别表示关键字与值的类型，T表示任意类型）。
+* 用具体的类型替换类型变量就可以实例化泛型类型，如Pair&lt;String&gt;。换句话来说，泛型类可以看做普通类的工厂。
 </code></pre>
 
-*
-
-<ul>
-<li>如上所示，Pair类引入了一个类型变量T,用&lt;>括起来，并放在类名之后。泛型类可以有多个类型变量。例如可以定义Pair类，两个域分别使用不同的类型变量：public class Pair&lt;T,V>{&hellip;}.</li>
-<li>类中定义的泛型变量指定方法的返回类型，以及域和局部变量的类型。（一般来说，K,V分别表示关键字与值的类型，T表示任意类型）。</li>
-<li>用具体的类型替换类型变量就可以实例化泛型类型，如Pair<String>。换句话来说，泛型类可以看做普通类的工厂。
-</br></br></li>
-</ul>
-</li>
-</ul>
-
+<p></br></br></p>
 
 <!--more-->
 
@@ -83,34 +109,54 @@
 <h3>* 泛型方法</h3>
 
 <ul>
-<li><p>可以在一个普通类中定义一个带有类型参数的简单方法。</p></li>
-<li><pre><code>public class Generic {
-public static &lt;T&gt; void print(T t){
- System.out.println(t);
-}
-}
-</code></pre>
-
-<p>*</p></li>
-<li><p>注意：类型变量放在修饰符的后面，返回类型的前面。</p></li>
-<li>泛型方法可以定义在普通类中，也可以定义在泛型类中。</li>
-<li>当调用一个泛型方法时，可以在方法名前的&lt;>中放入具体的类型，也可以省略&lt;>类型参数。
-*
-Generic.print(&ldquo;no&rdquo;);
-Generic.<String>print(&ldquo;nothing&rdquo;);</li>
+<li>可以在一个普通类中定义一个带有类型参数的简单方法。</li>
 </ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>
+</span><span class='line'>  public class Generic {
+</span><span class='line'>  public static &lt;T&gt; void print(T t){
+</span><span class='line'>  System.out.println(t);
+</span><span class='line'>      }
+</span><span class='line'>  }
+</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
+<li>注意：类型变量放在修饰符的后面，返回类型的前面。</li>
+<li>泛型方法可以定义在普通类中，也可以定义在泛型类中。</li>
+<li>当调用一个泛型方法时，可以在方法名前的&lt;>中放入具体的类型，也可以省略&lt;>类型参数。</li>
+</ul>
+
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Generic.print("no");
+</span><span class='line'>Generic.&lt;String&gt;print("nothing");</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>* 类型变量的限定</h3>
 
 <ul>
 <li>有时，需要对类或泛型方法中的类型变量加以限定。</li>
-<li><pre><code>public static &lt;T extends Comparable&gt; void sys(T t){
- System.out.println(t);
-}
-</code></pre>
+</ul>
 
-<p>*</p></li>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'> public static &lt;T extends Comparable&gt; void sys(T t){
+</span><span class='line'>     System.out.println(t);
+</span><span class='line'>          }</span></code></pre></td></tr></table></div></figure>
+
+
+<ul>
 <li>可以对泛型变量T进行限定，将其限定为实现了Comparable接口的类。</li>
 <li><T extends BoundingType> 表示：T应该是绑定类型的子类型。T和绑定类型可以是类，也可以是接口。</li>
 <li>一个类型变量或通配符可以有多个限定，如：T extends Comaprable &amp; Serializable</li>
@@ -127,35 +173,60 @@ Generic.<String>print(&ldquo;nothing&rdquo;);</li>
 </ul>
 
 
-<p>*</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+<span class='line-number'>8</span>
+<span class='line-number'>9</span>
+<span class='line-number'>10</span>
+<span class='line-number'>11</span>
+<span class='line-number'>12</span>
+<span class='line-number'>13</span>
+<span class='line-number'>14</span>
+<span class='line-number'>15</span>
+<span class='line-number'>16</span>
+<span class='line-number'>17</span>
+<span class='line-number'>18</span>
+<span class='line-number'>19</span>
+<span class='line-number'>20</span>
+<span class='line-number'>21</span>
+<span class='line-number'>22</span>
+<span class='line-number'>23</span>
+<span class='line-number'>24</span>
+<span class='line-number'>25</span>
+<span class='line-number'>26</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>public class Pair{
+</span><span class='line'>private Object first;
+</span><span class='line'>private Object second;
+</span><span class='line'>
+</span><span class='line'>public Pair(){
+</span><span class='line'>     this.first=null;
+</span><span class='line'>     this.second=null;
+</span><span class='line'>}
+</span><span class='line'>public Pair(Object first,Object second){
+</span><span class='line'>     this.first=first;
+</span><span class='line'>     this.second=second;
+</span><span class='line'>}
+</span><span class='line'>
+</span><span class='line'>public Object getFirst(){
+</span><span class='line'>     return first;
+</span><span class='line'>}
+</span><span class='line'>public Object getSecond(){
+</span><span class='line'>     return second;
+</span><span class='line'>}
+</span><span class='line'>public void setFirst(Object first){
+</span><span class='line'>     this.first=first;
+</span><span class='line'>}
+</span><span class='line'>      public void setSecond(Object second){
+</span><span class='line'>     this.second=second;
+</span><span class='line'>}
+</span><span class='line'>}
+</span></code></pre></td></tr></table></div></figure>
 
-<pre><code>public class Pair{
-private Object first;
-private Object second;
-
-public Pair(){
-     this.first=null;
-     this.second=null;
-}
-public Pair(Object first,Object second){
-     this.first=first;
-     this.second=second;
-}
-
-public Object getFirst(){
-     return first;
-}
-public Object getSecond(){
-     return second;
-}
-public void setFirst(Object first){
-     this.first=first;
-}
-public void setSecond(Object second){
-     this.second=second;
-}
-}
-</code></pre>
 
 <ul>
 <li>在程序中可以包含不同类型的Pair，如Pair<String>,Pair<LocalDate>，但是类型擦除后就变成了原始的Pair类型了。</li>
@@ -171,20 +242,14 @@ public void setSecond(Object second){
 
 <pre><code>  * Pair&lt;Employee&gt; p=new Pair&lt;&gt;();
   * Employee e=p.getFirst();//先对原始方法调用Pair.getFirst();再将返回的Object类型强制转换成Employee类型。
-</code></pre>
-
-<ul>
+</code></pre></li>
 <li>关于java泛型转换的事实：
 
-<ul>
-<li>虚拟机中没有泛型，只有普通的类与方法。</li>
-<li>所有的参数类型都用它们的限定类型进行替换。</li>
-<li>为了保持类型安全，必要时插入强制类型转换。</li>
-<li>桥方法被合成来保持多态。</li>
-</ul>
-</li>
-</ul>
-</li>
+<pre><code>* 虚拟机中没有泛型，只有普通的类与方法。
+* 所有的参数类型都用它们的限定类型进行替换。
+* 为了保持类型安全，必要时插入强制类型转换。
+* 桥方法被合成来保持多态。
+</code></pre></li>
 </ul>
 
 
@@ -200,14 +265,21 @@ public void setSecond(Object second){
 </ul>
 
 
-<p>*
-    Pair<String> pair=new Pair<String>();
-    if (pair instanceof Pair<String>) {    //error
-       System.out.println(true);
-    }
-    if (pair instanceof Pair) {         //true
-    System.out.println(true);
-    }</p>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+<span class='line-number'>7</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Pair&lt;String&gt; pair=new Pair&lt;String&gt;();
+</span><span class='line'>if (pair instanceof Pair&lt;String&gt;) {    //error
+</span><span class='line'>   System.out.println(true);
+</span><span class='line'>} 
+</span><span class='line'>if (pair instanceof Pair) {         //true
+</span><span class='line'>System.out.println(true);
+</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
+
 
 <p>*
 * 同样，getClass()方法返回的是原始类型。</p>
@@ -232,9 +304,10 @@ System.out.println(true);
 
 <h5>* 不能实例化类型变量</h5>
 
-<pre><code>* 
-    * 即不能使用new T(...),new T[...],或T.class这样的表达式中的类型变量。
-</code></pre>
+<ul>
+<li>即不能使用new T(&hellip;),new T[&hellip;],或T.class这样的表达式中的类型变量。</li>
+</ul>
+
 
 <h5>* 不能创建类型变量数组</h5>
 
@@ -253,7 +326,7 @@ System.out.println(true);
 
 <ul>
 <li>考虑一个类与一个子类，如Object,String，那么Pair<String>是Pair<Object>的子类吗？不是</li>
-<li>无论T和S有什么关系，通常Pair<S>,Pair<T>是没有任何关系的。
+<li>无论T和V有什么关系，通常Pair<V>,Pair<T>是没有任何关系的。
 Pair<Object>[] pair3=new Pair<String>[10];  //error</li>
 <li>注意泛型与Java数组之间的区别：可以将子类数组的变量赋给父类数组变量。
 Object[] objects=new String[10];</li>
