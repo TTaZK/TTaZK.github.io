@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Spring | Blog Of ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/spring/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-03-21T18:51:29+08:00</updated>
+  <updated>2017-03-21T19:16:01+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -14,10 +14,232 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Spring整合MyBatis框架]]></title>
+    <link href="http://ttazk.github.io/blog/2017/03/21/spring_mybatis/"/>
+    <updated>2017-03-21T16:21:24+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/03/21/spring_mybatis</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>使用MyBatis，面对的是纯粹的Java对象，类似于Hbernate。但是对于具体的数据库操作，Hibernate会自动生成SQL语句，MyBatis 则要求自己自己编写SQL语句。</p></li>
+<li><p>每一个MyBatis应用都是以一个SQLSessionFactory对象的实例为核心MyBatis可以拥有多个SQL映射文件，并通过一个配置文件对这些SQL映射文件进行装配，同时在该文件中定义一些控制属性信息。
+如下：</p></li>
+</ul>
+
+
+<!--more-->
+
+
+<p><strong>myBatisConfig.xml</strong></br></p>
+
+<pre><code>    &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+    &lt;!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;
+    &lt;configuration&gt;
+         &lt;!--提供框架运行的属性信息  --&gt;
+        &lt;settings&gt;
+            &lt;setting name="lazyLoadingEnabled" value="false"/&gt;
+        &lt;/settings&gt;
+
+        &lt;!--指定类的别名,可以在映射文件中使用类的别名  --&gt;
+        &lt;typeAliases&gt;
+            &lt;typeAlias alias="Information" type="spring_mybatis.Information"/&gt;
+        &lt;/typeAliases&gt;
+
+        &lt;!--指定映射文件  --&gt;
+        &lt;mappers&gt;
+            &lt;mapper resource="spring_mybatis/InformationMapper.xml"/&gt;
+        &lt;/mappers&gt;
+    &lt;/configuration&gt;
+</code></pre>
+
+<ul>
+<li><p>其中<mappers>属性指定了映射文件的位置。映射文件的配置如下：</br>
+<strong>InformationMapper.xml</strong></p>
+
+<pre><code>  &lt;?xml version="1.0" encoding="UTF-8" ?&gt; 
+  &lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
+  &lt;!--命名空间要与调用接口的名称相同  --&gt;
+  &lt;mapper namespace="spring_mybatis.InformationDAO"&gt;
+  &lt;!--下面定义映射语句项，映射语句中的id要与映射接口方法的名称相同  --&gt;
+      &lt;select id="getInformation" resultType="Information" parameterType="String"&gt;
+          select * from information where name=#{name}
+          &lt;!-- #{name}为对应接口方法的入参 --&gt;
+      &lt;/select&gt;
+
+      &lt;insert id="addInformation" parameterType="Information"&gt;
+          insert into information values(#{name},#{sex},#{address},#{phone})
+          &lt;!--#{name},#{sex},#{address},#{phone}对应接口方法参数Information的属性  --&gt;
+      &lt;/insert&gt;
+
+      &lt;update id="updateInformation" parameterType="Information"&gt;
+          update information set
+          name=#{name},sex=#{sex},address=#{address}，phone=#{phone}
+          &lt;!--#{name},#{sex},#{address},#{phone}对应接口方法参数Information的属性  --&gt;
+      &lt;/update&gt;
+  &lt;/mapper&gt;
+</code></pre></li>
+<li><p>在映射文件中定义了对实体类Information进行数据操作时所用的SQL语句。
+在该文件中定义了 select insert及update映射项语句，映射项语句的id唯一，resultType代表了语句的返回值类型，parameterType代表传入参数的类型，可以是全限定类名，也可以是在MyBatis中指定的类的别名；如果参数为String/基础数据类型，可以直接用int,String指定。映射项通过#{xxx}绑定传入参数对象的属性。</p></li>
+<li><p>MyBatis提供了一种可以将SQL映射文件中的映射项，通过名称匹配接口进行调用：定义一个映射接口，接口的全限定名称与映射文件中的命名空间相同，接口方法名称与映射项的id相同。调用接口的方法即可以访问对应的映射项。
+如：</br>
+<strong>InformationDAO接口</strong></br></p>
+
+<pre><code>  package spring_mybatis;
+  //定义映射接口
+  //接口的名称与映射命名空间相同
+  //方法名称与映射项的id相同
+  //可以通过接口名称及方法名称调用映射文件的映射项
+  public interface InformationDAO {
+      public Information getInformation(String name );
+      public void addInformation(Information information);
+      public void updateInformation(Information information);
+
+  }
+</code></pre>
+
+<h3>定义好了接口，如何使用其中的方法呢？</h3>
+
+<p>两种方式：</br>
+<strong>1：通过SqlSessionTemplate获取接口的实例。</strong></p></li>
+</ul>
+
+
+<p>DAO类，用于调用映射项，进行数据操作：</p>
+
+<pre><code>    package spring_mybatis;
+    import org.mybatis.spring.SqlSessionTemplate;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Repository;
+
+    @Repository("DAO")
+    public class DAO {
+        @Autowired//注入SqlSessionTemplate
+        SqlSessionTemplate sessionTemplate;
+
+        public SqlSessionTemplate getSessionTemplate() {
+            return sessionTemplate;
+        }
+
+        public void setSessionTemplate(SqlSessionTemplate sessionTemplate) {
+            this.sessionTemplate = sessionTemplate;
+        }
+
+        public Information getInformation_1(String name ){
+            //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
+            InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
+            return informationDAO.getInformation(name);
+        }
+
+        public void addInformation_1(Information information){
+            //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
+            InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
+            informationDAO.addInformation(information);
+        }
+
+        public void updateInformation(Information information){
+            //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
+            InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
+            informationDAO.updateInformation(information);
+        }
+    }
+</code></pre>
+
+<ul>
+<li><p><strong>2：使用类型转换器MapperScannerConfigurer，可以将映射接口直接转换成对应的Bean，</strong></br>
+PS：使用这种方法时，便不需要使用sqlSessionTemplate进行操作。</p>
+
+<pre><code>  &lt; !--配置转换器，将映射接口转换成实例，从而进行数据库访问  --&gt; 
+  &lt;bean class="org.spring.mapper.MapperScannerConfigure"
+  p:sqlSessionFactory-ref="sqlSessionFactory"
+  p:basePackage="spring_mybatis"/&gt;
+</code></pre></li>
+</ul>
+
+
+<p>然后可以直接在类中注入对应的接口对象，并调用方法使用映射文件中的映射项。
+如：</br><strong>DAO_1类</strong></p>
+
+<pre><code>    package spring_mybatis;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Repository;
+
+    @Repository("dao_1")
+    public class DAO_1 {
+        @Autowired
+        InformationDAO informationDAO;
+
+        public void getInformation(String name ){
+            informationDAO.getInformation(name);
+        }
+        public void addInformation(Information information){
+            informationDAO.addInformation(information);
+
+        }
+        public void updateInformation(Information information){
+            informationDAO.updateInformation(information);
+        }
+    }
+</code></pre>
+
+<ul>
+<li><p>以上是使用MyBatis访问数据库操作的配置，现在将Spring与MyBatis进行整合。
+整合过程在Spring的配置文件中完成。
+如下：</br>
+<strong>Spring-MyBatis.xml</strong></p>
+
+<pre><code>  &lt; context:component-scan base-package="spring_mybatis"/&gt;
+  &lt;!--引用属性文件  --&gt;
+  &lt;bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+  p:location="classpath:jdbc.properties"
+  p:fileEncoding="utf-8"/&gt;
+  &lt;!--配置数据源,DBCP数据源  --&gt;
+  &lt;bean id="datasource_1" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+  p:driverClassName="${driverClassName}"
+  p:url="${url}"
+  p:username="${username}"
+  p:password="${password}"/&gt;
+  &lt;!--配置数据源，Spring自身提供  --&gt;
+  &lt;bean id="datasource_2" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+  p:driverClassName="com.mysql.jdbc.Driver"
+  p:url="jdbc:mysql://localhost:3306/my_student?useSSL=false"
+  p:username="root"
+  p:password="000000"/&gt;
+
+  &lt;!--声明sqlsessionfactory  --&gt;
+  &lt;bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"&gt;
+  &lt;property name="dataSource" ref="datasource_2"&gt;&lt;/property&gt;
+  &lt;property name="configLocation" value="myBatisConfig.xml"&gt;&lt;/property&gt;
+  &lt;/bean&gt;
+  &lt;!--引用mybatis的配置文件  --&gt;
+
+   &lt;!--定义SqlSessionTemplate,可以用来直接访问数据库  --&gt;
+  &lt;bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate"&gt;
+     &lt; constructor-arg ref="sqlSessionFactory"/&gt;
+  &lt;/bean&gt;
+
+  &lt;!-- &lt;bean id="DAO" class="spring_mybatis.DAO"
+  p:sessionTemplate-ref="sqlSessionTemplate"/&gt;  --&gt; 
+
+  &lt;!--配置转换器，将映射接口转换成实例，从而进行数据库访问  --&gt;
+  &lt;bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+  p:sqlSessionFactory-ref="sqlSessionFactory"
+  p:basePackage="spring_mybatis"/&gt;
+
+  &lt;bean id="information" class="spring_mybatis.Information"
+  p:name="zt"
+  p:sex="woman"
+  p:address="huan"
+  p:phone="521155"/&gt;
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Bean的配置及注入]]></title>
-    <link href="http://ttazk.github.io/blog/2017/03/21/bean_config/"/>
-    <updated>2017-03-21T17:03:16+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/03/21/bean_config</id>
+    <link href="http://ttazk.github.io/blog/2016/03/21/bean_config/"/>
+    <updated>2016-03-21T17:03:16+08:00</updated>
+    <id>http://ttazk.github.io/blog/2016/03/21/bean_config</id>
     <content type="html"><![CDATA[<h4>Bean的配置方式有三种：xml配置，基于注解配置，基于java类配置</h4>
 
 <ul>
@@ -145,239 +367,6 @@ Spring配置文件中不允许出现两个相同id的Bean，但是可以有相�
 <bean id="" class="工厂方法类" factory-method="工厂类方法"/></p></li>
 </ol>
 </li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Spring整合MyBatis框架]]></title>
-    <link href="http://ttazk.github.io/blog/2017/03/21/spring_mybatis/"/>
-    <updated>2017-03-21T16:21:24+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/03/21/spring_mybatis</id>
-    <content type="html"><![CDATA[<ul>
-<li><p>使用MyBatis，面对的是纯粹的Java对象，类似于Hbernate。但是对于具体的数据库操作，Hibernate会自动生成SQL语句，MyBatis 则要求自己自己编写SQL语句。</p></li>
-<li><p>每一个MyBatis应用都是以一个SQLSessionFactory对象的实例为核心MyBatis可以拥有多个SQL映射文件，并通过一个配置文件对这些SQL映射文件进行装配，同时在该文件中定义一些控制属性信息。
-如下：</p></li>
-</ul>
-
-
-<!--more-->
-
-
-<p><strong>myBatisConfig.xml</strong></br>
-```
-&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo; ?>
-&lt;!DOCTYPE configuration PUBLIC &ldquo;-//mybatis.org//DTD Config 3.0//EN&rdquo;
-&ldquo;<a href="http://mybatis.org/dtd/mybatis-3-config.dtd">http://mybatis.org/dtd/mybatis-3-config.dtd</a>&rdquo;>
-<configuration>
-     <!--提供框架运行的属性信息  -->
-    <settings>
-        <setting name="lazyLoadingEnabled" value="false"/>
-    </settings></p>
-
-<pre><code>&lt;!--指定类的别名,可以在映射文件中使用类的别名  --&gt;
-&lt;typeAliases&gt;
-    &lt;typeAlias alias="Information" type="spring_mybatis.Information"/&gt;
-&lt;/typeAliases&gt;
-
-&lt;!--指定映射文件  --&gt;
-&lt;mappers&gt;
-    &lt;mapper resource="spring_mybatis/InformationMapper.xml"/&gt;
-&lt;/mappers&gt;
-</code></pre>
-
-<p></configuration>
-```</p>
-
-<ul>
-<li>其中<mappers>属性指定了映射文件的位置。映射文件的配置如下：</br>
-<strong>InformationMapper.xml</strong>
-```</li>
-</ul>
-
-
-<p>&lt;?xml version=&ldquo;1.0&rdquo; encoding=&ldquo;UTF-8&rdquo; ?>
-&lt;!DOCTYPE mapper PUBLIC &ldquo;-//mybatis.org//DTD Mapper 3.0//EN&rdquo; &ldquo;<a href="http://mybatis.org/dtd/mybatis-3-mapper.dtd">http://mybatis.org/dtd/mybatis-3-mapper.dtd</a>&rdquo;></p>
-
-<!--命名空间要与调用接口的名称相同  -->
-
-
-<p><mapper namespace="spring_mybatis.InformationDAO"></p>
-
-<!--下面定义映射语句项，映射语句中的id要与映射接口方法的名称相同  -->
-
-
-<pre><code>&lt;select id="getInformation" resultType="Information" parameterType="String"&gt;
-    select * from information where name=#{name}
-    &lt;!-- #{name}为对应接口方法的入参 --&gt;
-&lt;/select&gt;
-
-&lt;insert id="addInformation" parameterType="Information"&gt;
-    insert into information values(#{name},#{sex},#{address},#{phone})
-    &lt;!--#{name},#{sex},#{address},#{phone}对应接口方法参数Information的属性  --&gt;
-&lt;/insert&gt;
-
-&lt;update id="updateInformation" parameterType="Information"&gt;
-    update information set
-    name=#{name},sex=#{sex},address=#{address}，phone=#{phone}
-    &lt;!--#{name},#{sex},#{address},#{phone}对应接口方法参数Information的属性  --&gt;
-&lt;/update&gt;
-</code></pre>
-
-<p></mapper>```</p>
-
-<ul>
-<li><p>在映射文件中定义了对实体类Information进行数据操作时所用的SQL语句。
-在该文件中定义了 select insert及update映射项语句，映射项语句的id唯一，resultType代表了语句的返回值类型，parameterType代表传入参数的类型，可以是全限定类名，也可以是在MyBatis中指定的类的别名；如果参数为String/基础数据类型，可以直接用int,String指定。映射项通过#{xxx}绑定传入参数对象的属性。</p></li>
-<li><p>MyBatis提供了一种可以将SQL映射文件中的映射项，通过名称匹配接口进行调用：定义一个映射接口，接口的全限定名称与映射文件中的命名空间相同，接口方法名称与映射项的id相同。调用接口的方法即可以访问对应的映射项。
-如：</br>
-<strong>InformationDAO接口</strong></br>
-```
-package spring_mybatis;
-//定义映射接口
-//接口的名称与映射命名空间相同
-//方法名称与映射项的id相同
-//可以通过接口名称及方法名称调用映射文件的映射项
-public interface InformationDAO {
-  public Information getInformation(String name );
-  public void addInformation(Information information);
-  public void updateInformation(Information information);</p></li>
-</ul>
-
-
-<p>}
-```</p>
-
-<h3>定义好了接口，如何使用其中的方法呢？</h3>
-
-<p>两种方式：</br>
-<strong>1：通过SqlSessionTemplate获取接口的实例。</strong></p>
-
-<p>DAO类，用于调用映射项，进行数据操作：</p>
-
-<pre><code>package spring_mybatis;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
-
-@Repository("DAO")
-public class DAO {
-    @Autowired//注入SqlSessionTemplate
-    SqlSessionTemplate sessionTemplate;
-
-    public SqlSessionTemplate getSessionTemplate() {
-        return sessionTemplate;
-    }
-
-    public void setSessionTemplate(SqlSessionTemplate sessionTemplate) {
-        this.sessionTemplate = sessionTemplate;
-    }
-
-    public Information getInformation_1(String name ){
-        //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
-        InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
-        return informationDAO.getInformation(name);
-    }
-
-    public void addInformation_1(Information information){
-        //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
-        InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
-        informationDAO.addInformation(information);
-    }
-
-    public void updateInformation(Information information){
-        //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
-        InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
-        informationDAO.updateInformation(information);
-    }
-}
-</code></pre>
-
-<ul>
-<li><strong>2：使用类型转换器MapperScannerConfigurer，可以将映射接口直接转换成对应的Bean，</strong></br>
-PS：使用这种方法时，便不需要使用sqlSessionTemplate进行操作。
-<code>&lt; !--配置转换器，将映射接口转换成实例，从而进行数据库访问  --&gt;
-&lt;bean class="org.spring.mapper.MapperScannerConfigure"
-p:sqlSessionFactory-ref="sqlSessionFactory"
-p:basePackage="spring_mybatis"/&gt;
-</code>
-然后可以直接在类中注入对应的接口对象，并调用方法使用映射文件中的映射项。
-如：</br><strong>DAO_1类</strong></li>
-</ul>
-
-
-<pre><code>    package spring_mybatis;
-    import org.springframework.beans.factory.annotation.Autowired;
-    import org.springframework.stereotype.Repository;
-
-    @Repository("dao_1")
-    public class DAO_1 {
-        @Autowired
-        InformationDAO informationDAO;
-
-        public void getInformation(String name ){
-            informationDAO.getInformation(name);
-        }
-        public void addInformation(Information information){
-            informationDAO.addInformation(information);
-
-        }
-        public void updateInformation(Information information){
-            informationDAO.updateInformation(information);
-        }
-    }
-</code></pre>
-
-<ul>
-<li><p>以上是使用MyBatis访问数据库操作的配置，现在将Spring与MyBatis进行整合。
-整合过程在Spring的配置文件中完成。
-如下：</br>
-<strong>Spring-MyBatis.xml</strong></p>
-
-<p>  &lt; context:component-scan base-package=&ldquo;spring_mybatis&rdquo;/>
-  <!--引用属性文件  -->
-  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
-  p:location="classpath:jdbc.properties"
-  p:fileEncoding="utf-8"/>
-  <!--配置数据源,DBCP数据源  -->
-  <bean id="datasource_1" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
-  p:driverClassName="${driverClassName}"
-  p:url="${url}"
-  p:username="${username}"
-  p:password="${password}"/>
-  <!--配置数据源，Spring自身提供  -->
-  <bean id="datasource_2" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
-  p:driverClassName="com.mysql.jdbc.Driver"
-  p:url="jdbc:mysql://localhost:3306/my_student?useSSL=false"
-  p:username="root"
-  p:password="000000"/></p>
-
-<p>  <!--声明sqlsessionfactory  -->
-  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-  <property name="dataSource" ref="datasource_2"></property>
-  <property name="configLocation" value="myBatisConfig.xml"></property>
-  </bean>
-  <!--引用mybatis的配置文件  --></p>
-
-<p>   <!--定义SqlSessionTemplate,可以用来直接访问数据库  -->
-  <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-     &lt; constructor-arg ref=&ldquo;sqlSessionFactory&rdquo;/>
-  </bean></p>
-
-<p>  <!-- <bean id="DAO" class="spring_mybatis.DAO"
-  p:sessionTemplate-ref="sqlSessionTemplate"/>  &ndash;></p>
-
-<p>  <!--配置转换器，将映射接口转换成实例，从而进行数据库访问  -->
-  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
-  p:sqlSessionFactory-ref="sqlSessionFactory"
-  p:basePackage="spring_mybatis"/></p>
-
-<p>  <bean id="information" class="spring_mybatis.Information"
-  p:name="zt"
-  p:sex="woman"
-  p:address="huan"
-  p:phone="521155"/></p></li>
 </ul>
 
 ]]></content>

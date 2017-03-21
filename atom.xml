@@ -4,7 +4,7 @@
   <title><![CDATA[Blog Of ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-03-21T18:51:29+08:00</updated>
+  <updated>2017-03-21T19:16:01+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,143 +12,6 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
-  
-  <entry>
-    <title type="html"><![CDATA[Bean的配置及注入]]></title>
-    <link href="http://ttazk.github.io/blog/2017/03/21/bean_config/"/>
-    <updated>2017-03-21T17:03:16+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/03/21/bean_config</id>
-    <content type="html"><![CDATA[<h4>Bean的配置方式有三种：xml配置，基于注解配置，基于java类配置</h4>
-
-<ul>
-<li>Bean的配置信息包含了bean的实现及各个bean之间的依赖关系，Spring容器将各种形式的Bean的配置信息进行读取，并在Spring容器内部建立Bean定义注册表，然后根据注册表对Bean进行加载，实例化，并建立Bean之间的依赖关系，最后将准备就绪的Bean放入Bean缓冲池中，等待外部程序调用。</li>
-</ul>
-
-
-<h3>Bean配置方式详解：</h3>
-
-<!--more-->
-
-
-<h3>1，基于XML文档配置</h3>
-
-<h5>XML文档介绍</h5>
-
-<p>Spring2.0之后，XML文档采取Schema形式进行配置，使得各种类型拥有自己的命名空间，如beans，mvc,aop</p>
-
-<ul>
-<li>命名空间的作用：
-
-<ul>
-<li>a.默认命名空间：没有空间名，用于bean的定义，文档中无命名空间前缀的标签都属于默认命名空间，如<beans/>,<bean/></li>
-<li>b.自定义命名空间：如aop命名空间，</li>
-<li>c.xsi命名空间：用于为文档中的命名空间指定对应的Schema文件</li>
-</ul>
-</li>
-<li>指定命名空间Schema文件地址有两个作用：
-
-<ul>
-<li>1，XML解析器可以获得Schema文件并对文档进行验证</li>
-<li>2，IDE可以用其对文档编辑提供诱导作用
-
-<h6>Bean的基本配置</h6></li>
-</ul>
-</li>
-<li>&lt; bean id=&ldquo; &rdquo; class=&ldquo;  &rdquo;>
-</br> class属性制定了Bean对应的实现类.</br>
-Spring容器中的一个Bean即对应配置文件中的一个<bean/>
-Spring容器的getBean(String id)方法用于从Spring容器中获取对应的Bean，是外部程序与Spring容器进行交流的桥梁</li>
-<li>Bean的命名</br>
-id在Spring容器中唯一，作为Bean的名称
-name属性也可以用来指定Bean的名字，可以为多个
-Spring配置文件中不允许出现两个相同id的Bean，但是可以有相同name,根据name属性对bean进行引用时，如果name相同，则返回后声明的bean对象，因为后面把前面的覆盖了</br>
-如果id，name属性均未指定，如<bean class="zk.Controller"/>则自动将全限定名称作为Bean的名称，同样的方法进行引用</li>
-</ul>
-
-
-<p></br>
-<strong>2 ,基于注解的配置</strong></br></p>
-
-<ul>
-<li><p>在基于xml文档配置bean时，Bean的定义与实现是分开的
-而采用注解配置时，Bean的定义通过在Bean的实现类上标注注解实现。</p>
-
-<h6>使用注解定义Bean</h6>
-
-<p>  @ Component 用于任何层次
-  @ Service 用于对Service实现类进行标注
-  @ Controller  用于对Controller实现类标注
-  @ Repository 用于对Dao实现类进行标注</p></li>
-<li><p>使用这四个注解标注POJO 可以使类被Spring识别，并将其转换成Bean。
-作用等同于<bean id="" class=""/>,还可以通过注解的value属性指定Bean的名称。</p></li>
-<li>使用&lt;context:compoment-scan base-package=&ldquo;&rdquo;/>Spring会扫描指定的包，并识别其中的注解信息。
-</br></br></li>
-<li><strong>装配Bean</strong>
-
-<ul>
-<li>对Bean 属性或者方法参数的自动装配，仅限于该属性或参数的类型是对象，Spring会在容器中查找匹配的Ban进行注入，对于基本数据类型，不能实现自动装配，仍需要通过xml文档进行依赖注入</li>
-<li>@Autowired 实现bean的依赖注入，默认为按类型匹配</li>
-<li>@Autowired（required=false）;如果找不到符合要求的Bean不会抛出异常</li>
-<li>@Qulifier（““）用于指定注入的名称</li>
-<li>@Autowired既可以标注属性，也可以对方法及方法的参数进行标注。</li>
-<li>如果对类中集合类型（List，Set，Map）的属性或方法的参数进行@Autowired标注，Spring会将容器中所有类型匹配的Bean注入进来。</li>
-<li>对于@Autowired声明的数组、集合类型，spring并不是根据beanName去找容器中对应的bean，而是把容器中所有类型与集合（数组）中元素类型相同的bean构造出一个对应集合，注入到目标bean中。</li>
-<li>注入集合类型不要使用@Autowired，而使用@Resource注解。同时Spring官方也是不推荐使用@Autowired的。
-
-<h3>依赖注入</h3></li>
-</ul>
-</li>
-<li>Spring提供两种依赖注入的方式：属性注入和构造函数注入
-还支持工厂方法注入的方式（不常使用）
-
-<ol>
-<li>属性注入
-
-<ul>
-<li>通过setXXX（）函数注入Bean的属性及依赖对象
-属性注入要求Bean提供一个默认的构造函数及要注入属性的SetXXX（）方法</li>
-</ul>
-</li>
-</ol>
-
-
-<p>  Ps: Spring 只要求是否有setXXX（）方法，对于是否有相应的属性不做要求
-  如：
-  Public test{
-      Int a;//对于属性a无要求，但是一般会添加
-      //但是必须有setA()方法
-      Public void setA(int a){
-          This .a=a;
-      }
-  }</p>
-
-<p>  Spring会先调用Bean的默认的构造函数实例化Bean对象，然后通过反射的方式调用Bean的setter方法注入属性值。</p>
-
-<ol>
-<li>构造函数注入
-保证Bean的一些重要的属性在实例化之后就能使用
-使用构造函数注入的前提是Bean必须提供带参数的构造函数</li>
-</ol>
-
-
-<p>  Spring的配置文件采用元素标签与顺序无关的原则，即在一个上下文配置文件中，两个标签的位置不同不会影响使用。
-  但是在web.xml文档中，标签的顺序是有影响的。</p>
-
-<p>  构造函数注入有以下几种方式：</p>
-
-<ol type="a">
-<li> 按照类型匹配参数</li>
-<li> 按照索引匹配参数</li>
-<li> 类型及索引联合使用匹配参数</li>
-<li><p> 通过自身类型反射匹配参数</p></li>
-<li><p>工厂方法注入
-<bean id="" class="工厂方法类" factory-method="工厂类方法"/></p></li>
-</ol>
-</li>
-</ul>
-
-]]></content>
-  </entry>
   
   <entry>
     <title type="html"><![CDATA[Spring整合MyBatis框架]]></title>
@@ -167,221 +30,155 @@ Spring配置文件中不允许出现两个相同id的Bean，但是可以有相�
 
 <p><strong>myBatisConfig.xml</strong></br></p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>&lt;?xml version="1.0" encoding="UTF-8" ?&gt;
-</span><span class='line'>&lt;!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
-</span><span class='line'>"http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;
-</span><span class='line'>&lt;configuration&gt;
-</span><span class='line'>     &lt;!--提供框架运行的属性信息  --&gt;
-</span><span class='line'>    &lt;settings&gt;
-</span><span class='line'>        &lt;setting name="lazyLoadingEnabled" value="false"/&gt;
-</span><span class='line'>    &lt;/settings&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;!--指定类的别名,可以在映射文件中使用类的别名  --&gt;
-</span><span class='line'>    &lt;typeAliases&gt;
-</span><span class='line'>        &lt;typeAlias alias="Information" type="spring_mybatis.Information"/&gt;
-</span><span class='line'>    &lt;/typeAliases&gt;
-</span><span class='line'>
-</span><span class='line'>    &lt;!--指定映射文件  --&gt;
-</span><span class='line'>    &lt;mappers&gt;
-</span><span class='line'>        &lt;mapper resource="spring_mybatis/InformationMapper.xml"/&gt;
-</span><span class='line'>    &lt;/mappers&gt;
-</span><span class='line'>&lt;/configuration&gt;</span></code></pre></td></tr></table></div></figure>
+<pre><code>    &lt;?xml version="1.0" encoding="UTF-8" ?&gt;
+    &lt;!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+    "http://mybatis.org/dtd/mybatis-3-config.dtd"&gt;
+    &lt;configuration&gt;
+         &lt;!--提供框架运行的属性信息  --&gt;
+        &lt;settings&gt;
+            &lt;setting name="lazyLoadingEnabled" value="false"/&gt;
+        &lt;/settings&gt;
 
+        &lt;!--指定类的别名,可以在映射文件中使用类的别名  --&gt;
+        &lt;typeAliases&gt;
+            &lt;typeAlias alias="Information" type="spring_mybatis.Information"/&gt;
+        &lt;/typeAliases&gt;
+
+        &lt;!--指定映射文件  --&gt;
+        &lt;mappers&gt;
+            &lt;mapper resource="spring_mybatis/InformationMapper.xml"/&gt;
+        &lt;/mappers&gt;
+    &lt;/configuration&gt;
+</code></pre>
 
 <ul>
-<li>其中<mappers>属性指定了映射文件的位置。映射文件的配置如下：</br>
-<strong>InformationMapper.xml</strong></li>
+<li><p>其中<mappers>属性指定了映射文件的位置。映射文件的配置如下：</br>
+<strong>InformationMapper.xml</strong></p>
+
+<pre><code>  &lt;?xml version="1.0" encoding="UTF-8" ?&gt; 
+  &lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
+  &lt;!--命名空间要与调用接口的名称相同  --&gt;
+  &lt;mapper namespace="spring_mybatis.InformationDAO"&gt;
+  &lt;!--下面定义映射语句项，映射语句中的id要与映射接口方法的名称相同  --&gt;
+      &lt;select id="getInformation" resultType="Information" parameterType="String"&gt;
+          select * from information where name=#{name}
+          &lt;!-- #{name}为对应接口方法的入参 --&gt;
+      &lt;/select&gt;
+
+      &lt;insert id="addInformation" parameterType="Information"&gt;
+          insert into information values(#{name},#{sex},#{address},#{phone})
+          &lt;!--#{name},#{sex},#{address},#{phone}对应接口方法参数Information的属性  --&gt;
+      &lt;/insert&gt;
+
+      &lt;update id="updateInformation" parameterType="Information"&gt;
+          update information set
+          name=#{name},sex=#{sex},address=#{address}，phone=#{phone}
+          &lt;!--#{name},#{sex},#{address},#{phone}对应接口方法参数Information的属性  --&gt;
+      &lt;/update&gt;
+  &lt;/mapper&gt;
+</code></pre></li>
+<li><p>在映射文件中定义了对实体类Information进行数据操作时所用的SQL语句。
+在该文件中定义了 select insert及update映射项语句，映射项语句的id唯一，resultType代表了语句的返回值类型，parameterType代表传入参数的类型，可以是全限定类名，也可以是在MyBatis中指定的类的别名；如果参数为String/基础数据类型，可以直接用int,String指定。映射项通过#{xxx}绑定传入参数对象的属性。</p></li>
+<li><p>MyBatis提供了一种可以将SQL映射文件中的映射项，通过名称匹配接口进行调用：定义一个映射接口，接口的全限定名称与映射文件中的命名空间相同，接口方法名称与映射项的id相同。调用接口的方法即可以访问对应的映射项。
+如：</br>
+<strong>InformationDAO接口</strong></br></p>
+
+<pre><code>  package spring_mybatis;
+  //定义映射接口
+  //接口的名称与映射命名空间相同
+  //方法名称与映射项的id相同
+  //可以通过接口名称及方法名称调用映射文件的映射项
+  public interface InformationDAO {
+      public Information getInformation(String name );
+      public void addInformation(Information information);
+      public void updateInformation(Information information);
+
+  }
+</code></pre>
+
+<h3>定义好了接口，如何使用其中的方法呢？</h3>
+
+<p>两种方式：</br>
+<strong>1：通过SqlSessionTemplate获取接口的实例。</strong></p></li>
 </ul>
 
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-<span class='line-number'>28</span>
-<span class='line-number'>29</span>
-<span class='line-number'>30</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>&lt;?xml version="1.0" encoding="UTF-8" ?&gt; 
-</span><span class='line'>&lt;!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd"&gt;
-</span><span class='line'>&lt;!--命名空间要与调用接口的名称相同  --&gt;
-</span><span class='line'>&lt;mapper namespace="spring_mybatis.InformationDAO"&gt;
-</span><span class='line'>&lt;!--下面定义映射语句项，映射语句中的id要与映射接口方法的名称相同  --&gt;
-</span><span class='line'>&lt;select id="getInformation" resultType="Information" parameterType="String"&gt;
-</span><span class='line'>    select * from information where name=#{name}
-</span><span class='line'>    &lt;!-- #{name}为对应接口方法的入参 --&gt;
-</span><span class='line'>&lt;/select&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;insert id="addInformation" parameterType="Information"&gt;
-</span><span class='line'>    insert into information values(#{name},#{sex},#{address},#{phone})
-</span><span class='line'>    &lt;!--#{name},#{sex},#{address},#{phone}对应接口方法参数Information的属性  --&gt;
-</span><span class='line'>&lt;/insert&gt;
-</span><span class='line'>
-</span><span class='line'>&lt;update id="updateInformation" parameterType="Information"&gt;
-</span><span class='line'>    update information set
-</span><span class='line'>    name=#{name},sex=#{sex},address=#{address}，phone=#{phone}
-</span><span class='line'>    &lt;!--#{name},#{sex},#{address},#{phone}对应接口方法参数Information的属性  --&gt;
-</span><span class='line'>&lt;/update&gt;
-</span><span class='line'>&lt;/mapper&gt;```
-</span><span class='line'>
-</span><span class='line'>
-</span><span class='line'>- 在映射文件中定义了对实体类Information进行数据操作时所用的SQL语句。
-</span><span class='line'>在该文件中定义了 select insert及update映射项语句，映射项语句的id唯一，resultType代表了语句的返回值类型，parameterType代表传入参数的类型，可以是全限定类名，也可以是在MyBatis中指定的类的别名；如果参数为String/基础数据类型，可以直接用int,String指定。映射项通过#{xxx}绑定传入参数对象的属性。
-</span><span class='line'>
-</span><span class='line'>- MyBatis提供了一种可以将SQL映射文件中的映射项，通过名称匹配接口进行调用：定义一个映射接口，接口的全限定名称与映射文件中的命名空间相同，接口方法名称与映射项的id相同。调用接口的方法即可以访问对应的映射项。
-</span><span class='line'>如：&lt;/br&gt;
-</span><span class='line'>**InformationDAO接口**&lt;/br&gt;</span></code></pre></td></tr></table></div></figure>
+<p>DAO类，用于调用映射项，进行数据操作：</p>
 
+<pre><code>    package spring_mybatis;
+    import org.mybatis.spring.SqlSessionTemplate;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Repository;
 
-<p>package spring_mybatis;
-//定义映射接口
-//接口的名称与映射命名空间相同
-//方法名称与映射项的id相同
-//可以通过接口名称及方法名称调用映射文件的映射项
-public interface InformationDAO {
-    public Information getInformation(String name );
-    public void addInformation(Information information);
-    public void updateInformation(Information information);</p>
+    @Repository("DAO")
+    public class DAO {
+        @Autowired//注入SqlSessionTemplate
+        SqlSessionTemplate sessionTemplate;
 
-<p>}</p>
+        public SqlSessionTemplate getSessionTemplate() {
+            return sessionTemplate;
+        }
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>###定义好了接口，如何使用其中的方法呢？
-</span><span class='line'>两种方式：&lt;/br&gt;
-</span><span class='line'>**1：通过SqlSessionTemplate获取接口的实例。** 
-</span><span class='line'>
-</span><span class='line'>DAO类，用于调用映射项，进行数据操作：
-</span></code></pre></td></tr></table></div></figure>
+        public void setSessionTemplate(SqlSessionTemplate sessionTemplate) {
+            this.sessionTemplate = sessionTemplate;
+        }
 
+        public Information getInformation_1(String name ){
+            //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
+            InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
+            return informationDAO.getInformation(name);
+        }
 
-<p>package spring_mybatis;
-import org.mybatis.spring.SqlSessionTemplate;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;</p>
+        public void addInformation_1(Information information){
+            //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
+            InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
+            informationDAO.addInformation(information);
+        }
 
-<p>@Repository(&ldquo;DAO&rdquo;)
-public class DAO {
-    @Autowired//注入SqlSessionTemplate
-    SqlSessionTemplate sessionTemplate;</p>
-
-<pre><code>public SqlSessionTemplate getSessionTemplate() {
-    return sessionTemplate;
-}
-
-public void setSessionTemplate(SqlSessionTemplate sessionTemplate) {
-    this.sessionTemplate = sessionTemplate;
-}
-
-public Information getInformation_1(String name ){
-    //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
-    InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
-    return informationDAO.getInformation(name);
-}
-
-public void addInformation_1(Information information){
-    //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
-    InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
-    informationDAO.addInformation(information);
-}
-
-public void updateInformation(Information information){
-    //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
-    InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
-    informationDAO.updateInformation(information);
-}
+        public void updateInformation(Information information){
+            //调用sessionTemplate.getMapper方法返回接口实例，从而可以执行映射项
+            InformationDAO informationDAO=sessionTemplate.getMapper(InformationDAO.class);
+            informationDAO.updateInformation(information);
+        }
+    }
 </code></pre>
 
-<p>}</p>
+<ul>
+<li><p><strong>2：使用类型转换器MapperScannerConfigurer，可以将映射接口直接转换成对应的Bean，</strong></br>
+PS：使用这种方法时，便不需要使用sqlSessionTemplate进行操作。</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>- **2：使用类型转换器MapperScannerConfigurer，可以将映射接口直接转换成对应的Bean，**&lt;/br&gt;
-</span><span class='line'>PS：使用这种方法时，便不需要使用sqlSessionTemplate进行操作。</span></code></pre></td></tr></table></div></figure>
-
-
-<p>&lt; !&ndash;配置转换器，将映射接口转换成实例，从而进行数据库访问  &ndash;>
-<bean class="org.spring.mapper.MapperScannerConfigure"
-p:sqlSessionFactory-ref="sqlSessionFactory"
-p:basePackage="spring_mybatis"/></p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>然后可以直接在类中注入对应的接口对象，并调用方法使用映射文件中的映射项。
-</span><span class='line'>如：&lt;/br&gt;**DAO_1类**
-</span></code></pre></td></tr></table></div></figure>
+<pre><code>  &lt; !--配置转换器，将映射接口转换成实例，从而进行数据库访问  --&gt; 
+  &lt;bean class="org.spring.mapper.MapperScannerConfigure"
+  p:sqlSessionFactory-ref="sqlSessionFactory"
+  p:basePackage="spring_mybatis"/&gt;
+</code></pre></li>
+</ul>
 
 
-<pre><code>package spring_mybatis;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
+<p>然后可以直接在类中注入对应的接口对象，并调用方法使用映射文件中的映射项。
+如：</br><strong>DAO_1类</strong></p>
 
-@Repository("dao_1")
-public class DAO_1 {
-    @Autowired
-    InformationDAO informationDAO;
+<pre><code>    package spring_mybatis;
+    import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.stereotype.Repository;
 
-    public void getInformation(String name ){
-        informationDAO.getInformation(name);
+    @Repository("dao_1")
+    public class DAO_1 {
+        @Autowired
+        InformationDAO informationDAO;
+
+        public void getInformation(String name ){
+            informationDAO.getInformation(name);
+        }
+        public void addInformation(Information information){
+            informationDAO.addInformation(information);
+
+        }
+        public void updateInformation(Information information){
+            informationDAO.updateInformation(information);
+        }
     }
-    public void addInformation(Information information){
-        informationDAO.addInformation(information);
-
-    }
-    public void updateInformation(Information information){
-        informationDAO.updateInformation(information);
-    }
-}
 </code></pre>
-
-<p>```</p>
 
 <ul>
 <li><p>以上是使用MyBatis访问数据库操作的配置，现在将Spring与MyBatis进行整合。
@@ -389,49 +186,50 @@ public class DAO_1 {
 如下：</br>
 <strong>Spring-MyBatis.xml</strong></p>
 
-<p>  &lt; context:component-scan base-package=&ldquo;spring_mybatis&rdquo;/>
-  <!--引用属性文件  -->
-  <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
+<pre><code>  &lt; context:component-scan base-package="spring_mybatis"/&gt;
+  &lt;!--引用属性文件  --&gt;
+  &lt;bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer"
   p:location="classpath:jdbc.properties"
-  p:fileEncoding="utf-8"/>
-  <!--配置数据源,DBCP数据源  -->
-  <bean id="datasource_1" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
+  p:fileEncoding="utf-8"/&gt;
+  &lt;!--配置数据源,DBCP数据源  --&gt;
+  &lt;bean id="datasource_1" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close"
   p:driverClassName="${driverClassName}"
   p:url="${url}"
   p:username="${username}"
-  p:password="${password}"/>
-  <!--配置数据源，Spring自身提供  -->
-  <bean id="datasource_2" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
+  p:password="${password}"/&gt;
+  &lt;!--配置数据源，Spring自身提供  --&gt;
+  &lt;bean id="datasource_2" class="org.springframework.jdbc.datasource.DriverManagerDataSource"
   p:driverClassName="com.mysql.jdbc.Driver"
   p:url="jdbc:mysql://localhost:3306/my_student?useSSL=false"
   p:username="root"
-  p:password="000000"/></p>
+  p:password="000000"/&gt;
 
-<p>  <!--声明sqlsessionfactory  -->
-  <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
-  <property name="dataSource" ref="datasource_2"></property>
-  <property name="configLocation" value="myBatisConfig.xml"></property>
-  </bean>
-  <!--引用mybatis的配置文件  --></p>
+  &lt;!--声明sqlsessionfactory  --&gt;
+  &lt;bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean"&gt;
+  &lt;property name="dataSource" ref="datasource_2"&gt;&lt;/property&gt;
+  &lt;property name="configLocation" value="myBatisConfig.xml"&gt;&lt;/property&gt;
+  &lt;/bean&gt;
+  &lt;!--引用mybatis的配置文件  --&gt;
 
-<p>   <!--定义SqlSessionTemplate,可以用来直接访问数据库  -->
-  <bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
-     &lt; constructor-arg ref=&ldquo;sqlSessionFactory&rdquo;/>
-  </bean></p>
+   &lt;!--定义SqlSessionTemplate,可以用来直接访问数据库  --&gt;
+  &lt;bean id="sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate"&gt;
+     &lt; constructor-arg ref="sqlSessionFactory"/&gt;
+  &lt;/bean&gt;
 
-<p>  <!-- <bean id="DAO" class="spring_mybatis.DAO"
-  p:sessionTemplate-ref="sqlSessionTemplate"/>  &ndash;></p>
+  &lt;!-- &lt;bean id="DAO" class="spring_mybatis.DAO"
+  p:sessionTemplate-ref="sqlSessionTemplate"/&gt;  --&gt; 
 
-<p>  <!--配置转换器，将映射接口转换成实例，从而进行数据库访问  -->
-  <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
+  &lt;!--配置转换器，将映射接口转换成实例，从而进行数据库访问  --&gt;
+  &lt;bean class="org.mybatis.spring.mapper.MapperScannerConfigurer"
   p:sqlSessionFactory-ref="sqlSessionFactory"
-  p:basePackage="spring_mybatis"/></p>
+  p:basePackage="spring_mybatis"/&gt;
 
-<p>  <bean id="information" class="spring_mybatis.Information"
+  &lt;bean id="information" class="spring_mybatis.Information"
   p:name="zt"
   p:sex="woman"
   p:address="huan"
-  p:phone="521155"/></p></li>
+  p:phone="521155"/&gt;
+</code></pre></li>
 </ul>
 
 ]]></content>
@@ -443,89 +241,62 @@ public class DAO_1 {
     <updated>2017-03-19T10:38:05+08:00</updated>
     <id>http://ttazk.github.io/blog/2017/03/19/generic</id>
     <content type="html"><![CDATA[<ul>
-<li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。</li>
-<li><p>在增加泛型之前，泛型程序是利用继承实现的。</br>
-      public class ArrayList{
-      private Object[] data;
-       &hellip;
-      public Object get(int i){}
-      public void add(Object o){}
-      }</p></li>
-<li><p>这种方法有两个问题：</p></li>
+<li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。
+
+<ul>
+<li>在增加泛型之前，泛型程序是利用继承实现的。</li>
+</ul>
+</li>
+<li><pre><code>public class ArrayList{
+private Object[] data;
+ ...
+public Object get(int i){}
+public void add(Object o){}
+}
+</code></pre></li>
+<li>这种方法有两个问题：</li>
 <li>1.当获取一个值时必须进行强制类型转换。</li>
 <li><p>2.没有错误检查，可以向数组列表中添加任何类的对象。</br></br></p></li>
 <li><p>泛型提供了一个更好的解决方法：类型参数，用来指示存储元素的类型。如：ArrayList<String> arl=new ArrayList&lt;>();   (jdk1.7之后，构造函数中可以省略泛型类型)。</p>
 
 <ul>
 <li>对此编译器可以进行检查，避免插入错误的类型，同时在获取对象时不需要进行强制类型转换。</li>
-<li>一个泛型类(generic class)就是具有一个或多个类型变量的类。</li>
+<li><p>一个泛型类(generic class)就是具有一个或多个类型变量的类。
+      public class Pair<T> {
+      private T first;
+      private T second;</p>
+
+<pre><code>  public Pair(){
+       this.first=null;
+       this.second=null;
+  }
+  public Pair(T first,T second){
+       this.first=first;
+       this.second=second;
+  }
+
+  public T getFirst(){
+       return first;
+  }
+  public T getSecond(){
+       return second;
+  }
+  public void setFirst(T first){
+       this.first=first;
+  }
+  public void setSecond(T second){
+       this.second=second;
+      }
+  }
+</code></pre></li>
+<li>如上所示，Pair类引入了一个类型变量T,用&lt;>括起来，并放在类名之后。泛型类可以有多个类型变量。例如可以定义Pair类，两个域分别使用不同的类型变量：public class Pair&lt;T,V>{&hellip;}.</li>
+<li>类中定义的泛型变量指定方法的返回类型，以及域和局部变量的类型。（一般来说，K,V分别表示关键字与值的类型，T表示任意类型）。</li>
+<li>用具体的类型替换类型变量就可以实例化泛型类型，如Pair<String>。换句话来说，泛型类可以看做普通类的工厂。
+</br></br></li>
 </ul>
 </li>
 </ul>
 
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-<span class='line-number'>27</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>      public class Pair&lt;T&gt; {
-</span><span class='line'>      private T first;
-</span><span class='line'>      private T second;
-</span><span class='line'>  
-</span><span class='line'>      public Pair(){
-</span><span class='line'>           this.first=null;
-</span><span class='line'>           this.second=null;
-</span><span class='line'>      }
-</span><span class='line'>      public Pair(T first,T second){
-</span><span class='line'>           this.first=first;
-</span><span class='line'>           this.second=second;
-</span><span class='line'>      }
-</span><span class='line'>  
-</span><span class='line'>      public T getFirst(){
-</span><span class='line'>           return first;
-</span><span class='line'>      }
-</span><span class='line'>      public T getSecond(){
-</span><span class='line'>           return second;
-</span><span class='line'>      }
-</span><span class='line'>      public void setFirst(T first){
-</span><span class='line'>           this.first=first;
-</span><span class='line'>      }
-</span><span class='line'>      public void setSecond(T second){
-</span><span class='line'>           this.second=second;
-</span><span class='line'>          }
-</span><span class='line'>      }</span></code></pre></td></tr></table></div></figure>
-
-
-<pre><code>* 如上所示，Pair类引入了一个类型变量T,用&lt;&gt;括起来，并放在类名之后。泛型类可以有多个类型变量。例如可以定义Pair类，两个域分别使用不同的类型变量：public class Pair&lt;T,V&gt;{...}.
-* 类中定义的泛型变量指定方法的返回类型，以及域和局部变量的类型。（一般来说，K,V分别表示关键字与值的类型，T表示任意类型）。
-* 用具体的类型替换类型变量就可以实例化泛型类型，如Pair&lt;String&gt;。换句话来说，泛型类可以看做普通类的工厂。
-</code></pre>
-
-<p></br></br></p>
 
 <!--more-->
 
@@ -533,54 +304,33 @@ public class DAO_1 {
 <h3>* 泛型方法</h3>
 
 <ul>
-<li>可以在一个普通类中定义一个带有类型参数的简单方法。</li>
-</ul>
+<li><p>可以在一个普通类中定义一个带有类型参数的简单方法。</p>
 
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>
-</span><span class='line'>  public class Generic {
-</span><span class='line'>  public static &lt;T&gt; void print(T t){
-</span><span class='line'>  System.out.println(t);
-</span><span class='line'>      }
-</span><span class='line'>  }
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>注意：类型变量放在修饰符的后面，返回类型的前面。</li>
+<pre><code>public class Generic {
+public static &lt;T&gt; void print(T t){
+System.out.println(t);
+    }
+}
+</code></pre></li>
+<li><p>注意：类型变量放在修饰符的后面，返回类型的前面。</p></li>
 <li>泛型方法可以定义在普通类中，也可以定义在泛型类中。</li>
-<li>当调用一个泛型方法时，可以在方法名前的&lt;>中放入具体的类型，也可以省略&lt;>类型参数。</li>
+<li><p>当调用一个泛型方法时，可以在方法名前的&lt;>中放入具体的类型，也可以省略&lt;>类型参数。</p>
+
+<pre><code>Generic.print("no");
+Generic.&lt;String&gt;print("nothing");
+</code></pre></li>
 </ul>
-
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Generic.print("no");
-</span><span class='line'>Generic.&lt;String&gt;print("nothing");</span></code></pre></td></tr></table></div></figure>
 
 
 <h3>* 类型变量的限定</h3>
 
 <ul>
-<li>有时，需要对类或泛型方法中的类型变量加以限定。</li>
-</ul>
+<li><p>有时，需要对类或泛型方法中的类型变量加以限定。</p>
 
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'> public static &lt;T extends Comparable&gt; void sys(T t){
-</span><span class='line'>     System.out.println(t);
-</span><span class='line'>          }</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
+<pre><code>      public static &lt;T extends Comparable&gt; void sys(T t){
+       System.out.println(t);
+      }
+</code></pre></li>
 <li>可以对泛型变量T进行限定，将其限定为实现了Comparable接口的类。</li>
 <li><T extends BoundingType> 表示：T应该是绑定类型的子类型。T和绑定类型可以是类，也可以是接口。</li>
 <li>一个类型变量或通配符可以有多个限定，如：T extends Comaprable &amp; Serializable</li>
@@ -593,67 +343,35 @@ public class DAO_1 {
 <ul>
 <li>在虚拟机中，没有泛型类型对象&mdash;-所有的对象都属于普通类。</li>
 <li>无论何时定义一个泛型类型，都会自动提供一个相应的原始类型(raw type)。原始类型的名字就是删去类型参数后的泛型类型名。擦除类型变量，并替换为限定类型（没有限定类型就用Object）。</li>
-<li>例如，Pair<T>的原始类型为：</li>
-</ul>
+<li><p>例如，Pair<T>的原始类型为：
+      public class Pair{
+      private Object first;
+      private Object second;</p>
 
+<pre><code>  public Pair(){
+       this.first=null;
+       this.second=null;
+  }
+  public Pair(Object first,Object second){
+       this.first=first;
+       this.second=second;
+  }
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-<span class='line-number'>8</span>
-<span class='line-number'>9</span>
-<span class='line-number'>10</span>
-<span class='line-number'>11</span>
-<span class='line-number'>12</span>
-<span class='line-number'>13</span>
-<span class='line-number'>14</span>
-<span class='line-number'>15</span>
-<span class='line-number'>16</span>
-<span class='line-number'>17</span>
-<span class='line-number'>18</span>
-<span class='line-number'>19</span>
-<span class='line-number'>20</span>
-<span class='line-number'>21</span>
-<span class='line-number'>22</span>
-<span class='line-number'>23</span>
-<span class='line-number'>24</span>
-<span class='line-number'>25</span>
-<span class='line-number'>26</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>public class Pair{
-</span><span class='line'>private Object first;
-</span><span class='line'>private Object second;
-</span><span class='line'>
-</span><span class='line'>public Pair(){
-</span><span class='line'>     this.first=null;
-</span><span class='line'>     this.second=null;
-</span><span class='line'>}
-</span><span class='line'>public Pair(Object first,Object second){
-</span><span class='line'>     this.first=first;
-</span><span class='line'>     this.second=second;
-</span><span class='line'>}
-</span><span class='line'>
-</span><span class='line'>public Object getFirst(){
-</span><span class='line'>     return first;
-</span><span class='line'>}
-</span><span class='line'>public Object getSecond(){
-</span><span class='line'>     return second;
-</span><span class='line'>}
-</span><span class='line'>public void setFirst(Object first){
-</span><span class='line'>     this.first=first;
-</span><span class='line'>}
-</span><span class='line'>      public void setSecond(Object second){
-</span><span class='line'>     this.second=second;
-</span><span class='line'>}
-</span><span class='line'>}
-</span></code></pre></td></tr></table></div></figure>
-
-
-<ul>
-<li>在程序中可以包含不同类型的Pair，如Pair<String>,Pair<LocalDate>，但是类型擦除后就变成了原始的Pair类型了。</li>
+  public Object getFirst(){
+       return first;
+  }
+  public Object getSecond(){
+       return second;
+  }
+  public void setFirst(Object first){
+       this.first=first;
+  }
+  public void setSecond(Object second){
+       this.second=second;
+  }
+  }
+</code></pre></li>
+<li><p>在程序中可以包含不同类型的Pair，如Pair<String>,Pair<LocalDate>，但是类型擦除后就变成了原始的Pair类型了。</p></li>
 <li>原始类型用第一个限定类型来替换参数变量，如果没有给定限定类型，就用Object替换。</li>
 <li>为了提高效率，应该将标签接口(没有方法的接口)放在列表的末尾。</li>
 </ul>
@@ -664,16 +382,18 @@ public class DAO_1 {
 <ul>
 <li><p>当程序调用泛型方法时，如果擦除返回类型，编译器则插入强制类型转换。</p>
 
-<pre><code>  * Pair&lt;Employee&gt; p=new Pair&lt;&gt;();
-  * Employee e=p.getFirst();//先对原始方法调用Pair.getFirst();再将返回的Object类型强制转换成Employee类型。
+<pre><code>  Pair&lt;Employee&gt; p=new Pair&lt;&gt;();
+  Employee e=p.getFirst();//先对原始方法调用Pair.getFirst();再将返回的Object类型强制转换成Employee类型。
 </code></pre></li>
 <li>关于java泛型转换的事实：
 
-<pre><code>* 虚拟机中没有泛型，只有普通的类与方法。
-* 所有的参数类型都用它们的限定类型进行替换。
-* 为了保持类型安全，必要时插入强制类型转换。
-* 桥方法被合成来保持多态。
-</code></pre></li>
+<ul>
+<li>虚拟机中没有泛型，只有普通的类与方法。</li>
+<li>所有的参数类型都用它们的限定类型进行替换。</li>
+<li>为了保持类型安全，必要时插入强制类型转换。</li>
+<li>桥方法被合成来保持多态。</li>
+</ul>
+</li>
 </ul>
 
 
@@ -685,35 +405,26 @@ public class DAO_1 {
 <li>因此没有Pair<double>，只有Pair<Double>。原因是类型擦除，擦除之后，Pair类含有Object域，而Object域不能存储基本类型。
 
 <h5>* 运行时类型查询只适用于原始类型</h5></li>
-<li>虚拟机中的对象总有一个特定的非泛型类型，因此，所有的类型查询只产生原始类型。</li>
+<li><p>虚拟机中的对象总有一个特定的非泛型类型，因此，所有的类型查询只产生原始类型。</p>
+
+<pre><code>  Pair&lt;String&gt; pair=new Pair&lt;String&gt;();
+  if (pair instanceof Pair&lt;String&gt;) {    //error
+     System.out.println(true);
+  } 
+  if (pair instanceof Pair) {         //true
+  System.out.println(true);
+  }
+</code></pre></li>
+<li><p>同样，getClass()方法返回的是原始类型。</p>
+
+<pre><code>  Pair&lt;String&gt; pair=new Pair&lt;String&gt;();
+  Pair&lt;Double&gt; pair2=new Pair&lt;Double&gt;();
+  if (pair.getClass()==pair2.getClass()) {
+  System.out.println(true);
+  }         //输出为true
+</code></pre></li>
 </ul>
 
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-<span class='line-number'>3</span>
-<span class='line-number'>4</span>
-<span class='line-number'>5</span>
-<span class='line-number'>6</span>
-<span class='line-number'>7</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Pair&lt;String&gt; pair=new Pair&lt;String&gt;();
-</span><span class='line'>if (pair instanceof Pair&lt;String&gt;) {    //error
-</span><span class='line'>   System.out.println(true);
-</span><span class='line'>} 
-</span><span class='line'>if (pair instanceof Pair) {         //true
-</span><span class='line'>System.out.println(true);
-</span><span class='line'>}</span></code></pre></td></tr></table></div></figure>
-
-
-<p>*
-* 同样，getClass()方法返回的是原始类型。</p>
-
-<pre><code>Pair&lt;String&gt; pair=new Pair&lt;String&gt;();
-Pair&lt;Double&gt; pair2=new Pair&lt;Double&gt;();
-if (pair.getClass()==pair2.getClass()) {
-System.out.println(true);
-}         //输出为true
-</code></pre>
 
 <h5>* 不能创建泛型数组</h5>
 
@@ -729,26 +440,19 @@ System.out.println(true);
 <h5>* 不能实例化类型变量</h5>
 
 <ul>
-<li>即不能使用new T(&hellip;),new T[&hellip;],或T.class这样的表达式中的类型变量。</li>
-</ul>
-
+<li>即不能使用new T(&hellip;),new T[&hellip;],或T.class这样的表达式中的类型变量。
 
 <h5>* 不能创建类型变量数组</h5>
 
-<pre><code>private T[] ts=new T[2];   //error
-</code></pre>
+  private T[] ts=new T[2];   //error
 
 <h5>* 不能在静态域或静态方法中引用类型变量</h5>
 
-<pre><code>    * private static T t;   //error
-    * public static T print(){}   //error
-</code></pre>
+  private static T t;   //error
+  public static T print(){}   //error
+</br>
 
-<p></br></br></p>
-
-<h3>* 泛型类型的继承规则</h3>
-
-<ul>
+<h3>* 泛型类型的继承规则</h3></li>
 <li>考虑一个类与一个子类，如Object,String，那么Pair<String>是Pair<Object>的子类吗？不是</li>
 <li>无论T和V有什么关系，通常Pair<V>,Pair<T>是没有任何关系的。
 Pair<Object>[] pair3=new Pair<String>[10];  //error</li>
@@ -766,13 +470,9 @@ Pair pair3=new Pair<String>();</li>
 
 <ul>
 <li>通配符类型中，允许类型参数变化。如  Pair&lt;? extends Comparable></li>
-<li><p>类型Pair<String>是Pair&lt;? extends Object>的子类型。</p>
-
-<pre><code>                                                                                                                  &lt;---Pair&lt;Object&gt;
-</code></pre>
-
-<p>  Pair(原始类型)&lt;&mdash;Pair&lt;? extends Object><---
-                                                                                                                      <---Pair<String></p></li>
+<li><p>类型Pair<String>是Pair&lt;? extends Object>的子类型。                                                                                        &lt;&mdash;Pair<Object>
+Pair(原始类型)&lt;&mdash;Pair&lt;? extends Object><---
+                  <---Pair<String></p></li>
 <li><p>通配符的超类型限定</p></li>
 <li>可以指定一个父类型：  ? super Manager</li>
 <li>带有超类型限定的通配符可以向泛型对象写入，带有子类型限定的通配符可以从泛型对象读取。(P332)</li>
@@ -923,7 +623,7 @@ Pair pair3=new Pair<String>();</li>
 
 <ol>
 <li>加载</li>
-<li><p>加载是类加载的一个阶段。在加载时需要 完成以下几件事情：</p>
+<li>加载是类加载的一个阶段。在加载时需要 完成以下几件事情：
 
 <ol>
 <li>通过类的全限定名称获取此类的二进制字节流</li>
@@ -931,18 +631,22 @@ Pair pair3=new Pair<String>();</li>
 <li>在内存中生成代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口</li>
 </ol>
 </li>
-<li><p>二进制字节流可以从Class文件中获取，也可以从网络中或者其他文件中获取。</p></li>
-<li><p>在加载阶段完成后，虚拟机外部的二进制字节流就转换为方法区中的数据结构，然后再在内存中实例化一个java.lang.Class对象，作为程序访问方法区中这些数据类型的接口。</p></li>
-<li><p>验证</p></li>
-<li><p>为了确保Class文件中的字节流所包含的信息是符合当前虚拟机的要求。</p></li>
-<li><p>准备</p></li>
-<li><p>准备阶段是正式为类变量设置初始值的阶段。这些变量所用的内存都将在方法区中分配。</p></li>
+<li>二进制字节流可以从Class文件中获取，也可以从网络中或者其他文件中获取。</li>
+<li>在加载阶段完成后，虚拟机外部的二进制字节流就转换为方法区中的数据结构，然后再在内存中实例化一个java.lang.Class对象，作为程序访问方法区中这些数据类型的接口。</li>
+<li>验证
+
+<ul>
+<li>为了确保Class文件中的字节流所包含的信息是符合当前虚拟机的要求。</li>
+</ul>
+</li>
+<li>准备</li>
+<li>准备阶段是正式为类变量设置初始值的阶段。这些变量所用的内存都将在方法区中分配。</li>
 <li>此时仅分配类变量，不包括实例变量。实例变量会随着对象实例化一起在Java堆中分配。</li>
 <li>这里说的初始值是数据的零值，null/false/0等。</li>
-<li><p>解析</p></li>
-<li><p>将常量池中的符号引用替换为直接引用。</p></li>
-<li><p>初始化</p></li>
-<li><p>在这个阶段，才是对类变量进行赋值操作。按照程序的主观计划去初始化类变量及其他资源。</p></li>
+<li>解析</li>
+<li>将常量池中的符号引用替换为直接引用。</li>
+<li>初始化</li>
+<li>在这个阶段，才是对类变量进行赋值操作。按照程序的主观计划去初始化类变量及其他资源。</li>
 <li>初始化是执行类构造器<clinit>()方法的过程，<clinit>()方法是由编译器自动收集类中所有类变量的赋值动作与静态语句块（static{}）中的语句合并。</li>
 <li>类构造器<clinit>()方法与类的构造函数（实例构造器<init>()方法）不同，它不需要显示地调用父类构造器，虚拟机会保证在子类的<clinit>()方法执行之前，父类的<clinit>()方法已经执行完毕。因此虚拟机中第一个被执行的<clinit>()方法的类肯定是java.lang.Object。</li>
 <li>由于父类的<clinit>()方法先执行，因此父类中定义的静态语句块要优先于子类的静态语句块。</li>
@@ -1111,6 +815,143 @@ The child has been init !
 
 <p>　　 <br/>
 *</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Bean的配置及注入]]></title>
+    <link href="http://ttazk.github.io/blog/2016/03/21/bean_config/"/>
+    <updated>2016-03-21T17:03:16+08:00</updated>
+    <id>http://ttazk.github.io/blog/2016/03/21/bean_config</id>
+    <content type="html"><![CDATA[<h4>Bean的配置方式有三种：xml配置，基于注解配置，基于java类配置</h4>
+
+<ul>
+<li>Bean的配置信息包含了bean的实现及各个bean之间的依赖关系，Spring容器将各种形式的Bean的配置信息进行读取，并在Spring容器内部建立Bean定义注册表，然后根据注册表对Bean进行加载，实例化，并建立Bean之间的依赖关系，最后将准备就绪的Bean放入Bean缓冲池中，等待外部程序调用。</li>
+</ul>
+
+
+<h3>Bean配置方式详解：</h3>
+
+<!--more-->
+
+
+<h3>1，基于XML文档配置</h3>
+
+<h5>XML文档介绍</h5>
+
+<p>Spring2.0之后，XML文档采取Schema形式进行配置，使得各种类型拥有自己的命名空间，如beans，mvc,aop</p>
+
+<ul>
+<li>命名空间的作用：
+
+<ul>
+<li>a.默认命名空间：没有空间名，用于bean的定义，文档中无命名空间前缀的标签都属于默认命名空间，如<beans/>,<bean/></li>
+<li>b.自定义命名空间：如aop命名空间，</li>
+<li>c.xsi命名空间：用于为文档中的命名空间指定对应的Schema文件</li>
+</ul>
+</li>
+<li>指定命名空间Schema文件地址有两个作用：
+
+<ul>
+<li>1，XML解析器可以获得Schema文件并对文档进行验证</li>
+<li>2，IDE可以用其对文档编辑提供诱导作用
+
+<h6>Bean的基本配置</h6></li>
+</ul>
+</li>
+<li>&lt; bean id=&ldquo; &rdquo; class=&ldquo;  &rdquo;>
+</br> class属性制定了Bean对应的实现类.</br>
+Spring容器中的一个Bean即对应配置文件中的一个<bean/>
+Spring容器的getBean(String id)方法用于从Spring容器中获取对应的Bean，是外部程序与Spring容器进行交流的桥梁</li>
+<li>Bean的命名</br>
+id在Spring容器中唯一，作为Bean的名称
+name属性也可以用来指定Bean的名字，可以为多个
+Spring配置文件中不允许出现两个相同id的Bean，但是可以有相同name,根据name属性对bean进行引用时，如果name相同，则返回后声明的bean对象，因为后面把前面的覆盖了</br>
+如果id，name属性均未指定，如<bean class="zk.Controller"/>则自动将全限定名称作为Bean的名称，同样的方法进行引用</li>
+</ul>
+
+
+<p></br>
+<strong>2 ,基于注解的配置</strong></br></p>
+
+<ul>
+<li><p>在基于xml文档配置bean时，Bean的定义与实现是分开的
+而采用注解配置时，Bean的定义通过在Bean的实现类上标注注解实现。</p>
+
+<h6>使用注解定义Bean</h6>
+
+<p>  @ Component 用于任何层次
+  @ Service 用于对Service实现类进行标注
+  @ Controller  用于对Controller实现类标注
+  @ Repository 用于对Dao实现类进行标注</p></li>
+<li><p>使用这四个注解标注POJO 可以使类被Spring识别，并将其转换成Bean。
+作用等同于<bean id="" class=""/>,还可以通过注解的value属性指定Bean的名称。</p></li>
+<li>使用&lt;context:compoment-scan base-package=&ldquo;&rdquo;/>Spring会扫描指定的包，并识别其中的注解信息。
+</br></br></li>
+<li><strong>装配Bean</strong>
+
+<ul>
+<li>对Bean 属性或者方法参数的自动装配，仅限于该属性或参数的类型是对象，Spring会在容器中查找匹配的Ban进行注入，对于基本数据类型，不能实现自动装配，仍需要通过xml文档进行依赖注入</li>
+<li>@Autowired 实现bean的依赖注入，默认为按类型匹配</li>
+<li>@Autowired（required=false）;如果找不到符合要求的Bean不会抛出异常</li>
+<li>@Qulifier（““）用于指定注入的名称</li>
+<li>@Autowired既可以标注属性，也可以对方法及方法的参数进行标注。</li>
+<li>如果对类中集合类型（List，Set，Map）的属性或方法的参数进行@Autowired标注，Spring会将容器中所有类型匹配的Bean注入进来。</li>
+<li>对于@Autowired声明的数组、集合类型，spring并不是根据beanName去找容器中对应的bean，而是把容器中所有类型与集合（数组）中元素类型相同的bean构造出一个对应集合，注入到目标bean中。</li>
+<li>注入集合类型不要使用@Autowired，而使用@Resource注解。同时Spring官方也是不推荐使用@Autowired的。
+
+<h3>依赖注入</h3></li>
+</ul>
+</li>
+<li>Spring提供两种依赖注入的方式：属性注入和构造函数注入
+还支持工厂方法注入的方式（不常使用）
+
+<ol>
+<li>属性注入
+
+<ul>
+<li>通过setXXX（）函数注入Bean的属性及依赖对象
+属性注入要求Bean提供一个默认的构造函数及要注入属性的SetXXX（）方法</li>
+</ul>
+</li>
+</ol>
+
+
+<p>  Ps: Spring 只要求是否有setXXX（）方法，对于是否有相应的属性不做要求
+  如：
+  Public test{
+      Int a;//对于属性a无要求，但是一般会添加
+      //但是必须有setA()方法
+      Public void setA(int a){
+          This .a=a;
+      }
+  }</p>
+
+<p>  Spring会先调用Bean的默认的构造函数实例化Bean对象，然后通过反射的方式调用Bean的setter方法注入属性值。</p>
+
+<ol>
+<li>构造函数注入
+保证Bean的一些重要的属性在实例化之后就能使用
+使用构造函数注入的前提是Bean必须提供带参数的构造函数</li>
+</ol>
+
+
+<p>  Spring的配置文件采用元素标签与顺序无关的原则，即在一个上下文配置文件中，两个标签的位置不同不会影响使用。
+  但是在web.xml文档中，标签的顺序是有影响的。</p>
+
+<p>  构造函数注入有以下几种方式：</p>
+
+<ol type="a">
+<li> 按照类型匹配参数</li>
+<li> 按照索引匹配参数</li>
+<li> 类型及索引联合使用匹配参数</li>
+<li><p> 通过自身类型反射匹配参数</p></li>
+<li><p>工厂方法注入
+<bean id="" class="工厂方法类" factory-method="工厂类方法"/></p></li>
+</ol>
+</li>
+</ul>
+
 ]]></content>
   </entry>
   
