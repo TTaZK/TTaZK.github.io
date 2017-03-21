@@ -9,8 +9,7 @@
   <meta name="author" content="Z K">
 
   
-  <meta name="description" content="泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。
-在增加泛型之前，泛型程序是利用继承实现的。 public class ArrayList{ private Object[] data; &hellip; public Object get(int i){} public void &hellip;">
+  <meta name="description" content="Bean的配置方式有三种：xml配置，基于注解配置，基于java类配置 Bean的配置信息包含了bean的实现及各个bean之间的依赖关系，Spring容器将各种形式的Bean的配置信息进行读取，并在Spring容器内部建立Bean定义注册表，然后根据注册表对Bean进行加载，实例化， &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -66,6 +65,86 @@
     <div id="content">
       <div class="blog-index">
   
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/03/21/bean_config/">Bean的配置及注入</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-03-21T17:03:16+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>5:03 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><h4>Bean的配置方式有三种：xml配置，基于注解配置，基于java类配置</h4>
+
+<ul>
+<li>Bean的配置信息包含了bean的实现及各个bean之间的依赖关系，Spring容器将各种形式的Bean的配置信息进行读取，并在Spring容器内部建立Bean定义注册表，然后根据注册表对Bean进行加载，实例化，并建立Bean之间的依赖关系，最后将准备就绪的Bean放入Bean缓冲池中，等待外部程序调用。</li>
+</ul>
+
+
+<h3>Bean配置方式详解：</h3>
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2017/03/21/bean_config/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/03/21/spring_mybatis/">Spring整合MyBatis框架</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-03-21T16:21:24+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>4:21 pm</span></time>
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
+<li><p>使用MyBatis，面对的是纯粹的Java对象，类似于Hbernate。但是对于具体的数据库操作，Hibernate会自动生成SQL语句，MyBatis 则要求自己自己编写SQL语句。</p></li>
+<li><p>每一个MyBatis应用都是以一个SQLSessionFactory对象的实例为核心MyBatis可以拥有多个SQL映射文件，并通过一个配置文件对这些SQL映射文件进行装配，同时在该文件中定义一些控制属性信息。
+如下：</p></li>
+</ul>
+
+
+</div>
+  
+  
+    <footer>
+      <a rel="full-article" href="/blog/2017/03/21/spring_mybatis/">Read on &rarr;</a>
+    </footer>
+  
+
+
+    </article>
   
   
     <article>
@@ -323,6 +402,14 @@
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2017/03/21/bean_config/">Bean的配置及注入</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2017/03/21/spring_mybatis/">Spring整合MyBatis框架</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2017/03/19/generic/">泛型程序设计</a>
       </li>
     
@@ -332,10 +419,6 @@
     
       <li class="post">
         <a href="/blog/2017/03/09/jvm2/">虚拟机类加载机制</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2017/03/08/jvm1/">虚拟机内存分配</a>
       </li>
     
   </ul>

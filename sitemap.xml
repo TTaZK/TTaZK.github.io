@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://ttazk.github.io/blog/2017/03/21/bean_config/</loc>
+<lastmod>2017-03-21T17:03:16+08:00</lastmod>
+</url>
+<url>
+<loc>http://ttazk.github.io/blog/2017/03/21/spring_mybatis/</loc>
+<lastmod>2017-03-21T16:21:24+08:00</lastmod>
+</url>
+<url>
 <loc>http://ttazk.github.io/blog/2017/03/19/generic/</loc>
 <lastmod>2017-03-19T10:38:05+08:00</lastmod>
 </url>
@@ -21,5 +29,8 @@
 </url>
 <url>
 <loc>http://ttazk.github.io/</loc>
+</url>
+<url>
+<loc>http://ttazk.github.io/blog/categories/spring/</loc>
 </url>
 </urlset>
