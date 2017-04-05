@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
-<loc>http://ttazk.github.io/blog/2017/04/05/aboutme/</loc>
-<lastmod>2017-04-05T14:13:22+08:00</lastmod>
-</url>
-<url>
 <loc>http://ttazk.github.io/blog/2017/03/21/spring_mybatis/</loc>
 <lastmod>2017-03-21T16:21:24+08:00</lastmod>
 </url>
@@ -29,10 +25,13 @@
 <lastmod>2016-03-21T17:03:16+08:00</lastmod>
 </url>
 <url>
-<loc>http://ttazk.github.io/blog/archives/</loc>
+<loc>http://ttazk.github.io/404.html</loc>
 </url>
 <url>
 <loc>http://ttazk.github.io/</loc>
+</url>
+<url>
+<loc>http://ttazk.github.io/blog/archives/</loc>
 </url>
 <url>
 <loc>http://ttazk.github.io/aboutme/</loc>
