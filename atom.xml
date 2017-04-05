@@ -4,7 +4,7 @@
   <title><![CDATA[Blog Of ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-04-05T14:01:48+08:00</updated>
+  <updated>2017-04-05T14:22:44+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,6 +12,15 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Aboutme]]></title>
+    <link href="http://ttazk.github.io/blog/2017/04/05/aboutme/"/>
+    <updated>2017-04-05T14:13:22+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/04/05/aboutme</id>
+    <content type="html"><![CDATA[<h1>博主联系</h1>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Spring整合MyBatis框架]]></title>
