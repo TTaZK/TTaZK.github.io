@@ -4,7 +4,7 @@
   <title><![CDATA[Blog Of ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-03-21T19:16:01+08:00</updated>
+  <updated>2017-04-05T14:01:48+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -241,18 +241,15 @@ PS：使用这种方法时，便不需要使用sqlSessionTemplate进行操作。
     <updated>2017-03-19T10:38:05+08:00</updated>
     <id>http://ttazk.github.io/blog/2017/03/19/generic</id>
     <content type="html"><![CDATA[<ul>
-<li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。
+<li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。</li>
+<li><p>在增加泛型之前，泛型程序是利用继承实现的。</p>
 
-<ul>
-<li>在增加泛型之前，泛型程序是利用继承实现的。</li>
-</ul>
-</li>
-<li><pre><code>public class ArrayList{
-private Object[] data;
- ...
-public Object get(int i){}
-public void add(Object o){}
-}
+<pre><code>  public class ArrayList{
+  private Object[] data;
+   ...
+  public Object get(int i){}
+  public void add(Object o){}
+  }
 </code></pre></li>
 <li>这种方法有两个问题：</li>
 <li>1.当获取一个值时必须进行强制类型转换。</li>
