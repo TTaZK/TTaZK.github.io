@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Spring | Blog Of ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/spring/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-04-05T15:03:04+08:00</updated>
+  <updated>2017-04-07T08:51:44+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -237,9 +237,9 @@ PS：使用这种方法时，便不需要使用sqlSessionTemplate进行操作。
   
   <entry>
     <title type="html"><![CDATA[Bean的配置及注入]]></title>
-    <link href="http://ttazk.github.io/blog/2016/03/21/bean_config/"/>
-    <updated>2016-03-21T17:03:16+08:00</updated>
-    <id>http://ttazk.github.io/blog/2016/03/21/bean_config</id>
+    <link href="http://ttazk.github.io/blog/2017/02/21/bean_config/"/>
+    <updated>2017-02-21T17:03:16+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/02/21/bean_config</id>
     <content type="html"><![CDATA[<h4>Bean的配置方式有三种：xml配置，基于注解配置，基于java类配置</h4>
 
 <ul>
