@@ -16,9 +16,8 @@
 
 
 
-<meta name="description" content="April 19, 2017 Z K Object详解 Object类是所有类的父类，每个类都是由Object类扩展而来。如果没有明确指出父类，则默认为Object类为该类的父类。
-可以使用Object类型的变量引用任何类型的对象。
-在Java中，只有基本数据类型（数字，字符，布尔）不是对象。 &hellip;">
+<meta name="description" content="April 22, 2017 Z K MySql索引 根据存储介质的不同，数据库分为基于磁盘的数据库（最为常见的关系型数据库，如MySQL，SQLserver，Oracle等），基于内存的数据库。而混合型数据库将这两种类型的数据库进行整合。
+基于内存的数据库系统是最快的， &hellip;">
 
 <meta name="keywords" content=" ">
 
@@ -36,9 +35,8 @@
 <meta property="og:type" content="article">
 <meta property="og:url" content="http://ttazk.github.io">
 <meta property="og:title" content="Blog by ZK">
-<meta property="og:description" content="April 19, 2017 Z K Object详解 Object类是所有类的父类，每个类都是由Object类扩展而来。如果没有明确指出父类，则默认为Object类为该类的父类。
-可以使用Object类型的变量引用任何类型的对象。
-在Java中，只有基本数据类型（数字，字符，布尔）不是对象。 &hellip;">
+<meta property="og:description" content="April 22, 2017 Z K MySql索引 根据存储介质的不同，数据库分为基于磁盘的数据库（最为常见的关系型数据库，如MySQL，SQLserver，Oracle等），基于内存的数据库。而混合型数据库将这两种类型的数据库进行整合。
+基于内存的数据库系统是最快的， &hellip;">
 
   <meta property="og:image" content="/images/threaded-blue-on-black-cropped.jpg">
 
@@ -113,6 +111,50 @@
 
   <div id="main" role="main">
     
+
+<article class="hentry">
+  
+
+
+
+<header>
+  <div class="entry-meta">
+    <span class="entry-date date published updated">
+      <time datetime="2017-04-22T00:47:49+08:00">
+        <a href="/blog/2017/04/22/index/">April 22, 2017</a>
+      </time>
+    </span>
+    <span class="author vcard">
+      <span class="fn">
+        <a href="" title="About Z K">Z K</a>
+      </span>
+    </span>
+    
+  </div><!-- /.entry-meta -->
+  
+    <h1 class="entry-title">
+      <a href="/blog/2017/04/22/index/" rel="bookmark" title="MySql索引" itemprop="url">MySql索引</a>
+    </h1>
+  
+</header>
+
+<div class="entry-content">
+  <ul>
+<li>根据存储介质的不同，数据库分为<strong>基于磁盘的数据库</strong>（最为常见的关系型数据库，如MySQL，SQLserver，Oracle等），<strong>基于内存的数据库</strong>。而混合型数据库将这两种类型的数据库进行整合。</li>
+<li>基于内存的数据库系统是最快的，因为数据库不需要对磁盘进行操作。因此，基于磁盘的数据库系统一般都有缓冲池，即一块内存区域，其作用是将从磁盘上读取的指定大小的数据&mdash;称为页或块，放入缓冲池。当再次读取时，首先判断该页是否在缓冲池中，如果在则直接读取缓冲池中的页，如果不在则读取磁盘上的页。 对于写操作，数据库将页读入缓冲池，然后在缓冲池中对页进行修改，最后将修改完成的页异步（一般为异步）写入磁盘上。
+  
+  
+    <footer>
+      <a class="btn" rel="full-article" href="/blog/2017/04/22/index/">Read on &rarr;</a>
+    </footer>
+  
+</div><!-- /.entry-content -->
+
+
+
+
+
+</article><!-- /.hentry -->
 
 <article class="hentry">
   
@@ -692,55 +734,6 @@
   
     <footer>
       <a class="btn" rel="full-article" href="/blog/2017/02/14/transmission/">Read on &rarr;</a>
-    </footer>
-  
-</div><!-- /.entry-content -->
-
-
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
-  
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-02-09T22:55:40+08:00">
-        <a href="/blog/2017/02/09/jvm2/">February 09, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
-    
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/02/09/jvm2/" rel="bookmark" title="虚拟机类加载机制" itemprop="url">虚拟机类加载机制</a>
-    </h1>
-  
-</header>
-
-<div class="entry-content">
-  <ul>
-<li>类的生命周期包括：加载&ndash;>连接&ndash;>初始化&ndash;>使用&ndash;>卸载，其中连接包括，验证&ndash;>准备&ndash;>解析。</li>
-<li>虚拟机把描述类的数据从Class文件中加载到内存，并对数据进行校验，转换，解析和初始化，最终形成可被虚拟机直接使用的Java类型。</li>
-<li>在Java中，类的加载，连接，初始化都是在运行期间完成的，这种策略与C++等不同，但是这也实现了Java语言的运行期动态加载与动态连接的特点。</li>
-</ul>
-
-
-
-  
-  
-    <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/02/09/jvm2/">Read on &rarr;</a>
     </footer>
   
 </div><!-- /.entry-content -->
