@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Jvm | Coding BY ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/jvm/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-05-15T12:18:46+08:00</updated>
+  <updated>2017-06-04T15:16:27+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -35,7 +35,7 @@
 <li>在Object类中，该方法用于判断两个对象是否具有相同的引用。</li>
 <li><p>然而，经常需要检测两个对象的状态的相等性，所以一般需要覆写equals()方法。</p>
 
-<pre><code>         public class Test{
+<pre><code>      public class Test{
              public boolean equals(Object otherObject){
                   }
          }
