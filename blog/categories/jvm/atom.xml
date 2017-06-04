@@ -4,7 +4,7 @@
   <title><![CDATA[Category: Jvm | Coding BY ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/jvm/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-06-04T15:26:56+08:00</updated>
+  <updated>2017-06-04T15:31:26+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -21,16 +21,25 @@
     <content type="html"><![CDATA[<ul>
 <li>Object类是所有类的父类，每个类都是由Object类扩展而来。如果没有明确指出父类，则默认为Object类为该类的父类。</li>
 <li>可以使用Object类型的变量引用任何类型的对象。</li>
-<li>在Java中，只有基本数据类型（数字，字符，布尔）不是对象。所有的数组类型，不管是对象数组还是基本类型的数组都扩展了Object类。
+<li><p>在Java中，只有基本数据类型（数字，字符，布尔）不是对象。所有的数组类型，不管是对象数组还是基本类型的数组都扩展了Object类。</p>
+
+<pre><code>  int[] i=new int[5];
+  Object obj=i;
+</code></pre></li>
+</ul>
+
 
 <blockquote><p>int[] i=new int[5];
 Object obj=i;</p></blockquote>
 
-  nihao
-  zhwhi
-  zhiads
+<pre><code>nihao
+zhwhi
+zhiads
+</code></pre>
 
-<h3>equals()方法</h3></li>
+<h3>equals()方法</h3>
+
+<ul>
 <li>在Object类中，该方法用于判断两个对象是否具有相同的引用。</li>
 <li><p>然而，经常需要检测两个对象的状态的相等性，所以一般需要覆写equals()方法。</p>
 
