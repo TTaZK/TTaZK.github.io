@@ -3,114 +3,108 @@
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-
 <head>
+  <meta charset="utf-8">
+  <title>Java代理 - Coding BY ZK</title>
+  <meta name="author" content="Z K">
 
-
-<meta charset="utf-8">
-<meta http-equiv="cleartype" content="on">
-
-<title>Java代理 - Coding BY ZK</title>
-<meta name="author" content="Z K">
-
-
-
-
-<meta name="description" content="代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。
+  
+  <meta name="description" content="代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。
 代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下： 指定接口所需要的全部方法。
 Object类中的全部方法，（所有的代理类都覆盖了Object类中的方法toString,equals, &hellip;">
+  
 
-<meta name="keywords" content="javase ">
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-
-<!-- http://t.co/dKP3o1e -->
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Twitter Cards -->
-
-
-<!-- Open Graph -->
-<meta property="og:local" content="en_US">
-<meta property="og:type" content="article">
-<meta property="og:url" content="http://ttazk.github.io/blog/2017/06/04/proxy">
-<meta property="og:title" content="java代理">
-<meta property="og:description" content="代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。
-代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下： 指定接口所需要的全部方法。
-Object类中的全部方法，（所有的代理类都覆盖了Object类中的方法toString,equals, &hellip;">
-
-  <meta property="og:image" content="">
-
-<meta property="og:site_name" content="Coding BY ZK">
-
-<link rel="canonical" href="http://ttazk.github.io/blog/2017/06/04/proxy">
-<link href="/favicon.png" rel="icon">
-<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="/atom.xml" rel="alternate" title="Coding BY ZK" type="application/atom+xml">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-<script>Modernizr || document.write('<script src="/javascripts/vendor/modernizr-2.6.2.custom.min.js"><\/script>') </script>
-
-
-
-<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+  
+  <link rel="canonical" href="http://ttazk.github.io/blog/2017/06/04/proxy">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Coding BY ZK" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
 
 </head>
 
-<body id="post" >
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Coding BY ZK</a></h1>
+  
+    <h2>A Java Coder</h2>
+  
+</hgroup>
 
-<!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
-<nav id="dl-menu" class="dl-menuwrapper" role="navigation">
-	<button class="dl-trigger">Open Menu</button>
-	<ul class="dl-menu">
-		<li><a href="/">Home</a></li>
-		<li>
-			<a href="#">About</a>
-			<ul class="dl-submenu">
-				<li>
-					<img src="" alt="Z K photo" class="author-photo">
-					<h4>Z K</h4>
-					<p></p>
-				</li>
-				
-				
-				
-				
-				
-				
-			</ul><!-- /.dl-submenu -->
-		</li>
-		<li>
-			<a href="#">Posts</a>
-			<ul class="dl-submenu">
-				<li><a href="/posts/">All Posts</a></li>
-				<li><a href="/categories/">All Categories</a></li>
-			</ul>
-		</li>
-		
-	</ul><!-- /.dl-menu -->
-</nav><!-- /.dl-menuwrapper -->
+</header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.baidu.com/search/" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="ttazk.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
 
-
-
-
-<div id="main" role="main">
-  <article class="hentry">
-    <header class="header-title">
-      <div class="header-title-wrap">
+</nav>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      
+        <h1 class="entry-title">Java代理</h1>
+      
+    
+    
+      <p class="meta">
         
-          <h1 class="entry-title"><a href="/blog/2017/06/04/proxy/" rel="bookmark" title="java代理">java代理</a></h1>
+
+
+
+
+<time class='entry-date' datetime='2017-06-04T15:51:47+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>3:51 pm</span></time>
         
-        <h2>June 04, 2017</h2>
-      </div><!-- /.header-title-wrap -->
-    </header>
-    <div class="entry-content">
-      <ul>
+         | <a href="#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><ul>
 <li>代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。</li>
 <li>代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下：
 
@@ -183,62 +177,75 @@ Object类中的全部方法，（所有的代理类都覆盖了Object类中的�
 <li>代理类一定是public final。如果代理类实现的所有接口都是public,代理类就不属于某个特定的包；否则所有的非公有接口都必须属于同一个包，同时代理类也属于这个包。</li>
 </ul>
 
+</div>
 
-      <footer class="entry-meta">
-        <span class="entry-tags"><a href="/categories/#javase" title="Pages tagged javase" class="tag">javase</a></span>
-        <span><a href="/blog/2017/06/04/proxy/" rel="bookmark" title="java代理">java代理</a> was published on <span class="entry-date date published updated"><time datetime="2017-06-04T15:51:47+08:00">June 04, 2017</time></span></span>
-        
-        <span class="author vcard"><span class="fn"><a href="" title="About Z K">Z K</a></span></span>
-        
-      </footer>
-    </div><!-- /.entry-content -->
+
+  <footer>
+    <p class="meta">
+      
+  
+
+
+
+  <span class="byline author vcard">Authored by <span class="fn">
+  
+    Z K
+  
+  </span></span>
+
+
+      
+
+
+
+
+<time class='entry-date' datetime='2017-06-04T15:51:47+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>3:51 pm</span></time>
+      
+      
+
+<span class="categories">
+  
+    <a class='category' href='/blog/categories/javase/'>javase</a>
+  
+</span>
+
+
+    </p>
     
-      <div class="read-more">
-        
-          <div class="read-more-header">
-            <a href="/blog/2017/04/22/btree/" class="btn">Read More</a>
-          </div><!-- /.read-more-header -->
-          <div class="read-more-content">
-            <h3><a href="/blog/2017/04/22/btree/" title="B树，B+树，B*树简介">B树，B+树，B*树简介</a></h3>
-            <p>B树又叫平衡多路查找树（Balance-Tree)，一棵m阶B树满足以下条件：每个节点至多有m棵子树除根节点外，其他节点至少有|m/2|棵子树根节点至少有两棵子树（除非B树只有一个节点）所有的叶子节点位于同一层上。B树的叶子节点可以看做一种外部节点，不包含任何信息。 &hellip;&hellip; <a href="/blog/2017/04/22/btree/"> Continue reading</a></p>
-          </div><!-- /.read-more-content -->
-        
-        <div class="read-more-list">
-          
-            <div class="list-item">
-              <h4><a href="/blog/2017/04/22/index/" title="MySql索引">MySql索引</a></h4>
-              <span>Published on April 22, 2017</span>
-            </div><!-- /.list-item -->
-          
-            <div class="list-item">
-              <h4><a href="/blog/2017/04/19/object/" title="Object详解">Object详解</a></h4>
-              <span>Published on April 19, 2017</span>
-            </div><!-- /.list-item -->
-          
-        </div><!-- /.read-more-list -->
-      </div><!-- /.read-more -->
+      <div class="sharing">
+  
+  
+  
+</div>
+
     
-    
-
-  </article>
-</div><!-- /#main -->
-
-<div class="footer-wrapper">
-  <footer role="contentinfo">
-    <span>&copy; 2017 Z K.</span>
-
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2017/04/22/btree/" title="Previous Post: B树，B+树，B*树简介">&laquo; B树，B+树，B*树简介</a>
+      
+      
+    </p>
   </footer>
-</div><!-- /.footer-wrapper -->
+</article>
+
+  <section>
+    <h1>Comments</h1>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+  </section>
 
 
-	        
-<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/javascripts/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="/javascripts/octopress.js" type="text/javascript"></script>
-<script src="/javascripts/scripts.min.js"></script>
+</div>
 
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Z K -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
 
-
+</footer>
+  
 
 <script type="text/javascript">
       var disqus_shortname = 'zkatt';
@@ -258,7 +265,16 @@ Object类中的全部方法，（所有的代理类都覆盖了Object类中的�
 
 
 
-	        
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>

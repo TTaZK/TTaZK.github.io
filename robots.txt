@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: 
+Disallow:
 
-Sitemap: http://ttazk.github.io/sitemap.xml 
+Sitemap: http://ttazk.github.io/sitemap.xml

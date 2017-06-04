@@ -3,147 +3,109 @@
 <!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
 <!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
-
 <head>
+  <meta charset="utf-8">
+  <title>Coding BY ZK</title>
+  <meta name="author" content="Z K">
 
+  
+  <meta name="description" content="代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。
+代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下： 指定接口所需要的全部方法。
+Object类中的全部方法，（所有的代理类都覆盖了Object类中的方法toString,equals, &hellip;">
+  
 
-<meta charset="utf-8">
-<meta http-equiv="cleartype" content="on">
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Blog by ZK - Coding BY ZK</title>
-<meta name="author" content="Z K">
-
-
-
-
-<meta name="description" content="June 04, 2017 Z K &nbsp; &bull; &nbsp; Comment Java代理 代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。
-代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下： 指定接口所需要的全部方法 &hellip;">
-
-<meta name="keywords" content=" ">
-
-
-<!-- http://t.co/dKP3o1e -->
-<meta name="HandheldFriendly" content="True">
-<meta name="MobileOptimized" content="320">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-
-<!-- Twitter Cards -->
-
-
-<!-- Open Graph -->
-<meta property="og:local" content="en_US">
-<meta property="og:type" content="article">
-<meta property="og:url" content="http://ttazk.github.io">
-<meta property="og:title" content="Blog by ZK">
-<meta property="og:description" content="June 04, 2017 Z K &nbsp; &bull; &nbsp; Comment Java代理 代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。
-代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下： 指定接口所需要的全部方法 &hellip;">
-
-  <meta property="og:image" content="/images/threaded-blue-on-black-cropped.jpg">
-
-<meta property="og:site_name" content="Coding BY ZK">
-
-<link rel="canonical" href="http://ttazk.github.io">
-<link href="/favicon.png" rel="icon">
-<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
-<link href="//netdna.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css" rel="stylesheet">
-<link href="/atom.xml" rel="alternate" title="Coding BY ZK" type="application/atom+xml">
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
-<script>Modernizr || document.write('<script src="/javascripts/vendor/modernizr-2.6.2.custom.min.js"><\/script>') </script>
-
-
-
-<!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+  
+  <link rel="canonical" href="http://ttazk.github.io">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Coding BY ZK" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="/javascripts/libs/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
 <link href="//fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-<link href="//fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
-
+<link href="//fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet" type="text/css">
+<link href="//fonts.googleapis.com/css?family=Fjalla+One" rel="stylesheet" type="text/css">
+<!--- MathJax Configuration -->
+<script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
 
 </head>
 
-<body id="post-index" class="feature">
-  <!--[if lt IE 9]><div class="upgrade"><strong><a href="http://whatbrowser.org/">Your browser is quite old!</strong> Why not upgrade to a different browser to better enjoy this site?</a></div><![endif]-->
-  <nav id="dl-menu" class="dl-menuwrapper" role="navigation">
-	<button class="dl-trigger">Open Menu</button>
-	<ul class="dl-menu">
-		<li><a href="/">Home</a></li>
-		<li>
-			<a href="#">About</a>
-			<ul class="dl-submenu">
-				<li>
-					<img src="" alt="Z K photo" class="author-photo">
-					<h4>Z K</h4>
-					<p></p>
-				</li>
-				
-				
-				
-				
-				
-				
-			</ul><!-- /.dl-submenu -->
-		</li>
-		<li>
-			<a href="#">Posts</a>
-			<ul class="dl-submenu">
-				<li><a href="/posts/">All Posts</a></li>
-				<li><a href="/categories/">All Categories</a></li>
-			</ul>
-		</li>
-		
-	</ul><!-- /.dl-menu -->
-</nav><!-- /.dl-menuwrapper -->
-
-
-  <div class="entry-header">
-    
-    
-      <div class="entry-image">
-        <img src="/images/threaded-blue-on-black-cropped.jpg" alt="Blog by ZK">
-      </div><!-- /.entry-image -->
-    
-    <div class="header-title">
-      <div class="header-title-wrap">
-        <h1>Coding BY ZK</h1>
-        <h2>A Java Coder</h2>
-      </div><!-- /.header-title-wrap -->
-    </div><!-- /.header-title -->
-  </div><!-- /.entry-header -->
-
-  <div id="main" role="main">
-    
-
-<article class="hentry">
+<body   class="collapse-sidebar sidebar-footer" >
+  <header role="banner"><hgroup>
+  <h1><a href="/">Coding BY ZK</a></h1>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-06-04T15:51:47+08:00">
-        <a href="/blog/2017/06/04/proxy/">June 04, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
-    
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/06/04/proxy/#disqus_thread">Comment</a>
-      </span>
-    
-  </div><!-- /.entry-meta -->
+    <h2>A Java Coder</h2>
   
-    <h1 class="entry-title">
-      <a href="/blog/2017/06/04/proxy/" rel="bookmark" title="Java代理" itemprop="url">Java代理</a>
-    </h1>
-  
+</hgroup>
+
 </header>
+  <nav role="navigation"><ul class="subscribe" data-subscription="rss">
+  <li><a href="/atom.xml" rel="subscribe-rss" title="subscribe via RSS" target="_blank"><svg version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="25" height="25" viewbox="0 0 100 100"><path class="social" d="M 13.310204,73.332654 C 5.967347,73.332654 0,79.322448 0,86.621428 c 0,7.338776 5.967347,13.262246 13.310204,13.262246 7.370408,0 13.328572,-5.92245 13.328572,-13.262246 0,-7.29898 -5.958164,-13.288774 -13.328572,-13.288774 z M 0.01530612,33.978572 V 53.143878 C 12.493878,53.143878 24.229592,58.02347 33.068368,66.865306 41.894898,75.685714 46.767346,87.47449 46.767346,100 h 19.25 C 66.017346,63.592858 36.4,33.979592 0.01530612,33.978572 l 0,0 z M 0.03877552,0 V 19.17449 C 44.54796,19.17551 80.77551,55.437756 80.77551,100 H 100 C 100,44.87653 55.15102,0 0.03877552,0 z"></path></svg></a></li>
+  
+</ul>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+    
+      <form action="https://www.baidu.com/search/" method="get">
+        <fieldset role="search">
+          <input type="hidden" name="sitesearch" value="ttazk.github.io" />
+    
+          <input class="search" type="text" name="q" results="0" placeholder="Search"/>
+        </fieldset>
+      </form>
+  
+<ul class="main-navigation">
+  <li><a href="/">Blog</a></li>
+  <li><a href="/blog/archives">Archives</a></li>
+</ul>
 
-<div class="entry-content">
-  <ul>
+</nav>
+  <div id="main">
+    <div id="content">
+      <div class="blog-index">
+  
+  
+  
+    <article>
+      
+  <header>
+    
+      <h1 class="entry-title"><a href="/blog/2017/06/04/proxy/">Java代理</a></h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+<time class='entry-date' datetime='2017-06-04T15:51:47+08:00'><span class='date'><span class='date-month'>Jun</span> <span class='date-day'>4</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>3:51 pm</span></time>
+        
+         | <a href="/blog/2017/06/04/proxy/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li>代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。</li>
 <li>代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下：
 
@@ -160,53 +122,42 @@
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/06/04/proxy/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/06/04/proxy/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-04-22T11:30:13+08:00">
-        <a href="/blog/2017/04/22/btree/">April 22, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/04/22/btree/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/04/22/btree/">B树，B+树，B*树简介</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/04/22/btree/" rel="bookmark" title="B树，B+树，B*树简介" itemprop="url">B树，B+树，B*树简介</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <ul>
+
+
+
+<time class='entry-date' datetime='2017-04-22T11:30:13+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2017</span></span> <span class='time'>11:30 am</span></time>
+        
+         | <a href="/blog/2017/04/22/btree/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li><h3>B树又叫平衡多路查找树（Balance-Tree)，一棵m阶B树满足以下条件：</h3>
 
 <ul>
@@ -222,101 +173,79 @@
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/04/22/btree/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/04/22/btree/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-04-22T00:47:49+08:00">
-        <a href="/blog/2017/04/22/index/">April 22, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/04/22/index/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/04/22/index/">MySql索引</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/04/22/index/" rel="bookmark" title="MySql索引" itemprop="url">MySql索引</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <ul>
+
+
+
+<time class='entry-date' datetime='2017-04-22T00:47:49+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2017</span></span> <span class='time'>12:47 am</span></time>
+        
+         | <a href="/blog/2017/04/22/index/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li>根据存储介质的不同，数据库分为<strong>基于磁盘的数据库</strong>（最为常见的关系型数据库，如MySQL，SQLserver，Oracle等），<strong>基于内存的数据库</strong>。而混合型数据库将这两种类型的数据库进行整合。</li>
-<li>基于内存的数据库系统是最快的，因为数据库不需要对磁盘进行操作。因此，基于磁盘的数据库系统一般都有缓冲池，即一块内存区域，其作用是将从磁盘上读取的指定大小的数据&mdash;称为页或块，放入缓冲池。当再次读取时，首先判断该页是否在缓冲池中，如果在则直接读取缓冲池中的页，如果不在则读取磁盘上的页。 对于写操作，数据库将页读入缓冲池，然后在缓冲池中对页进行修改，最后将修改完成的页异步（一般为异步）写入磁盘上。
+<li>基于内存的数据库系统是最快的，因为数据库不需要对磁盘进行操作。因此，基于磁盘的数据库系统一般都有缓冲池，即一块内存区域，其作用是将从磁盘上读取的指定大小的数据&mdash;称为页或块，放入缓冲池。当再次读取时，首先判断该页是否在缓冲池中，如果在则直接读取缓冲池中的页，如果不在则读取磁盘上的页。 对于写操作，数据库将页读入缓冲池，然后在缓冲池中对页进行修改，最后将修改完成的页异步（一般为异步）写入磁盘上。</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/04/22/index/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/04/22/index/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-04-19T20:07:37+08:00">
-        <a href="/blog/2017/04/19/object/">April 19, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/04/19/object/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/04/19/object/">Object详解</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/04/19/object/" rel="bookmark" title="Object详解" itemprop="url">Object详解</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <ul>
+
+
+
+<time class='entry-date' datetime='2017-04-19T20:07:37+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>8:07 pm</span></time>
+        
+         | <a href="/blog/2017/04/19/object/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li>Object类是所有类的父类，每个类都是由Object类扩展而来。如果没有明确指出父类，则默认为Object类为该类的父类。</li>
 <li>可以使用Object类型的变量引用任何类型的对象。</li>
 <li><p>在Java中，只有基本数据类型（数字，字符，布尔）不是对象。所有的数组类型，不管是对象数组还是基本类型的数组都扩展了Object类。</p>
@@ -338,53 +267,42 @@
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/04/19/object/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/04/19/object/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-04-12T11:05:15+08:00">
-        <a href="/blog/2017/04/12/jmm/">April 12, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/04/12/jmm/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/04/12/jmm/">Java内存模型</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/04/12/jmm/" rel="bookmark" title="Java内存模型" itemprop="url">Java内存模型</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <ul>
+
+
+
+<time class='entry-date' datetime='2017-04-12T11:05:15+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>12</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>11:05 am</span></time>
+        
+         | <a href="/blog/2017/04/12/jmm/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li><p><strong>Java 内存模型中的可见性、原子性和有序性。</strong></p></li>
 <li><p><strong>可见性：</strong></p>
 
@@ -397,53 +315,42 @@
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/04/12/jmm/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/04/12/jmm/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-04-11T21:00:36+08:00">
-        <a href="/blog/2017/04/11/threadpool/">April 11, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/04/11/threadpool/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/04/11/threadpool/">线程池详解</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/04/11/threadpool/" rel="bookmark" title="线程池详解" itemprop="url">线程池详解</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <ul>
+
+
+
+<time class='entry-date' datetime='2017-04-11T21:00:36+08:00'><span class='date'><span class='date-month'>Apr</span> <span class='date-day'>11</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>9:00 pm</span></time>
+        
+         | <a href="/blog/2017/04/11/threadpool/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li>线程池是管理一组同构线程的资源池。线程池与工作队列密切相关，其中在工作队列中保存了所有等待执行的任务。<strong>工作者线程的任务是：从工作队列中取出一个任务，执行任务，然后返回线程等待下一个任务。线程池通过重用线程，而不是新建线程，减小线程创建与销毁的开销</strong>。</li>
 <li>Excutor是顶级线程池接口</li>
 <li>ExecutorService是真正的线程池接口。</li>
@@ -451,53 +358,42 @@
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/04/11/threadpool/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/04/11/threadpool/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-03-22T14:06:10+08:00">
-        <a href="/blog/2017/03/22/generic/">March 22, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/03/22/generic/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/03/22/generic/">泛型程序设计</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/03/22/generic/" rel="bookmark" title="泛型程序设计" itemprop="url">泛型程序设计</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <ul>
+
+
+
+<time class='entry-date' datetime='2017-03-22T14:06:10+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2017</span></span> <span class='time'>2:06 pm</span></time>
+        
+         | <a href="/blog/2017/03/22/generic/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。</li>
 <li><p>在增加泛型之前，泛型程序是利用继承实现的。</p>
 
@@ -552,53 +448,42 @@
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/03/22/generic/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/03/22/generic/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-03-22T13:33:24+08:00">
-        <a href="/blog/2017/03/22/thread/">March 22, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/03/22/thread/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/03/22/thread/">线程与并发</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/03/22/thread/" rel="bookmark" title="线程与并发" itemprop="url">线程与并发</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <pre><code>public class Thread  extends Object  implements Runnable
+
+
+
+<time class='entry-date' datetime='2017-03-22T13:33:24+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>22</span><span class='date-suffix'>nd</span>, <span class='date-year'>2017</span></span> <span class='time'>1:33 pm</span></time>
+        
+         | <a href="/blog/2017/03/22/thread/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><pre><code>public class Thread  extends Object  implements Runnable
 
 线程 是程序中的执行线程。Java 虚拟机允许应用程序并发地运行多个执行线程。
 
@@ -624,106 +509,84 @@
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/03/22/thread/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/03/22/thread/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-03-21T16:21:24+08:00">
-        <a href="/blog/2017/03/21/spring_mybatis/">March 21, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/03/21/spring_mybatis/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/03/21/spring_mybatis/">Spring整合MyBatis框架</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/03/21/spring_mybatis/" rel="bookmark" title="Spring整合MyBatis框架" itemprop="url">Spring整合MyBatis框架</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <ul>
+
+
+
+<time class='entry-date' datetime='2017-03-21T16:21:24+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>21</span><span class='date-suffix'>st</span>, <span class='date-year'>2017</span></span> <span class='time'>4:21 pm</span></time>
+        
+         | <a href="/blog/2017/03/21/spring_mybatis/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li><p>使用MyBatis，面对的是纯粹的Java对象，类似于Hbernate。但是对于具体的数据库操作，Hibernate会自动生成SQL语句，MyBatis 则要求自己自己编写SQL语句。</p></li>
 <li><p>每一个MyBatis应用都是以一个SQLSessionFactory对象的实例为核心MyBatis可以拥有多个SQL映射文件，并通过一个配置文件对这些SQL映射文件进行装配，同时在该文件中定义一些控制属性信息。
 如下：</p></li>
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/03/21/spring_mybatis/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/03/21/spring_mybatis/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-<article class="hentry">
+    </article>
   
-
-
-
-<header>
-  <div class="entry-meta">
-    <span class="entry-date date published updated">
-      <time datetime="2017-03-19T10:38:05+08:00">
-        <a href="/blog/2017/03/19/generic/">March 19, 2017</a>
-      </time>
-    </span>
-    <span class="author vcard">
-      <span class="fn">
-        <a href="" title="About Z K">Z K</a>
-      </span>
-    </span>
+  
+    <article>
+      
+  <header>
     
-      &nbsp; &bull; &nbsp;<span class="entry-comments">
-        <a href="/blog/2017/03/19/generic/#disqus_thread">Comment</a>
-      </span>
+      <h1 class="entry-title"><a href="/blog/2017/03/19/generic/">泛型程序设计</a></h1>
     
-  </div><!-- /.entry-meta -->
-  
-    <h1 class="entry-title">
-      <a href="/blog/2017/03/19/generic/" rel="bookmark" title="泛型程序设计" itemprop="url">泛型程序设计</a>
-    </h1>
-  
-</header>
+    
+      <p class="meta">
+        
 
-<div class="entry-content">
-  <ul>
+
+
+
+<time class='entry-date' datetime='2017-03-19T10:38:05+08:00'><span class='date'><span class='date-month'>Mar</span> <span class='date-day'>19</span><span class='date-suffix'>th</span>, <span class='date-year'>2017</span></span> <span class='time'>10:38 am</span></time>
+        
+         | <a href="/blog/2017/03/19/generic/#disqus_thread">Comments</a>
+        
+        
+      </p>
+    
+  </header>
+
+
+  <div class="entry-content"><ul>
 <li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。</li>
 <li><p>在增加泛型之前，泛型程序是利用继承实现的。</p>
 
@@ -778,49 +641,66 @@
 </ul>
 
 
-
+</div>
   
   
     <footer>
-      <a class="btn" rel="full-article" href="/blog/2017/03/19/generic/">Read on &rarr;</a>
+      <a rel="full-article" href="/blog/2017/03/19/generic/">Read on &rarr;</a>
     </footer>
   
-</div><!-- /.entry-content -->
 
 
-
-
-
-</article><!-- /.hentry -->
-
-
-<div class="pagination">
+    </article>
   
-  <a href="/archives">Blog Archives</a>
+  <div class="pagination">
+    
+      <a class="prev" href="/posts/2">&larr; Older</a>
+    
+    <a href="/blog/archives">Blog Archives</a>
+    
+  </div>
+</div>
+<aside class="sidebar">
   
-    <a href="/posts/2" class="btn">Next</a>
+    
   
-</div><!-- /.pagination -->
+</aside>
 
-  </div><!-- /#main -->
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2017 - Z K -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a> | Themed with <a href="https://github.com/lucaslew/whitespace">Whitespace</a></span>
+</p>
 
-  <div class="footer-wrapper">
-    <footer role="contentinfo">
-      <span>&copy; 2017 Z K.</span>
-
-    </footer>
-  </div><!-- /.footer-wrapper -->
-
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
-<script>window.jQuery || document.write('<script src="/javascripts/vendor/jquery-1.9.1.min.js"><\/script>')</script>
-<script src="/javascripts/octopress.js" type="text/javascript"></script>
-<script src="/javascripts/scripts.min.js"></script>
-
-
-
-
-          
+</footer>
   
+
+<script type="text/javascript">
+      var disqus_shortname = 'zkatt';
+      
+        
+        var disqus_script = 'count.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//' + disqus_shortname + '.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </body>
 </html>
