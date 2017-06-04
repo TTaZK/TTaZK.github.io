@@ -4,7 +4,7 @@
   <title><![CDATA[Coding BY ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-06-04T15:42:47+08:00</updated>
+  <updated>2017-06-04T16:02:02+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,6 +12,87 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Java代理]]></title>
+    <link href="http://ttazk.github.io/blog/2017/06/04/proxy/"/>
+    <updated>2017-06-04T15:51:47+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/06/04/proxy</id>
+    <content type="html"><![CDATA[<ul>
+<li>代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。</li>
+<li>代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下：
+
+<ul>
+<li>指定接口所需要的全部方法。</li>
+<li>Object类中的全部方法，（所有的代理类都覆盖了Object类中的方法toString,equals,hashCode,其他方法如，clone,getClass没有重新定义）</li>
+<li><p>然而，不能在运行时定义这些方法的代码，而是要提供一个调用处理器(invocation Handler)。调用处理器是实现了InvocationHandler接口的类对象，在这个接口中只有一个方法：</p>
+
+<pre><code>  Object invoke(Object proxy,Method method,Object[] args)
+</code></pre></li>
+</ul>
+</li>
+<li>无论何时调用代理对象的任何方法，调用处理器的invoke（）方法都会被调用，并向其传递Method对象和原始的调用参数。调用处理器必须给出处理调用的方式。</li>
+</ul>
+
+
+<!--- more -->
+
+
+<h3>创建代理对象</h3>
+
+<ul>
+<li><p>需要使用Proxy类的newProxyInstance方法，该方法有三个参数</p>
+
+<ul>
+<li>一个类加载器(class loader)。对于预定义类使用null作为默认的类加载器，对于自定义的接口，使用：myInterface.class.getClassLoader()(其中myInterface为要实现的接口)</li>
+<li>一个class对象数组，每个元素都是要实现的接口。</li>
+<li>一个调用处理器。</li>
+</ul>
+</li>
+<li><p>简单示例如下：</p>
+
+<pre><code>  interface  Proxy1{
+      public void print();
+  }
+  class ImpHandler implements InvocationHandler{
+
+      @Override
+      public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+          // TODO Auto-generated method stub
+           System.out.println("Invoke invoke() method");
+           String string="return String";
+          return string;
+      }
+
+  }
+  public class ProxyTest {
+
+      public static void main(String[] args) {
+           // TODO Auto-generated method stub
+           InvocationHandler invocationHandler=new ImpHandler();
+           Object proxy=Proxy.newProxyInstance(Proxy1.class.getClassLoader(), new Class[]{Proxy1.class}, invocationHandler);
+           proxy.toString();
+      }
+  }
+  输出结果为：
+  Invoke invoke() method
+</code></pre></li>
+<li><p>代理对象属于在运行时定义的类。没有定义代理类的名字（所以在创建代理对象时，将返回的引用传递给Object变量），sun虚拟机中的Proxy类将生成一个以字符串$Proxy开头的类名，如$proxy0.</p>
+
+<h3>代理类的特性</h3></li>
+<li>代理类是在程序运行时创建的，然而一旦创建，就变成了常规类，与其他类没有区别。</li>
+<li>所有的代理类都扩展于Proxy类。一个代理类只有一个实例域&mdash;调用处理器，它定义在Proxy的父类中。为了履行代理对象的职责，所需要的任何附加数据都必须存储在调用处理器中。</li>
+<li>所有的代理类中的方法仅仅调用了调用处理器的invoke()方法。</li>
+<li>对于特定的类加载器与预设的一组接口来说，只能有一个代理类。也就是说，如果使用同一个类加载器和接口数组调用两次newProxyInstance()方法的话，那么只能得到同一个类的两个对象。</li>
+<li><p>可以调用Proxy类的getProxyClass方法获取实现指定接口的代理类：</p>
+
+<pre><code>  static Class&lt;?&gt; getProxyClass(classLoader,interfaces)
+</code></pre></li>
+<li>代理类一定是public final。如果代理类实现的所有接口都是public,代理类就不属于某个特定的包；否则所有的非公有接口都必须属于同一个包，同时代理类也属于这个包。</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[B树，B+树，B*树简介]]></title>
