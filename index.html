@@ -262,30 +262,18 @@
 
 <pre><code>  int[] i=new int[5];
   Object obj=i;
-</code></pre></li>
-</ul>
-
-
-<blockquote><p>int[] i=new int[5];
-Object obj=i;</p></blockquote>
-
-<pre><code>nihao
-zhwhi
-zhiads
 </code></pre>
 
-<h3>equals()方法</h3>
-
-<ul>
+<h3>equals()方法</h3></li>
 <li>在Object类中，该方法用于判断两个对象是否具有相同的引用。</li>
 <li><p>然而，经常需要检测两个对象的状态的相等性，所以一般需要覆写equals()方法。</p>
 
-<pre><code>      public class Test{
+<pre><code>  public class Test{
              public boolean equals(Object otherObject){
                   }
          }
 </code></pre></li>
-<li><p>在子类中定义equals方法时，首先调用父类的equals方法。如果检测失败，则对象不可能相等。如果父类中的域都相等，就需要比较子类中的实例域。</p></li>
+<li>在子类中定义equals方法时，首先调用父类的equals方法。如果检测失败，则对象不可能相等。如果父类中的域都相等，就需要比较子类中的实例域。</li>
 </ul>
 
 

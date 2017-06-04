@@ -4,7 +4,7 @@
   <title><![CDATA[Coding BY ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-06-04T15:31:26+08:00</updated>
+  <updated>2017-06-04T15:42:47+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -246,30 +246,18 @@
 
 <pre><code>  int[] i=new int[5];
   Object obj=i;
-</code></pre></li>
-</ul>
-
-
-<blockquote><p>int[] i=new int[5];
-Object obj=i;</p></blockquote>
-
-<pre><code>nihao
-zhwhi
-zhiads
 </code></pre>
 
-<h3>equals()方法</h3>
-
-<ul>
+<h3>equals()方法</h3></li>
 <li>在Object类中，该方法用于判断两个对象是否具有相同的引用。</li>
 <li><p>然而，经常需要检测两个对象的状态的相等性，所以一般需要覆写equals()方法。</p>
 
-<pre><code>      public class Test{
+<pre><code>  public class Test{
              public boolean equals(Object otherObject){
                   }
          }
 </code></pre></li>
-<li><p>在子类中定义equals方法时，首先调用父类的equals方法。如果检测失败，则对象不可能相等。如果父类中的域都相等，就需要比较子类中的实例域。</p></li>
+<li>在子类中定义equals方法时，首先调用父类的equals方法。如果检测失败，则对象不可能相等。如果父类中的域都相等，就需要比较子类中的实例域。</li>
 </ul>
 
 
@@ -301,15 +289,18 @@ zhiads
 <li>显式参数命名为otherObject，稍后需将它转换成叫做other的变量</li>
 <li><p>检测this与otherObject是否引用同一个对象</p>
 
-<pre><code>  if(this==otherObject)  return true;
+<pre><code>  if(this==otherObject)
+  return true;
 </code></pre></li>
 <li><p>检测otherObject是否为null，如果为null，则返回false</p>
 
-<pre><code>   if(otherObject==null)  return false;
+<pre><code>   if(otherObject==null)  
+   return false;
 </code></pre></li>
 <li><p>比较this与otherObject是否属于同一个类</p>
 
-<pre><code>  if(this.getClass!==otherObject.getClass)  return false;
+<pre><code>  if(this.getClass!==otherObject.getClass)  
+  return false;
 </code></pre></li>
 <li><p>将otherObject转换为相应的类类型变量</p>
 
@@ -336,7 +327,7 @@ zhiads
         //String str1="string";  String str2=new String("string");
         //str1,str2的散列码值相同，因为其内容相同。
 </code></pre></li>
-<li><p>如果重新定义equals()方法，就必须重新定义hashCode()方法，以便用户可以将对象插入到散列表中。equals()方法与hashCode()方法的定义必须一致：如果x.equals(y)返回true,那么x.hashCode()的值必须与y.hashCode()值相等。</p></li>
+<li>如果重新定义equals()方法，就必须重新定义hashCode()方法，以便用户可以将对象插入到散列表中。equals()方法与hashCode()方法的定义必须一致：如果x.equals(y)返回true,那么x.hashCode()的值必须与y.hashCode()值相等。</li>
 <li><p>如果存在数组类型的域，可以使用静态的Arrays.hashCode()方法计算一个散列码，这个散列码由数组元素的散列码组成。</p>
 
 <pre><code>  static int hashCode(type[] a)//数组类型可以是任意类型
