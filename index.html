@@ -7,9 +7,7 @@
 	<meta name="author" content="Z K">
 
 	
-	<meta name="description" content="代理（Proxy）:利用代理可以在运行时创建一个实现了一组给定接口的新类。
-代理类可以在运行时创建全新的类，这样的代理类能够实现指定的接口，代理类具有的方法如下： 指定接口所需要的全部方法。
-Object类中的全部方法，（所有的代理类都覆盖了Object类中的方法toString,equals, &hellip;">
+	<meta name="description" content=" Jul 30th, 2017 algorithm Comments ">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -74,6 +72,42 @@ Object类中的全部方法，（所有的代理类都覆盖了Object类中的�
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2017/07/30/algorithm/">
+		
+			动态规划与贪心</a>
+	</h2>
+	<div class="entry-content">
+		
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Jul 30th, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/algorithm/'>algorithm</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2017/07/30/algorithm/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -552,92 +586,6 @@ Mar 21st, 2017</div>
 </div>
 	
 	<div class="comments"><a href="/blog/2017/03/21/spring_mybatis/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2017/03/19/generic/">
-		
-			泛型程序设计</a>
-	</h2>
-	<div class="entry-content">
-		<ul>
-<li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。</li>
-<li><p>在增加泛型之前，泛型程序是利用继承实现的。</p>
-
-<pre><code>  public class ArrayList{
-  private Object[] data;
-   ...
-  public Object get(int i){}
-  public void add(Object o){}
-  }
-</code></pre></li>
-<li>这种方法有两个问题：</li>
-<li>1.当获取一个值时必须进行强制类型转换。</li>
-<li><p>2.没有错误检查，可以向数组列表中添加任何类的对象。</br></br></p></li>
-<li><p>泛型提供了一个更好的解决方法：类型参数，用来指示存储元素的类型。如：ArrayList<String> arl=new ArrayList&lt;>();   (jdk1.7之后，构造函数中可以省略泛型类型)。</p>
-
-<ul>
-<li>对此编译器可以进行检查，避免插入错误的类型，同时在获取对象时不需要进行强制类型转换。</li>
-<li><p>一个泛型类(generic class)就是具有一个或多个类型变量的类。
-      public class Pair<T> {
-      private T first;
-      private T second;</p>
-
-<pre><code>  public Pair(){
-       this.first=null;
-       this.second=null;
-  }
-  public Pair(T first,T second){
-       this.first=first;
-       this.second=second;
-  }
-
-  public T getFirst(){
-       return first;
-  }
-  public T getSecond(){
-       return second;
-  }
-  public void setFirst(T first){
-       this.first=first;
-  }
-  public void setSecond(T second){
-       this.second=second;
-      }
-  }
-</code></pre></li>
-<li>如上所示，Pair类引入了一个类型变量T,用&lt;>括起来，并放在类名之后。泛型类可以有多个类型变量。例如可以定义Pair类，两个域分别使用不同的类型变量：public class Pair&lt;T,V>{&hellip;}.</li>
-<li>类中定义的泛型变量指定方法的返回类型，以及域和局部变量的类型。（一般来说，K,V分别表示关键字与值的类型，T表示任意类型）。</li>
-<li>用具体的类型替换类型变量就可以实例化泛型类型，如Pair<String>。换句话来说，泛型类可以看做普通类的工厂。
-</br></br></li>
-</ul>
-</li>
-</ul>
-
-
-
-		
-		<a href="/blog/2017/03/19/generic/" class="more-link">Read on &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-Mar 19th, 2017</div>
-	<div class="tags">
-
-</div>
-	
-	<div class="comments"><a href="/blog/2017/03/19/generic/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
