@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithm | ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/algorithm/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-08-02T22:00:31+08:00</updated>
+  <updated>2017-08-02T22:53:27+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,6 +12,68 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[剑指Offer_Question5]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/02/question5/"/>
+    <updated>2017-08-02T22:50:38+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/08/02/question5</id>
+    <content type="html"><![CDATA[<pre><code>    package test;
+
+    /*
+     * 从尾到头打印链表
+     * 输入一个头结点，从尾到头打印每个节点的值
+     * 
+     * 可以可以使用栈来实现，访问一个节点时就入栈，根据栈的特点，输出时已经反向
+     * 递归本身就相当于栈结构
+     */
+    class Qnode{
+        public int key;
+        public Qnode next;
+        public Qnode(int key){
+            this.key=key;
+            next=null;
+        }
+    }
+    public class Question5 {
+</code></pre>
+
+<!-- more -->           
+
+
+<pre><code>        public static void printFromTailToHead(Qnode head){
+            /*
+             * 如果想要不改变链表结构（将链表翻转），从尾到头地打印链表
+             * 可以采取的思路是利用递归
+             * 不过要注意，要先递归调用方法，再打印，这样当递归调用至最深处时
+             * 即最后一个节点进行递归，找到递归出口，实现了先打印最后一个节点，依次倒着打印节点
+             */
+            if (head!=null) {
+                printFromTailToHead(head.next);
+                System.out.print(head.key+" ");//这种顺序使得首先递归调用地最后输出
+            }
+        }
+        public static void main(String[] args) {
+            // TODO Auto-generated method stub
+            Qnode listnode=new Qnode(3);
+            Qnode listnode1=new Qnode(4);
+            Qnode listnode2=new Qnode(5);
+            Qnode listnode3=new Qnode(6);
+            Qnode listnode4=new Qnode(7);
+            Qnode listnode5=new Qnode(8);
+            Qnode listnode6=new Qnode(9);
+
+            listnode.next=listnode1;listnode1.next=listnode2;
+            listnode2.next=listnode3;listnode3.next=listnode4;
+            listnode4.next=listnode5;listnode5.next=listnode6;
+
+            printFromTailToHead(listnode);
+        }
+
+    }
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[剑指offer_Question3]]></title>

@@ -1,0 +1,206 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>剑指Offer_Question5 - ZK</title>
+	<meta name="author" content="Z K">
+
+	
+	<meta name="description" content="package test; /* * 从尾到头打印链表 * 输入一个头结点，从尾到头打印每个节点的值 * * 可以可以使用栈来实现，访问一个节点时就入栈，根据栈的特点，输出时已经反向 * 递归本身就相当于栈结构 */ class Qnode{ public int key; public &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="" rel="alternate" title="ZK" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">ZK</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com/" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:ttazk.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com/" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:ttazk.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">剑指Offer_Question5</h2>
+	<div class="entry-content"><pre><code>    package test;
+
+    /*
+     * 从尾到头打印链表
+     * 输入一个头结点，从尾到头打印每个节点的值
+     * 
+     * 可以可以使用栈来实现，访问一个节点时就入栈，根据栈的特点，输出时已经反向
+     * 递归本身就相当于栈结构
+     */
+    class Qnode{
+        public int key;
+        public Qnode next;
+        public Qnode(int key){
+            this.key=key;
+            next=null;
+        }
+    }
+    public class Question5 {
+</code></pre>
+
+<!-- more -->           
+
+
+<pre><code>        public static void printFromTailToHead(Qnode head){
+            /*
+             * 如果想要不改变链表结构（将链表翻转），从尾到头地打印链表
+             * 可以采取的思路是利用递归
+             * 不过要注意，要先递归调用方法，再打印，这样当递归调用至最深处时
+             * 即最后一个节点进行递归，找到递归出口，实现了先打印最后一个节点，依次倒着打印节点
+             */
+            if (head!=null) {
+                printFromTailToHead(head.next);
+                System.out.print(head.key+" ");//这种顺序使得首先递归调用地最后输出
+            }
+        }
+        public static void main(String[] args) {
+            // TODO Auto-generated method stub
+            Qnode listnode=new Qnode(3);
+            Qnode listnode1=new Qnode(4);
+            Qnode listnode2=new Qnode(5);
+            Qnode listnode3=new Qnode(6);
+            Qnode listnode4=new Qnode(7);
+            Qnode listnode5=new Qnode(8);
+            Qnode listnode6=new Qnode(9);
+
+            listnode.next=listnode1;listnode1.next=listnode2;
+            listnode2.next=listnode3;listnode3.next=listnode4;
+            listnode4.next=listnode5;listnode5.next=listnode6;
+
+            printFromTailToHead(listnode);
+        }
+
+    }
+</code></pre>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 2nd, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/algorithm/'>algorithm</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2017
+
+    Z K
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'zkatt';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ttazk.github.io/blog/2017/08/02/question5/';
+        var disqus_url = 'http://ttazk.github.io/blog/2017/08/02/question5/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
