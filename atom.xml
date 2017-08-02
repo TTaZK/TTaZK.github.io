@@ -4,7 +4,7 @@
   <title><![CDATA[ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-08-02T21:52:02+08:00</updated>
+  <updated>2017-08-02T21:57:10+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -37,8 +37,12 @@ public class Question3 {
         }
         int row=array.length-1;
         int column=array[0].length-1;
+</code></pre>
 
-        int i=row,j=0;
+<!--  more -->          
+
+
+<pre><code>        int i=row,j=0;
         while(i&gt;=0&amp;&amp;j&lt;=column){
             if (array[i][j]&gt;a) {
                 System.out.print(array[i][j]+" ");
@@ -110,8 +114,12 @@ public class Question4 {
          */
         return string.replace(" ","%20");
     }
+</code></pre>
 
-    public static String replaceBlank3(String string){
+<!--  more -->      
+
+
+<pre><code>    public static String replaceBlank3(String string){
         /*
          * 使用类似于剑指offer中的方法，对原来字符串中的字符一个一个进行复制
          * 先统计原本字符串中的空格个数x，则新的字符串的长度比原来字符串长2x

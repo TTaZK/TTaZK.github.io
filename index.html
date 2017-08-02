@@ -101,35 +101,11 @@ public class Question3 {
         }
         int row=array.length-1;
         int column=array[0].length-1;
-
-        int i=row,j=0;
-        while(i&gt;=0&amp;&amp;j&lt;=column){
-            if (array[i][j]&gt;a) {
-                System.out.print(array[i][j]+" ");
-                i--;//往上走
-            }
-            else if (array[i][j]&lt;a) {
-                System.out.print(array[i][j]+" ");
-                j++;//往右走
-            }else {
-                System.out.print(array[i][j]+" ");
-                return true;
-            }
-        }
-
-        return false;
-    }
-    public static void main(String[] args) {
-        int[][] array={.{1,2,3,4},{2,3,4,5},{3,4,5,6,},{4,5,6,7}.};
-        System.out.println(findInArray(array, 3));
-        //System.out.println(findInArray(array, 9));
-    }
-
-}
 </code></pre>
 
+
 		
-		
+		<a href="/blog/2017/08/02/question3/" class="more-link">Read on &rarr;</a>
 	</div>
 
 
@@ -201,55 +177,11 @@ public class Question4 {
          */
         return string.replace(" ","%20");
     }
-
-    public static String replaceBlank3(String string){
-        /*
-         * 使用类似于剑指offer中的方法，对原来字符串中的字符一个一个进行复制
-         * 先统计原本字符串中的空格个数x，则新的字符串的长度比原来字符串长2x
-         * 定义两个指针p1,p2,其中p1初始指向原来字符串的末尾位置，p2指向新字符串的末尾位置
-         * 当p1遇到的字符不是空格时，将该字符复制到新字符串，同时p1,p2向前移动一个位置
-         * 当p1遇到的字符为空格时，p1往前移动一个位置，p2往前移动三个位置，同时在这三个位置上添加%20
-         * 当p1,p2的索引相同时，说明前面没有空格了
-         * 
-         * 简易新建一个字符数组为新的字符串，以空间换时间
-         * 
-         */
-          int blankCount=0;
-          for(int i=0;i&lt;string.length();i++){
-           if (string.charAt(i)==' ') {
-            blankCount++;
-           }
-          }
-          char[] newString=new char[string.length()+blankCount*2];
-          int p1=string.length()-1,p2=newString.length-1;
-          while(p1&gt;=0&amp;&amp;p2&gt;=0){
-           if (string.charAt(p1)!=' ') {
-            //当前字符非空，则复制且两个指针都往前移一个
-            newString[p2]=string.charAt(p1);
-            p1--;
-            p2--;
-           }else if (string.charAt(p1)==' ') {
-            p1--;
-            newString[p2]='0';
-            p2--;
-            newString[p2]='2';
-            p2--;
-            newString[p2]='%';
-            p2--;
-           }
-          }
-        return String.valueOf(newString);
-    }
-    public static void main(String[] args) {
-        // TODO Auto-generated method stub
-        System.out.println(replaceBlank2("ni hao wo "));
-    }
-
-}
 </code></pre>
 
+
 		
-		
+		<a href="/blog/2017/08/02/question4/" class="more-link">Read on &rarr;</a>
 	</div>
 
 
