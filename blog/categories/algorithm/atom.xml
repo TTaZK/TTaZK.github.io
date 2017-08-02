@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithm | ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/algorithm/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-08-02T21:57:10+08:00</updated>
+  <updated>2017-08-02T22:00:31+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -104,7 +104,12 @@ public class Question4 {
          * 直接使用String.repalce(char old,char new)
          * 返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。
          * 该方法只能替换一个字符
-         * 
+</code></pre>
+
+<!--  more -->  
+
+
+<pre><code>         * 
          * replace(CharSequence target, CharSequence replacement) 
          *使用指定的字面值替换序列替换此字符串所有匹配字面值目标序列的子字符串。
          *该方法可以替换字符串
@@ -114,12 +119,8 @@ public class Question4 {
          */
         return string.replace(" ","%20");
     }
-</code></pre>
 
-<!--  more -->      
-
-
-<pre><code>    public static String replaceBlank3(String string){
+    public static String replaceBlank3(String string){
         /*
          * 使用类似于剑指offer中的方法，对原来字符串中的字符一个一个进行复制
          * 先统计原本字符串中的空格个数x，则新的字符串的长度比原来字符串长2x
