@@ -4,7 +4,7 @@
   <title><![CDATA[ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-07-30T17:03:09+08:00</updated>
+  <updated>2017-08-02T21:52:02+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,6 +12,152 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[剑指offer_Question3]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/02/question3/"/>
+    <updated>2017-08-02T21:32:12+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/08/02/question3</id>
+    <content type="html"><![CDATA[<pre><code>/*
+ * 在一个二维数组中查找一个整数，数组是从左向右，从上向下递增
+ * 分析：
+ * 对于无序的数组，我们可以一行一行地进行比较，时间复杂度为O(n*n)
+ * 由于该数组有序，按照一般的比较思路，我们一般从左上角到又开始比较，如果当前数字比待查找值小，则向右或者
+ * 向下继续查找，这样的话便不容易进行选择。因此，我们可以尝试从右上角向左进行排查/从左下角向右进行排查，这样就不会像刚才一样
+ * 面临两种选择，从而使问题简化。
+ * 从左下角向右进行排查：如果当前数字比待查找值大，则向上进行查找（同时摈弃最下面一行，因为最下面一行的数字都比左下角的大）
+ * 如果当前数字比待查找值小，则向右进行查找（同时摈弃该列，因为该列往上的数字都比待查找值小）
+ */
+public class Question3 {
+
+    //从左下角向右进行排查
+    public static boolean findInArray(int[][] array,int a){
+        if (array==null) {
+            return false;
+        }
+        int row=array.length-1;
+        int column=array[0].length-1;
+
+        int i=row,j=0;
+        while(i&gt;=0&amp;&amp;j&lt;=column){
+            if (array[i][j]&gt;a) {
+                System.out.print(array[i][j]+" ");
+                i--;//往上走
+            }
+            else if (array[i][j]&lt;a) {
+                System.out.print(array[i][j]+" ");
+                j++;//往右走
+            }else {
+                System.out.print(array[i][j]+" ");
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public static void main(String[] args) {
+        int[][] array={.{1,2,3,4},{2,3,4,5},{3,4,5,6,},{4,5,6,7}.};
+        System.out.println(findInArray(array, 3));
+        //System.out.println(findInArray(array, 9));
+    }
+
+}
+</code></pre>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[剑指offer_Question4]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/02/question4/"/>
+    <updated>2017-08-02T21:31:37+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/08/02/question4</id>
+    <content type="html"><![CDATA[<pre><code>package test;
+
+/*
+ * 替换空格
+ * 实现一个函数，将字符串中的空格替换成%20
+ */
+public class Question4 {
+
+    public static String replaceBlank(String string){
+        /*
+         * 可以直接创建一个新的字符串/StringBuffer,然后对输入的字符串进行遍历，如果遇到字符，
+         * 则加在新字符串的末尾；如果遇到空格，就在新字符串的末尾加入%20,返回新的字符串即可。
+         */
+        StringBuffer stringBuffer=new StringBuffer();
+        for(int i=0;i&lt;string.length();i++){
+            if (string.charAt(i)==' ') {
+                stringBuffer.append("%20");
+            }else{
+                stringBuffer.append(string.charAt(i));
+            }
+        }
+        return stringBuffer.toString();
+    }
+
+    public static String replaceBlank2(String string){
+        /*
+         * 直接使用String.repalce(char old,char new)
+         * 返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。
+         * 该方法只能替换一个字符
+         * 
+         * replace(CharSequence target, CharSequence replacement) 
+         *使用指定的字面值替换序列替换此字符串所有匹配字面值目标序列的子字符串。
+         *该方法可以替换字符串
+         * 
+         *replaceAll(String regex, String replacement) 
+         *使用给定的 replacement 替换此字符串所有匹配给定的正则表达式的子字符串。。
+         */
+        return string.replace(" ","%20");
+    }
+
+    public static String replaceBlank3(String string){
+        /*
+         * 使用类似于剑指offer中的方法，对原来字符串中的字符一个一个进行复制
+         * 先统计原本字符串中的空格个数x，则新的字符串的长度比原来字符串长2x
+         * 定义两个指针p1,p2,其中p1初始指向原来字符串的末尾位置，p2指向新字符串的末尾位置
+         * 当p1遇到的字符不是空格时，将该字符复制到新字符串，同时p1,p2向前移动一个位置
+         * 当p1遇到的字符为空格时，p1往前移动一个位置，p2往前移动三个位置，同时在这三个位置上添加%20
+         * 当p1,p2的索引相同时，说明前面没有空格了
+         * 
+         * 简易新建一个字符数组为新的字符串，以空间换时间
+         * 
+         */
+          int blankCount=0;
+          for(int i=0;i&lt;string.length();i++){
+           if (string.charAt(i)==' ') {
+            blankCount++;
+           }
+          }
+          char[] newString=new char[string.length()+blankCount*2];
+          int p1=string.length()-1,p2=newString.length-1;
+          while(p1&gt;=0&amp;&amp;p2&gt;=0){
+           if (string.charAt(p1)!=' ') {
+            //当前字符非空，则复制且两个指针都往前移一个
+            newString[p2]=string.charAt(p1);
+            p1--;
+            p2--;
+           }else if (string.charAt(p1)==' ') {
+            p1--;
+            newString[p2]='0';
+            p2--;
+            newString[p2]='2';
+            p2--;
+            newString[p2]='%';
+            p2--;
+           }
+          }
+        return String.valueOf(newString);
+    }
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        System.out.println(replaceBlank2("ni hao wo "));
+    }
+
+}
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[动态规划与贪心]]></title>

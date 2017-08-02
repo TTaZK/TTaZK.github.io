@@ -7,7 +7,7 @@
 	<meta name="author" content="Z K">
 
 	
-	<meta name="description" content=" Jul 30th, 2017 algorithm Comments ">
+	<meta name="description" content="/* * 在一个二维数组中查找一个整数，数组是从左向右，从上向下递增 * 分析： * 对于无序的数组，我们可以一行一行地进行比较，时间复杂度为O(n*n) * 由于该数组有序，按照一般的比较思路，我们一般从左上角到又开始比较，如果当前数字比待查找值小，则向右或者 * 向下继续查找， &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -72,6 +72,206 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2017/08/02/question3/">
+		
+			剑指offer_Question3</a>
+	</h2>
+	<div class="entry-content">
+		<pre><code>/*
+ * 在一个二维数组中查找一个整数，数组是从左向右，从上向下递增
+ * 分析：
+ * 对于无序的数组，我们可以一行一行地进行比较，时间复杂度为O(n*n)
+ * 由于该数组有序，按照一般的比较思路，我们一般从左上角到又开始比较，如果当前数字比待查找值小，则向右或者
+ * 向下继续查找，这样的话便不容易进行选择。因此，我们可以尝试从右上角向左进行排查/从左下角向右进行排查，这样就不会像刚才一样
+ * 面临两种选择，从而使问题简化。
+ * 从左下角向右进行排查：如果当前数字比待查找值大，则向上进行查找（同时摈弃最下面一行，因为最下面一行的数字都比左下角的大）
+ * 如果当前数字比待查找值小，则向右进行查找（同时摈弃该列，因为该列往上的数字都比待查找值小）
+ */
+public class Question3 {
+
+    //从左下角向右进行排查
+    public static boolean findInArray(int[][] array,int a){
+        if (array==null) {
+            return false;
+        }
+        int row=array.length-1;
+        int column=array[0].length-1;
+
+        int i=row,j=0;
+        while(i&gt;=0&amp;&amp;j&lt;=column){
+            if (array[i][j]&gt;a) {
+                System.out.print(array[i][j]+" ");
+                i--;//往上走
+            }
+            else if (array[i][j]&lt;a) {
+                System.out.print(array[i][j]+" ");
+                j++;//往右走
+            }else {
+                System.out.print(array[i][j]+" ");
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public static void main(String[] args) {
+        int[][] array={.{1,2,3,4},{2,3,4,5},{3,4,5,6,},{4,5,6,7}.};
+        System.out.println(findInArray(array, 3));
+        //System.out.println(findInArray(array, 9));
+    }
+
+}
+</code></pre>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 2nd, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/algorithm/'>algorithm</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2017/08/02/question3/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2017/08/02/question4/">
+		
+			剑指offer_Question4</a>
+	</h2>
+	<div class="entry-content">
+		<pre><code>package test;
+
+/*
+ * 替换空格
+ * 实现一个函数，将字符串中的空格替换成%20
+ */
+public class Question4 {
+
+    public static String replaceBlank(String string){
+        /*
+         * 可以直接创建一个新的字符串/StringBuffer,然后对输入的字符串进行遍历，如果遇到字符，
+         * 则加在新字符串的末尾；如果遇到空格，就在新字符串的末尾加入%20,返回新的字符串即可。
+         */
+        StringBuffer stringBuffer=new StringBuffer();
+        for(int i=0;i&lt;string.length();i++){
+            if (string.charAt(i)==' ') {
+                stringBuffer.append("%20");
+            }else{
+                stringBuffer.append(string.charAt(i));
+            }
+        }
+        return stringBuffer.toString();
+    }
+
+    public static String replaceBlank2(String string){
+        /*
+         * 直接使用String.repalce(char old,char new)
+         * 返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。
+         * 该方法只能替换一个字符
+         * 
+         * replace(CharSequence target, CharSequence replacement) 
+         *使用指定的字面值替换序列替换此字符串所有匹配字面值目标序列的子字符串。
+         *该方法可以替换字符串
+         * 
+         *replaceAll(String regex, String replacement) 
+         *使用给定的 replacement 替换此字符串所有匹配给定的正则表达式的子字符串。。
+         */
+        return string.replace(" ","%20");
+    }
+
+    public static String replaceBlank3(String string){
+        /*
+         * 使用类似于剑指offer中的方法，对原来字符串中的字符一个一个进行复制
+         * 先统计原本字符串中的空格个数x，则新的字符串的长度比原来字符串长2x
+         * 定义两个指针p1,p2,其中p1初始指向原来字符串的末尾位置，p2指向新字符串的末尾位置
+         * 当p1遇到的字符不是空格时，将该字符复制到新字符串，同时p1,p2向前移动一个位置
+         * 当p1遇到的字符为空格时，p1往前移动一个位置，p2往前移动三个位置，同时在这三个位置上添加%20
+         * 当p1,p2的索引相同时，说明前面没有空格了
+         * 
+         * 简易新建一个字符数组为新的字符串，以空间换时间
+         * 
+         */
+          int blankCount=0;
+          for(int i=0;i&lt;string.length();i++){
+           if (string.charAt(i)==' ') {
+            blankCount++;
+           }
+          }
+          char[] newString=new char[string.length()+blankCount*2];
+          int p1=string.length()-1,p2=newString.length-1;
+          while(p1&gt;=0&amp;&amp;p2&gt;=0){
+           if (string.charAt(p1)!=' ') {
+            //当前字符非空，则复制且两个指针都往前移一个
+            newString[p2]=string.charAt(p1);
+            p1--;
+            p2--;
+           }else if (string.charAt(p1)==' ') {
+            p1--;
+            newString[p2]='0';
+            p2--;
+            newString[p2]='2';
+            p2--;
+            newString[p2]='%';
+            p2--;
+           }
+          }
+        return String.valueOf(newString);
+    }
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        System.out.println(replaceBlank2("ni hao wo "));
+    }
+
+}
+</code></pre>
+
+		
+		
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 2nd, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/algorithm/'>algorithm</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2017/08/02/question4/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -483,109 +683,6 @@ Mar 22nd, 2017</div>
 </div>
 	
 	<div class="comments"><a href="/blog/2017/03/22/generic/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2017/03/22/thread/">
-		
-			线程与并发</a>
-	</h2>
-	<div class="entry-content">
-		<pre><code>public class Thread  extends Object  implements Runnable
-
-线程 是程序中的执行线程。Java 虚拟机允许应用程序并发地运行多个执行线程。
-
-每个线程都有一个优先级，高优先级线程的执行优先于低优先级线程。每个线程都可以或不可以标记为一个守护程序。当某个线程中运行的代码创建一个新 Thread 对象时，该新线程的初始优先级被设定为创建线程的优先级，并且当且仅当创建线程是守护线程时，新线程才是守护程序。
-
-当 Java 虚拟机启动时，通常都会有单个非守护线程（它通常会调用某个指定类的 main 方法）。Java 虚拟机会继续执行线程，直到下列任一情况出现时为止：
-    - 调用了 Runtime 类的 exit 方法，并且安全管理器允许退出操作发生。
-    - 非守护线程的所有线程都已停止运行，无论是通过从对 run 方法的调用中返回，还是通过抛出一个传播到 run 方法之外的异常。
-
-创建新执行线程有两种方法。一种方法是将类声明为 Thread 的子类。该子类应重写 Thread 类的 run 方法。这种方法不再推荐。
-创建线程的另一种方法是声明实现 Runnable 接口的类。该类然后实现 run 方法。然后可以分配该类的实例，在创建 Thread 时作为一个参数来传递并启动
-</code></pre>
-
-<ul>
-<li>在一个单独线程中执行一个任务的步骤如下：
-
-<ul>
-<li>将任务代码移到实现了Runnable接口类的run()方法中。</li>
-<li>由Runnable对象创建一个Thread对象。Thread thread=new Thread(new Runnable());</li>
-<li>启动线程。thread.start().<br/><br/></li>
-</ul>
-</li>
-</ul>
-
-
-
-		
-		<a href="/blog/2017/03/22/thread/" class="more-link">Read on &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-Mar 22nd, 2017</div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/javase/'>javase</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2017/03/22/thread/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2017/03/21/spring_mybatis/">
-		
-			Spring整合MyBatis框架</a>
-	</h2>
-	<div class="entry-content">
-		<ul>
-<li><p>使用MyBatis，面对的是纯粹的Java对象，类似于Hbernate。但是对于具体的数据库操作，Hibernate会自动生成SQL语句，MyBatis 则要求自己自己编写SQL语句。</p></li>
-<li><p>每一个MyBatis应用都是以一个SQLSessionFactory对象的实例为核心MyBatis可以拥有多个SQL映射文件，并通过一个配置文件对这些SQL映射文件进行装配，同时在该文件中定义一些控制属性信息。
-如下：</p></li>
-</ul>
-
-
-
-		
-		<a href="/blog/2017/03/21/spring_mybatis/" class="more-link">Read on &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-Mar 21st, 2017</div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/spring/'>spring</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2017/03/21/spring_mybatis/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
