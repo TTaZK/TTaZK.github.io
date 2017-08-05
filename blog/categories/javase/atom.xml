@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javase | ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/javase/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-08-02T22:53:27+08:00</updated>
+  <updated>2017-08-05T18:49:37+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,6 +12,188 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[字符串讲解]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/05/string/"/>
+    <updated>2017-08-05T17:21:04+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/08/05/string</id>
+    <content type="html"><![CDATA[<ul>
+<li>String类没有提供用于修改字符串的方法。<strong><em>String类对象为不可变字符串</em></strong>，如字符串string=&ldquo;HELLO"永远只包含HELLO这几个字母，而不能修改其中任何一个字符。当然可以修改字符串变量string的引用，让它引用另一个字符串。</li>
+<li><p>不可变字符串有一个优点：<strong><em>编译器可以让字符串实现共享</em></strong>。实际上只有字符串常量（使用“ ”声明，存储在字符串常量池中）是共享的，subStrng,+等操作产生的结果不能共享。（</p>
+
+<ul>
+<li>具体见JVM笔记</li>
+<li>（1）只有使用引号包含文本的方式创建的String对象之间使用“+”连接产生的新对象才会被加入字符串池中。</li>
+<li>（2）对于所有包含new方式新建对象（包括null）的“+”连接表达式，它所产生的新对象都不会被加入字符串池中。）</li>
+</ul>
+</li>
+<li><p>比较字符串值是否相等时使用equals()方法，不能使用==，==比较的是字符串的地址是否相同。如果字符串在常量池中，可以使用==比较，因为指向的都是同一个字符串。</p></li>
+<li><p><strong><em>直接使用 &ldquo; &rdquo; 声明的String对象会直接存储在常量池中</em></strong>，（可以实现共享）</p>
+
+<ul>
+<li>1.String str1=&ldquo;first&rdquo;;
+ jvm在运行时先查找常量池中是否有该字符串，如果有则直接返回该字符串的引用给first(实现了字符串     的共享) ；否则先在常量池中创建该字符串并返回引用。
+ <strong><em>此时只会在常量池中创建String对象，不会在堆中创建。</em></strong></li>
+<li>2.String str2=new String(&ldquo;second&rdquo;);
+ 该代码生成了两个String对象。因为使用了<strong><em>“”会先在常量池中查找是否存在second对象</em></strong>，没有则创建
+ 否则不创建；在常量池创建完成后，由于<strong><em>使用了new，jvm会在堆中创建内容相同的String对象</em></strong>，并将引用返回给str2.</li>
+<li>3.String str3=&ldquo;what&rdquo;; String str4=str3+&ldquo;a nice day&rdquo;;
+ 运行时，+ 相当于new，所以堆中会有“what a nice day”对象；常量池中会有"what" &ldquo;a nice day"两个对象，而不会有"what a nice day”对象。</li>
+</ul>
+</li>
+</ul>
+
+
+<!-- more -->
+
+
+<pre><code>        package String;
+        public class String_1 {
+            public static void main(String[] args) {
+                 //string1,string2都指向常量池中的同一个字符串first
+                 //所以引用相同，值也相同
+                 String string1="first";
+                 String string2="first";
+                 System.out.println(string1==string2);
+                System.out.println(string1.equals(string2));
+
+                 //string3指向常量池中的字符串second
+                 //string4指向堆中的字符串second
+                 //所以值相同，引用不同
+                 String string3="second";
+                 String string4=new String("second");
+                 System.out.println(string3==string4);
+                System.out.println(string3.equals(string4));
+
+                 //string5指向常量池中的字符串third
+                 //string6一开始指向堆中的字符串third,但是调用intern()方法之后，且该方法调用时先检查常量池中是否有值为string6
+                 //的字符串，如果有则返回该字符串的引用，否则在常量池中创建该字符串，并返回引用
+                 //所以一开始引用不相等，后来相等
+                 String string5="third";
+                 String string6=new String("third");
+                 System.out.println(string5==string6);
+                 string6=string6.intern();
+                 System.out.println(string5==string6);
+            }
+        }
+</code></pre>
+
+<ul>
+<li>关于常量池分为运行时常量池与静态常量池，具体详解查看JVM笔记
+
+<ul>
+<li>所谓<strong><em>静态常量池</em></strong>，即*.class文件中的常量池，class文件中的常量池不仅仅包含字符串（数字）字面量，还包括类、方法的信息，占用class文件绝大部分空间。</li>
+<li><p>而<strong><em>运行时常量池</em></strong>，则是JVM虚拟机在完成类装载操作后，将class文件中的常量池载入带内存中，并保存在方法区中，我们常说的常量池就是指方法区中的运行时常量池。<strong><em>运行时常量池中的常量，基本来源于各个class文件中的常量池。程序运行时，除非手动向常量池中添加常量（比如调用intern方法），否则JVM不会自动添加常量到常量池。</em></strong></p>
+
+<pre><code>        String string1="te";
+        String string2="st";
+        String string3="test";
+        String string4=string1+string2;
+        String string5="te"+"st";
+        String string6=new StringBuilder("test").toString();
+        String string7=new String("test").intern(); 
+        System.out.println(string3==string4);//false
+        System.out.println(string3==string5);//true
+        System.out.println(string4==string5);//false
+        System.out.println(string3==string6);//false
+    　　System.out.println(string3==string7);//true
+</code></pre></li>
+</ul>
+</li>
+</ul>
+
+
+<p>以上所讲仅涉及字符串常量池，实际上还有整型常量池、浮点型常量池等等，但都大同小异，<strong><em>只不过数值类型的常量池不可以手动添加常量，程序启动时常量池中的常量就已经确定了，比如整型常量池中的常量范围：-128~127，只有合格范围的数字可以用到常量池。</em></strong></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[枚举类型]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/05/enum/"/>
+    <updated>2017-08-05T16:59:07+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/08/05/enum</id>
+    <content type="html"><![CDATA[<ul>
+<li>所有的枚举类型都是Enum类的子类，枚举类型包括有限个命名的值。枚举类型的变量只能存储该类型中指定的枚举常量，或者null值。</li>
+<li>枚举类型在定义时，可以添加指定的域，方法或者构造函数；当然构造函数为private，只是在声明枚举常量时调用，用于传递值。</li>
+<li><p>枚举类型可以简单定义为：</p>
+
+<pre><code>  enum Size{
+           //枚举常量列表必须写在前面，否则编译出错
+           Small,Mid,Larger,SuperLager;  
+      }
+</code></pre></li>
+<li><p>也可以给枚举类型增加构造方法，然后每个枚举类型的值通过构造函数传入对应的参数</p>
+
+<pre><code>  enum Size_1{ 
+           //定义枚举常量，并利用构造函数传递值,
+          Small("1"),Mid("2"),Larger("3"),SuperLarger("4");
+           //定义私有变量
+           private String size;
+           //定义构造函数，类型为private，用于给枚举常量传递值
+           private Size_1(String size){
+               this.size=size;
+           }
+           //重写toString()方法，用于返回枚举常量的值
+           @Override
+           public String toString() {
+               // TODO Auto-generated method stub
+               return this.size;
+           }
+
+      }
+</code></pre></li>
+<li>完整代码及具体使用如下：</li>
+</ul>
+
+
+<!-- more -->
+
+
+<pre><code>    package Enum;
+    public class Enum_Test {
+        enum Size{
+             //枚举常量列表必须写在前面，否则编译出错
+             Small,Mid,Larger,SuperLager;  
+        }
+        enum Size_1{
+             //定义枚举常量，并利用构造函数传递值,
+            Small("1"),Mid("2"),Larger("3"),SuperLarger("4");
+             //定义私有变量
+             private String size;
+             //定义构造函数，类型为private，用于给枚举常量传递值
+             private Size_1(String size){
+                 this.size=size;
+             }
+             //重写toString()方法，用于返回枚举常量的值
+             @Override
+             public String toString() {
+                 // TODO Auto-generated method stub
+                 return this.size;
+             }
+
+        }
+        public static void main(String[] args) {
+             // TODO Auto-generated method stub
+             Size size=Size.Larger;
+             String string=size.toString();//默认toString()方法用于返回枚举常量名
+             System.out.println(string);
+             //toString()的逆方法是valueOf(),即根据给定的常量名，返回对应的枚举变量
+             Size size2=Enum.valueOf(Size.class, "Larger");
+             System.out.println(size==size2);//比较两个枚举类型的值时，直接使用==，不需要使用equals();
+
+             Size_1 size_1=Size_1.Larger;
+             String string2=size_1.toString();//返回枚举常量的值
+             System.out.println(string2);
+             Size_1[] size_2=Size_1.values();//values()返回包含全部枚举常量的数组
+             System.out.println(size_2[1]);
+
+            System.out.println(size_1.ordinal());//ordinal()方法返回枚举常量的位置
+        }
+    }
+</code></pre>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[java代理]]></title>
@@ -367,445 +549,6 @@
 <li>在启用某个对象的 finalize 方法后，将不会执行进一步操作，直到 Java 虚拟机再次确定尚未终止的任何线程无法再通过任何方法访问此对象，其中包括由准备终止的其他对象或类执行的可能操作，在执行该操作时，对象可能被丢弃。</li>
 <li>对于任何给定对象，Java 虚拟机最多只调用一次 finalize 方法。</li>
 <li>finalize 方法抛出的任何异常都会导致此对象的终结操作停止，但可以通过其他方法忽略它。</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[线程池详解]]></title>
-    <link href="http://ttazk.github.io/blog/2017/04/11/threadpool/"/>
-    <updated>2017-04-11T21:00:36+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/04/11/threadpool</id>
-    <content type="html"><![CDATA[<ul>
-<li>线程池是管理一组同构线程的资源池。线程池与工作队列密切相关，其中在工作队列中保存了所有等待执行的任务。<strong>工作者线程的任务是：从工作队列中取出一个任务，执行任务，然后返回线程等待下一个任务。线程池通过重用线程，而不是新建线程，减小线程创建与销毁的开销</strong>。</li>
-<li>Excutor是顶级线程池接口</li>
-<li>ExecutorService是真正的线程池接口。</li>
-<li>Executors类提供了一些静态工厂用于生成一些常用的线程池，当将一个任务添加到线程池时，线程池会为每个任务创建一个线程，该线程会在某个时刻执行。</li>
-</ul>
-
-
-<!--  more -->
-
-
-<p> <strong>public class Executors extends Object</strong></p>
-
-<pre><code>public static ExecutorService newCachedThreadPool()
-空闲线程会被保留60秒。对于每个任务，如果有空闲线程可用，立即让它执行任务；如果没有空闲的线程，则创建一个新的线程。
-
-public static ExecutorService newFixedThreadPool(int nThreads)
-构建一个具有固定大小的线程池。如果提交的任务大于空闲的线程数，则把任务放置到队列中。
-
-public static ExecutorService newSingleThreadExecutor()
- 线程数目为1的线程池，由一个线程执行提交的任务，一个接一个。
-</code></pre>
-
-<ul>
-<li>为了解决执行服务的生命周期问题，ExecutorService扩展了Executor接口，添加了一些用于生命周期管理的方法。</li>
-<li><strong>ExecutorService的生命周期有三种：运行，关闭，已终止。ExecutorService在初始创建时处于运行状态。shutdowm方法将执行平缓的关闭过程：不再接受新的任务，同时等待已经提交的任务的完成&mdash;包括那写还没有开始执行的任务。shutdownNow方法将执行粗暴的关闭过程：它将取消所有运行中的任务，并且不再启动队列中尚未开始的任务。在ExecutorService关闭后提交的任务将由“拒绝处理执行器 ”来处理，它会抛弃任务，或者使得execute()方法抛出一个未检查异常。等到所有的任务完成后，ExecutorService进入终止状态。</strong></li>
-</ul>
-
-
-<p><strong>public interface ExecutorService extends Executor</strong></p>
-
-<p>Executor 提供了管理终止的方法，以及可为跟踪一个或多个异步任务执行状况而生成 Future 的方法。
-可以关闭 ExecutorService，这将导致其拒绝新任务。提供两个方法来关闭 ExecutorService。shutdown() 方法在终止前允许执行以前提交的任务，而 shutdownNow() 方法阻止等待任务启动并试图停止当前正在执行的任务。在终止时，执行程序没有任务在执行，也没有任务在等待执行，并且无法提交新任务。应该关闭未使用的 ExecutorService 以允许回收其资源。</p>
-
-<p>通过创建并返回一个可用于取消执行和/或等待完成的 Future，方法 submit 扩展了基本方法 Executor.execute(java.lang.Runnable)。方法 invokeAny 和 invokeAll 是批量执行的最常用形式，它们执行任务 collection，然后等待至少一个，或全部任务完成（可使用 ExecutorCompletionService 类来编写这些方法的自定义变体）。</p>
-
-<pre><code>    &lt;T&gt; Future&lt;T&gt; submit(Callable&lt;T&gt; task)
-    提交一个返回值的任务用于执行，返回一个表示任务的未决结果的 Future。该 Future 的 get 方法在成功完成时将会返回该任务的结果。
-
-    &lt;T&gt; Future&lt;T&gt; submit(Runnable task,
-                         T result)
-    提交一个 Runnable 任务用于执行，并返回一个表示该任务的 Future。该 Future 的 get 方法在成功完成时将会返回给定的结果。
-
-    Future&lt;?&gt; submit(Runnable task)
-    提交一个 Runnable 任务用于执行，并返回一个表示该任务的 Future。该 Future 的 get 方法在成功 完成时将会返回 null。
-
-    &lt;T&gt; List&lt;Future&lt;T&gt;&gt; invokeAll(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks)
-                              throws InterruptedException
-    执行给定的任务，当所有任务完成时，返回保持任务状态和结果的 Future 列表。返回列表的所有元素的 Future.isDone() 为 true。注意，可以正常地或通过抛出异常来终止已完成 任务。如果正在进行此操作时修改了给定的 collection，则此方法的结果是不确定的。
-
-    &lt;T&gt; T invokeAny(Collection&lt;? extends Callable&lt;T&gt;&gt; tasks)
-               throws InterruptedException,
-                       ExecutionException
-    执行给定的任务，如果某个任务已成功完成（也就是未抛出异常），则返回其结果。一旦正常或异常返回后，则取消尚未完成的任务。如果此操作正在进行时修改了给定的 collection，则此方法的结果是不确定的。
-
-    void shutdown()
-    启动一次顺序关闭，执行以前提交的任务，但不接受新任务。如果已经关闭，则调用没有其他作用。
-
-    List&lt;Runnable&gt;  shutdownNow()
-    试图停止所有正在执行的活动任务，暂停处理正在等待的任务，并返回等待执行的任务列表。 无法保证能够停止正在处理的活动执行任务，但是会尽力尝试。例如，通过 Thread.interrupt() 来取消典型的实现，所以任何任务无法响应中断都可能永远无法终止。
-
-    boolean isShutdown()
-    如果此执行程序已关闭，则返回 true。
-
-    boolean isTerminated()
-    如果关闭后所有任务都已完成，则返回 true。注意，除非首先调用 shutdown 或 shutdownNow，否则 isTerminated 永不为 true。
-</code></pre>
-
-<ul>
-<li><p>Runnable封装了一个异步运行的任务，可以把它想象为一个没有参数和返回值的方法。Callable与Runnable类似，但是有返回值。</p>
-
-<pre><code>    public interface Callable&lt;V&gt;{
-         v call() throws Exception;  
-    }
-</code></pre></li>
-</ul>
-
-
-<p><strong>public interface Future<V></strong></p>
-
-<p>Future 表示异步计算的结果。它提供了检查计算是否完成的方法，以等待计算的完成，并获取计算的结果。计算完成后只能使用 get 方法来获取结果，如有必要，计算完成前可以阻塞此方法。取消则由 cancel 方法来执行。还提供了其他方法，以确定任务是正常完成还是被取消了。一旦计算完成，就不能再取消计算。如果为了可取消性而使用 Future 但又不提供可用的结果，则可以声明 Future&lt;?> 形式类型、并返回 null 作为底层任务的结果。</p>
-
-<p>用法示例（注意，下列各类都是构造好的。）</p>
-
-<pre><code>    interface ArchiveSearcher { String search(String target); }
-    class App {
-      ExecutorService executor = ...
-      ArchiveSearcher searcher = ...
-      void showSearch(final String target)
-          throws InterruptedException {
-        Future&lt;String&gt; future
-          = executor.submit(new Callable&lt;String&gt;() {
-            public String call() {
-                return searcher.search(target);
-            }});
-        displayOtherThings(); // do other things while searching
-        try {
-          displayText(future.get()); // use future
-        } catch (ExecutionException ex) { cleanup(); return; }
-      }
-    }
-</code></pre>
-
-<ul>
-<li><p>FutureTask 类是 Future 的一个实现，Future 可实现 Runnable，所以可通过 Executor 来执行。例如，可用下列内容替换上面带有 submit 的构造：</p>
-
-<pre><code>  FutureTask&lt;String&gt; future =
-    new FutureTask&lt;String&gt;(new Callable&lt;String&gt;() {
-      public String call() {
-        return searcher.search(target);
-    }});
-  executor.execute(future);
-</code></pre>
-
-<p>Future的方法：</p>
-
-<pre><code>  boolean cancel(boolean mayInterruptIfRunning)
-  试图取消对此任务的执行。如果任务已完成、或已取消，或者由于某些其他原因而无法取消，则此尝试将失败。当调用 cancel 时，如果调用成功，而此任务尚未启动，则此任务将永不运行。如果任务已经启动，则 mayInterruptIfRunning 参数确定是否应该以试图停止任务的方式来中断执行此任务的线程。
-  此方法返回后，对 isDone() 的后续调用将始终返回 true。如果此方法返回 true，则对 isCancelled() 的后续调用将始终返回 true。
-
-  boolean isCancelled()
-  如果在任务正常完成前将其取消，则返回 true。
-
-  boolean isDone()
-  如果任务已完成，则返回 true。 可能由于正常终止、异常或取消而完成，在所有这些情况中，此方法都将返回 true。
-
-  V get()    throws InterruptedException,
-              ExecutionException
-  如有必要，等待计算完成，然后获取其结果。
-  get方法调用被阻塞，直到计算完成。
-
-  V get(long timeout,
-        TimeUnit unit)
-        throws InterruptedException,
-              ExecutionException,
-              TimeoutException
-  如有必要，最多等待为使计算完成所给定的时间之后，获取其结果（如果结果可用）。
-  get方法调用被阻塞，直到计算完成，如果在计算完成之前超时，将抛出TimeoutExecption异常。
-</code></pre></li>
-</ul>
-
-
-<p><strong>public class FutureTask<V> extends Object implements</strong> <strong>RunnableFuture<V> ,Runnable,Future<V></strong></p>
-
-<ul>
-<li>可取消的异步计算。利用开始和取消计算的方法、查询计算是否完成的方法和获取计算结果的方法，此类提供了对 Future 的基本实现。仅在计算完成时才能获取结果；如果计算尚未完成，则阻塞 get 方法。一旦计算完成，就不能再重新开始或取消计算。</li>
-<li><p>可使用 FutureTask 包装 Callable 或 Runnable 对象。因为 FutureTask 实现了 Runnable，所以可将 FutureTask 提交给 Executor 执行。</p>
-
-<pre><code>  public FutureTask(Callable&lt;V&gt; callable)
-  创建一个 FutureTask，一旦运行就执行给定的 Callable。
-
-  public FutureTask(Runnable runnable,
-                    V result)
-  创建一个 FutureTask，一旦运行就执行给定的 Runnable，并安排成功完成时 get 返回给定的结果 。
-</code></pre></li>
-<li><p>使用连接池应该做的事：</p>
-
-<ul>
-<li>调用Executors类中的静态方法newCachedThreadPool或newFixedThreadPool。</li>
-<li>调用submit()提交Runnable/Callable对象，会得到一个Future对象，可以用来查询该任务的状态。</li>
-<li><p>当不想提交任务时，调用shutDowm。</p>
-
-<pre><code>  class ThreadTest implements Runnable {
-      public synchronized void run() {
-           for (int i = 0; i &lt; 5; i++) {
-               System.out.print(i+" ");
-           }
-           System.out.println();
-      }
-  }
-
-  public class ThreadPoolTest {
-
-      public static void main(String[] args) {
-           // TODO Auto-generated method stub
-           ExecutorService executorService=Executors.newCachedThreadPool();
-           ThreadTest thread=new ThreadTest();
-           for(int i=0;i&lt;10;i++){
-               executorService.execute(thread);
-           }
-           executorService.shutdown();
-      }
-  }
-</code></pre></li>
-</ul>
-</li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[泛型程序设计]]></title>
-    <link href="http://ttazk.github.io/blog/2017/03/22/generic/"/>
-    <updated>2017-03-22T14:06:10+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/03/22/generic</id>
-    <content type="html"><![CDATA[<ul>
-<li>泛型程序设计意味着编写的代码可以被很多不同类型的对象所重用。</li>
-<li><p>在增加泛型之前，泛型程序是利用继承实现的。</p>
-
-<pre><code>  public class ArrayList{
-  private Object[] data;
-   ...
-  public Object get(int i){}
-  public void add(Object o){}
-  }
-</code></pre></li>
-<li>这种方法有两个问题：</li>
-<li>1.当获取一个值时必须进行强制类型转换。</li>
-<li><p>2.没有错误检查，可以向数组列表中添加任何类的对象。</br></br></p></li>
-<li><p>泛型提供了一个更好的解决方法：类型参数，用来指示存储元素的类型。如：ArrayList<String> arl=new ArrayList&lt;>();   (jdk1.7之后，构造函数中可以省略泛型类型)。</p>
-
-<ul>
-<li>对此编译器可以进行检查，避免插入错误的类型，同时在获取对象时不需要进行强制类型转换。</li>
-<li><p>一个泛型类(generic class)就是具有一个或多个类型变量的类。
-      public class Pair<T> {
-      private T first;
-      private T second;</p>
-
-<pre><code>  public Pair(){
-       this.first=null;
-       this.second=null;
-  }
-  public Pair(T first,T second){
-       this.first=first;
-       this.second=second;
-  }
-
-  public T getFirst(){
-       return first;
-  }
-  public T getSecond(){
-       return second;
-  }
-  public void setFirst(T first){
-       this.first=first;
-  }
-  public void setSecond(T second){
-       this.second=second;
-      }
-  }
-</code></pre></li>
-<li>如上所示，Pair类引入了一个类型变量T,用&lt;>括起来，并放在类名之后。泛型类可以有多个类型变量。例如可以定义Pair类，两个域分别使用不同的类型变量：public class Pair&lt;T,V>{&hellip;}.</li>
-<li>类中定义的泛型变量指定方法的返回类型，以及域和局部变量的类型。（一般来说，K,V分别表示关键字与值的类型，T表示任意类型）。</li>
-<li>用具体的类型替换类型变量就可以实例化泛型类型，如Pair<String>。换句话来说，泛型类可以看做普通类的工厂。
-</br></br></li>
-</ul>
-</li>
-</ul>
-
-
-<!--more-->
-
-
-<h3>* 泛型方法</h3>
-
-<ul>
-<li><p>可以在一个普通类中定义一个带有类型参数的简单方法。</p>
-
-<pre><code>public class Generic {
-public static &lt;T&gt; void print(T t){
-System.out.println(t);
-    }
-}
-</code></pre></li>
-<li><p>注意：类型变量放在修饰符的后面，返回类型的前面。</p></li>
-<li>泛型方法可以定义在普通类中，也可以定义在泛型类中。</li>
-<li><p>当调用一个泛型方法时，可以在方法名前的&lt;>中放入具体的类型，也可以省略&lt;>类型参数。</p>
-
-<pre><code>Generic.print("no");
-Generic.&lt;String&gt;print("nothing");
-</code></pre></li>
-</ul>
-
-
-<h3>* 类型变量的限定</h3>
-
-<ul>
-<li><p>有时，需要对类或泛型方法中的类型变量加以限定。</p>
-
-<pre><code>      public static &lt;T extends Comparable&gt; void sys(T t){
-       System.out.println(t);
-      }
-</code></pre></li>
-<li>可以对泛型变量T进行限定，将其限定为实现了Comparable接口的类。</li>
-<li><T extends BoundingType> 表示：T应该是绑定类型的子类型。T和绑定类型可以是类，也可以是接口。</li>
-<li>一个类型变量或通配符可以有多个限定，如：T extends Comaprable &amp; Serializable</li>
-<li>在Java的继承中，可以根据需要有多个接口的父类型，但是限定中至多只能有一个类，且必须是限定列表中的第一个。</li>
-</ul>
-
-
-<h3>* 类型擦除</h3>
-
-<ul>
-<li>在虚拟机中，没有泛型类型对象&mdash;-所有的对象都属于普通类。</li>
-<li>无论何时定义一个泛型类型，都会自动提供一个相应的原始类型(raw type)。原始类型的名字就是删去类型参数后的泛型类型名。擦除类型变量，并替换为限定类型（没有限定类型就用Object）。</li>
-<li><p>例如，Pair<T>的原始类型为：
-      public class Pair{
-      private Object first;
-      private Object second;</p>
-
-<pre><code>  public Pair(){
-       this.first=null;
-       this.second=null;
-  }
-  public Pair(Object first,Object second){
-       this.first=first;
-       this.second=second;
-  }
-
-  public Object getFirst(){
-       return first;
-  }
-  public Object getSecond(){
-       return second;
-  }
-  public void setFirst(Object first){
-       this.first=first;
-  }
-  public void setSecond(Object second){
-       this.second=second;
-  }
-  }
-</code></pre></li>
-<li><p>在程序中可以包含不同类型的Pair，如Pair<String>,Pair<LocalDate>，但是类型擦除后就变成了原始的Pair类型了。</p></li>
-<li>原始类型用第一个限定类型来替换参数变量，如果没有给定限定类型，就用Object替换。</li>
-<li>为了提高效率，应该将标签接口(没有方法的接口)放在列表的末尾。</li>
-</ul>
-
-
-<h3>* 翻译泛型表达式</h3>
-
-<ul>
-<li><p>当程序调用泛型方法时，如果擦除返回类型，编译器则插入强制类型转换。</p>
-
-<pre><code>  Pair&lt;Employee&gt; p=new Pair&lt;&gt;();
-  Employee e=p.getFirst();//先对原始方法调用Pair.getFirst();再将返回的Object类型强制转换成Employee类型。
-</code></pre></li>
-<li>关于java泛型转换的事实：
-
-<ul>
-<li>虚拟机中没有泛型，只有普通的类与方法。</li>
-<li>所有的参数类型都用它们的限定类型进行替换。</li>
-<li>为了保持类型安全，必要时插入强制类型转换。</li>
-<li>桥方法被合成来保持多态。</li>
-</ul>
-</li>
-</ul>
-
-
-<h3>* 约束与局限性(大多数限制都是由类型擦除引起的)</h3>
-
-<h5>* 不能用基本类型实例化类型参数</h5>
-
-<ul>
-<li>因此没有Pair<double>，只有Pair<Double>。原因是类型擦除，擦除之后，Pair类含有Object域，而Object域不能存储基本类型。
-
-<h5>* 运行时类型查询只适用于原始类型</h5></li>
-<li><p>虚拟机中的对象总有一个特定的非泛型类型，因此，所有的类型查询只产生原始类型。</p>
-
-<pre><code>  Pair&lt;String&gt; pair=new Pair&lt;String&gt;();
-  if (pair instanceof Pair&lt;String&gt;) {    //error
-     System.out.println(true);
-  } 
-  if (pair instanceof Pair) {         //true
-  System.out.println(true);
-  }
-</code></pre></li>
-<li><p>同样，getClass()方法返回的是原始类型。</p>
-
-<pre><code>  Pair&lt;String&gt; pair=new Pair&lt;String&gt;();
-  Pair&lt;Double&gt; pair2=new Pair&lt;Double&gt;();
-  if (pair.getClass()==pair2.getClass()) {
-  System.out.println(true);
-  }         //输出为true
-</code></pre></li>
-</ul>
-
-
-<h5>* 不能创建泛型数组</h5>
-
-<pre><code>Pair&lt;String&gt;[] pairs=new Pair&lt;String&gt;[10];  //error
-</code></pre>
-
-<ul>
-<li>只是不能创建这些数组，但是声明类型Pair<String>[] 的变量仍是合法的，只能不过不能初始化。</li>
-<li>原因也是类型擦除。</li>
-</ul>
-
-
-<h5>* 不能实例化类型变量</h5>
-
-<ul>
-<li>即不能使用new T(&hellip;),new T[&hellip;],或T.class这样的表达式中的类型变量。
-
-<h5>* 不能创建类型变量数组</h5>
-
-  private T[] ts=new T[2];   //error
-
-<h5>* 不能在静态域或静态方法中引用类型变量</h5>
-
-  private static T t;   //error
-  public static T print(){}   //error
-</br>
-
-<h3>* 泛型类型的继承规则</h3></li>
-<li>考虑一个类与一个子类，如Object,String，那么Pair<String>是Pair<Object>的子类吗？不是</li>
-<li>无论T和V有什么关系，通常Pair<V>,Pair<T>是没有任何关系的。
-Pair<Object>[] pair3=new Pair<String>[10];  //error</li>
-<li>注意泛型与Java数组之间的区别：可以将子类数组的变量赋给父类数组变量。
-Object[] objects=new String[10];</li>
-<li>永远可以将参数化类型转换为一个原始类型。
-Pair pair3=new Pair<String>();</li>
-<li>泛型类可以扩展或者实现其他泛型类，这点而言与普通类没有区别</li>
-<li>ArrayList<T>类实现了List<T>接口。</li>
-<li>意味着ArrayList<String>可以转换为List<String></li>
-</ul>
-
-
-<h3>* 通配符类型</h3>
-
-<ul>
-<li>通配符类型中，允许类型参数变化。如  Pair&lt;? extends Comparable></li>
-<li><p>类型Pair<String>是Pair&lt;? extends Object>的子类型。                                                                                        &lt;&mdash;Pair<Object>
-Pair(原始类型)&lt;&mdash;Pair&lt;? extends Object><---
-                  <---Pair<String></p></li>
-<li><p>通配符的超类型限定</p></li>
-<li>可以指定一个父类型：  ? super Manager</li>
-<li>带有超类型限定的通配符可以向泛型对象写入，带有子类型限定的通配符可以从泛型对象读取。(P332)</li>
 </ul>
 
 ]]></content>

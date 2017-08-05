@@ -1,0 +1,240 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>字符串讲解 - ZK</title>
+	<meta name="author" content="Z K">
+
+	
+	<meta name="description" content="String类没有提供用于修改字符串的方法。String类对象为不可变字符串，如字符串string=&ldquo;HELLO"永远只包含HELLO这几个字母，而不能修改其中任何一个字符。当然可以修改字符串变量string的引用，让它引用另一个字符串。
+不可变字符串有一个优点： &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="" rel="alternate" title="ZK" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">ZK</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com/" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:ttazk.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com/" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:ttazk.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">字符串讲解</h2>
+	<div class="entry-content"><ul>
+<li>String类没有提供用于修改字符串的方法。<strong><em>String类对象为不可变字符串</em></strong>，如字符串string=&ldquo;HELLO"永远只包含HELLO这几个字母，而不能修改其中任何一个字符。当然可以修改字符串变量string的引用，让它引用另一个字符串。</li>
+<li><p>不可变字符串有一个优点：<strong><em>编译器可以让字符串实现共享</em></strong>。实际上只有字符串常量（使用“ ”声明，存储在字符串常量池中）是共享的，subStrng,+等操作产生的结果不能共享。（</p>
+
+<ul>
+<li>具体见JVM笔记</li>
+<li>（1）只有使用引号包含文本的方式创建的String对象之间使用“+”连接产生的新对象才会被加入字符串池中。</li>
+<li>（2）对于所有包含new方式新建对象（包括null）的“+”连接表达式，它所产生的新对象都不会被加入字符串池中。）</li>
+</ul>
+</li>
+<li><p>比较字符串值是否相等时使用equals()方法，不能使用==，==比较的是字符串的地址是否相同。如果字符串在常量池中，可以使用==比较，因为指向的都是同一个字符串。</p></li>
+<li><p><strong><em>直接使用 &ldquo; &rdquo; 声明的String对象会直接存储在常量池中</em></strong>，（可以实现共享）</p>
+
+<ul>
+<li>1.String str1=&ldquo;first&rdquo;;
+ jvm在运行时先查找常量池中是否有该字符串，如果有则直接返回该字符串的引用给first(实现了字符串     的共享) ；否则先在常量池中创建该字符串并返回引用。
+ <strong><em>此时只会在常量池中创建String对象，不会在堆中创建。</em></strong></li>
+<li>2.String str2=new String(&ldquo;second&rdquo;);
+ 该代码生成了两个String对象。因为使用了<strong><em>“”会先在常量池中查找是否存在second对象</em></strong>，没有则创建
+ 否则不创建；在常量池创建完成后，由于<strong><em>使用了new，jvm会在堆中创建内容相同的String对象</em></strong>，并将引用返回给str2.</li>
+<li>3.String str3=&ldquo;what&rdquo;; String str4=str3+&ldquo;a nice day&rdquo;;
+ 运行时，+ 相当于new，所以堆中会有“what a nice day”对象；常量池中会有"what" &ldquo;a nice day"两个对象，而不会有"what a nice day”对象。</li>
+</ul>
+</li>
+</ul>
+
+
+<!-- more -->
+
+
+<pre><code>        package String;
+        public class String_1 {
+            public static void main(String[] args) {
+                 //string1,string2都指向常量池中的同一个字符串first
+                 //所以引用相同，值也相同
+                 String string1="first";
+                 String string2="first";
+                 System.out.println(string1==string2);
+                System.out.println(string1.equals(string2));
+
+                 //string3指向常量池中的字符串second
+                 //string4指向堆中的字符串second
+                 //所以值相同，引用不同
+                 String string3="second";
+                 String string4=new String("second");
+                 System.out.println(string3==string4);
+                System.out.println(string3.equals(string4));
+
+                 //string5指向常量池中的字符串third
+                 //string6一开始指向堆中的字符串third,但是调用intern()方法之后，且该方法调用时先检查常量池中是否有值为string6
+                 //的字符串，如果有则返回该字符串的引用，否则在常量池中创建该字符串，并返回引用
+                 //所以一开始引用不相等，后来相等
+                 String string5="third";
+                 String string6=new String("third");
+                 System.out.println(string5==string6);
+                 string6=string6.intern();
+                 System.out.println(string5==string6);
+            }
+        }
+</code></pre>
+
+<ul>
+<li>关于常量池分为运行时常量池与静态常量池，具体详解查看JVM笔记
+
+<ul>
+<li>所谓<strong><em>静态常量池</em></strong>，即*.class文件中的常量池，class文件中的常量池不仅仅包含字符串（数字）字面量，还包括类、方法的信息，占用class文件绝大部分空间。</li>
+<li><p>而<strong><em>运行时常量池</em></strong>，则是JVM虚拟机在完成类装载操作后，将class文件中的常量池载入带内存中，并保存在方法区中，我们常说的常量池就是指方法区中的运行时常量池。<strong><em>运行时常量池中的常量，基本来源于各个class文件中的常量池。程序运行时，除非手动向常量池中添加常量（比如调用intern方法），否则JVM不会自动添加常量到常量池。</em></strong></p>
+
+<pre><code>        String string1="te";
+        String string2="st";
+        String string3="test";
+        String string4=string1+string2;
+        String string5="te"+"st";
+        String string6=new StringBuilder("test").toString();
+        String string7=new String("test").intern(); 
+        System.out.println(string3==string4);//false
+        System.out.println(string3==string5);//true
+        System.out.println(string4==string5);//false
+        System.out.println(string3==string6);//false
+    　　System.out.println(string3==string7);//true
+</code></pre></li>
+</ul>
+</li>
+</ul>
+
+
+<p>以上所讲仅涉及字符串常量池，实际上还有整型常量池、浮点型常量池等等，但都大同小异，<strong><em>只不过数值类型的常量池不可以手动添加常量，程序启动时常量池中的常量就已经确定了，比如整型常量池中的常量范围：-128~127，只有合格范围的数字可以用到常量池。</em></strong></p>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 5th, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/javase/'>javase</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2017
+
+    Z K
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'zkatt';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ttazk.github.io/blog/2017/08/05/string/';
+        var disqus_url = 'http://ttazk.github.io/blog/2017/08/05/string/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

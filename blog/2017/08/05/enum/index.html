@@ -1,0 +1,233 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>枚举类型 - ZK</title>
+	<meta name="author" content="Z K">
+
+	
+	<meta name="description" content="所有的枚举类型都是Enum类的子类，枚举类型包括有限个命名的值。枚举类型的变量只能存储该类型中指定的枚举常量，或者null值。
+枚举类型在定义时，可以添加指定的域，方法或者构造函数；当然构造函数为private，只是在声明枚举常量时调用，用于传递值。
+枚举类型可以简单定义为： enum Size &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="" rel="alternate" title="ZK" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">ZK</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com/" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:ttazk.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com/" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:ttazk.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">枚举类型</h2>
+	<div class="entry-content"><ul>
+<li>所有的枚举类型都是Enum类的子类，枚举类型包括有限个命名的值。枚举类型的变量只能存储该类型中指定的枚举常量，或者null值。</li>
+<li>枚举类型在定义时，可以添加指定的域，方法或者构造函数；当然构造函数为private，只是在声明枚举常量时调用，用于传递值。</li>
+<li><p>枚举类型可以简单定义为：</p>
+
+<pre><code>  enum Size{
+           //枚举常量列表必须写在前面，否则编译出错
+           Small,Mid,Larger,SuperLager;  
+      }
+</code></pre></li>
+<li><p>也可以给枚举类型增加构造方法，然后每个枚举类型的值通过构造函数传入对应的参数</p>
+
+<pre><code>  enum Size_1{ 
+           //定义枚举常量，并利用构造函数传递值,
+          Small("1"),Mid("2"),Larger("3"),SuperLarger("4");
+           //定义私有变量
+           private String size;
+           //定义构造函数，类型为private，用于给枚举常量传递值
+           private Size_1(String size){
+               this.size=size;
+           }
+           //重写toString()方法，用于返回枚举常量的值
+           @Override
+           public String toString() {
+               // TODO Auto-generated method stub
+               return this.size;
+           }
+
+      }
+</code></pre></li>
+<li>完整代码及具体使用如下：</li>
+</ul>
+
+
+<!-- more -->
+
+
+<pre><code>    package Enum;
+    public class Enum_Test {
+        enum Size{
+             //枚举常量列表必须写在前面，否则编译出错
+             Small,Mid,Larger,SuperLager;  
+        }
+        enum Size_1{
+             //定义枚举常量，并利用构造函数传递值,
+            Small("1"),Mid("2"),Larger("3"),SuperLarger("4");
+             //定义私有变量
+             private String size;
+             //定义构造函数，类型为private，用于给枚举常量传递值
+             private Size_1(String size){
+                 this.size=size;
+             }
+             //重写toString()方法，用于返回枚举常量的值
+             @Override
+             public String toString() {
+                 // TODO Auto-generated method stub
+                 return this.size;
+             }
+
+        }
+        public static void main(String[] args) {
+             // TODO Auto-generated method stub
+             Size size=Size.Larger;
+             String string=size.toString();//默认toString()方法用于返回枚举常量名
+             System.out.println(string);
+             //toString()的逆方法是valueOf(),即根据给定的常量名，返回对应的枚举变量
+             Size size2=Enum.valueOf(Size.class, "Larger");
+             System.out.println(size==size2);//比较两个枚举类型的值时，直接使用==，不需要使用equals();
+
+             Size_1 size_1=Size_1.Larger;
+             String string2=size_1.toString();//返回枚举常量的值
+             System.out.println(string2);
+             Size_1[] size_2=Size_1.values();//values()返回包含全部枚举常量的数组
+             System.out.println(size_2[1]);
+
+            System.out.println(size_1.ordinal());//ordinal()方法返回枚举常量的位置
+        }
+    }
+</code></pre>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 5th, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/javase/'>javase</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2017
+
+    Z K
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'zkatt';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ttazk.github.io/blog/2017/08/05/enum/';
+        var disqus_url = 'http://ttazk.github.io/blog/2017/08/05/enum/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

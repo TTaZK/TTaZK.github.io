@@ -7,7 +7,8 @@
 	<meta name="author" content="Z K">
 
 	
-	<meta name="description" content="package test; /* * 从尾到头打印链表 * 输入一个头结点，从尾到头打印每个节点的值 * * 可以可以使用栈来实现，访问一个节点时就入栈，根据栈的特点，输出时已经反向 * 递归本身就相当于栈结构 */ class Qnode{ public int key; public &hellip;">
+	<meta name="description" content="String类没有提供用于修改字符串的方法。String类对象为不可变字符串，如字符串string=&ldquo;HELLO"永远只包含HELLO这几个字母，而不能修改其中任何一个字符。当然可以修改字符串变量string的引用，让它引用另一个字符串。
+不可变字符串有一个优点： &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -72,6 +73,137 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2017/08/05/string/">
+		
+			字符串讲解</a>
+	</h2>
+	<div class="entry-content">
+		<ul>
+<li>String类没有提供用于修改字符串的方法。<strong><em>String类对象为不可变字符串</em></strong>，如字符串string=&ldquo;HELLO"永远只包含HELLO这几个字母，而不能修改其中任何一个字符。当然可以修改字符串变量string的引用，让它引用另一个字符串。</li>
+<li><p>不可变字符串有一个优点：<strong><em>编译器可以让字符串实现共享</em></strong>。实际上只有字符串常量（使用“ ”声明，存储在字符串常量池中）是共享的，subStrng,+等操作产生的结果不能共享。（</p>
+
+<ul>
+<li>具体见JVM笔记</li>
+<li>（1）只有使用引号包含文本的方式创建的String对象之间使用“+”连接产生的新对象才会被加入字符串池中。</li>
+<li>（2）对于所有包含new方式新建对象（包括null）的“+”连接表达式，它所产生的新对象都不会被加入字符串池中。）</li>
+</ul>
+</li>
+<li><p>比较字符串值是否相等时使用equals()方法，不能使用==，==比较的是字符串的地址是否相同。如果字符串在常量池中，可以使用==比较，因为指向的都是同一个字符串。</p></li>
+<li><p><strong><em>直接使用 &ldquo; &rdquo; 声明的String对象会直接存储在常量池中</em></strong>，（可以实现共享）</p>
+
+<ul>
+<li>1.String str1=&ldquo;first&rdquo;;
+ jvm在运行时先查找常量池中是否有该字符串，如果有则直接返回该字符串的引用给first(实现了字符串     的共享) ；否则先在常量池中创建该字符串并返回引用。
+ <strong><em>此时只会在常量池中创建String对象，不会在堆中创建。</em></strong></li>
+<li>2.String str2=new String(&ldquo;second&rdquo;);
+ 该代码生成了两个String对象。因为使用了<strong><em>“”会先在常量池中查找是否存在second对象</em></strong>，没有则创建
+ 否则不创建；在常量池创建完成后，由于<strong><em>使用了new，jvm会在堆中创建内容相同的String对象</em></strong>，并将引用返回给str2.</li>
+<li>3.String str3=&ldquo;what&rdquo;; String str4=str3+&ldquo;a nice day&rdquo;;
+ 运行时，+ 相当于new，所以堆中会有“what a nice day”对象；常量池中会有"what" &ldquo;a nice day"两个对象，而不会有"what a nice day”对象。</li>
+</ul>
+</li>
+</ul>
+
+
+
+		
+		<a href="/blog/2017/08/05/string/" class="more-link">Read on &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 5th, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/javase/'>javase</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2017/08/05/string/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2017/08/05/enum/">
+		
+			枚举类型</a>
+	</h2>
+	<div class="entry-content">
+		<ul>
+<li>所有的枚举类型都是Enum类的子类，枚举类型包括有限个命名的值。枚举类型的变量只能存储该类型中指定的枚举常量，或者null值。</li>
+<li>枚举类型在定义时，可以添加指定的域，方法或者构造函数；当然构造函数为private，只是在声明枚举常量时调用，用于传递值。</li>
+<li><p>枚举类型可以简单定义为：</p>
+
+<pre><code>  enum Size{
+           //枚举常量列表必须写在前面，否则编译出错
+           Small,Mid,Larger,SuperLager;  
+      }
+</code></pre></li>
+<li><p>也可以给枚举类型增加构造方法，然后每个枚举类型的值通过构造函数传入对应的参数</p>
+
+<pre><code>  enum Size_1{ 
+           //定义枚举常量，并利用构造函数传递值,
+          Small("1"),Mid("2"),Larger("3"),SuperLarger("4");
+           //定义私有变量
+           private String size;
+           //定义构造函数，类型为private，用于给枚举常量传递值
+           private Size_1(String size){
+               this.size=size;
+           }
+           //重写toString()方法，用于返回枚举常量的值
+           @Override
+           public String toString() {
+               // TODO Auto-generated method stub
+               return this.size;
+           }
+
+      }
+</code></pre></li>
+<li>完整代码及具体使用如下：</li>
+</ul>
+
+
+
+		
+		<a href="/blog/2017/08/05/enum/" class="more-link">Read on &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 5th, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/javase/'>javase</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2017/08/05/enum/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -479,97 +611,6 @@ Apr 19th, 2017</div>
 </div>
 	
 	<div class="comments"><a href="/blog/2017/04/19/object/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2017/04/12/jmm/">
-		
-			Java内存模型</a>
-	</h2>
-	<div class="entry-content">
-		<ul>
-<li><p><strong>Java 内存模型中的可见性、原子性和有序性。</strong></p></li>
-<li><p><strong>可见性：</strong></p>
-
-<ul>
-<li>可见性是一种复杂的属性，因为可见性中的错误总是会违背我们的直觉。通常，我们无法确保执行读操作的线程能适时地看到其他线程写入的值，有时甚至是根本不可能的事情。为了确保多个线程之间对内存写入操作的可见性，必须使用同步机制。</li>
-<li>可见性，是<strong>指线程之间的可见性，一个线程修改的状态对另一个线程是可见的。也就是一个线程修改的结果。另一个线程马上就能看到</strong>。比如：用volatile修饰的变量，就会具有可见性。volatile修饰的变量不允许线程内部缓存和重排序，即直接修改内存。所以对其他线程是可见的。但是这里需要注意一个问题，volatile只能让被他修饰内容具有可见性，但不能保证它具有原子性。比如 volatile int a = 0；之后有一个操作 a++；这个变量a具有可见性，但是a++ 依然是一个非原子操作，也就是这个操作同样存在线程安全问题。</li>
-<li><strong>在 Java 中 volatile、synchronized 和 final 实现可见性。</strong><br/><br/></li>
-</ul>
-</li>
-</ul>
-
-
-
-		
-		<a href="/blog/2017/04/12/jmm/" class="more-link">Read on &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-Apr 12th, 2017</div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/jvm/'>jvm</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2017/04/12/jmm/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2017/04/11/threadpool/">
-		
-			线程池详解</a>
-	</h2>
-	<div class="entry-content">
-		<ul>
-<li>线程池是管理一组同构线程的资源池。线程池与工作队列密切相关，其中在工作队列中保存了所有等待执行的任务。<strong>工作者线程的任务是：从工作队列中取出一个任务，执行任务，然后返回线程等待下一个任务。线程池通过重用线程，而不是新建线程，减小线程创建与销毁的开销</strong>。</li>
-<li>Excutor是顶级线程池接口</li>
-<li>ExecutorService是真正的线程池接口。</li>
-<li>Executors类提供了一些静态工厂用于生成一些常用的线程池，当将一个任务添加到线程池时，线程池会为每个任务创建一个线程，该线程会在某个时刻执行。</li>
-</ul>
-
-
-
-		
-		<a href="/blog/2017/04/11/threadpool/" class="more-link">Read on &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-Apr 11th, 2017</div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/javase/'>javase</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2017/04/11/threadpool/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
