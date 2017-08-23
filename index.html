@@ -7,8 +7,8 @@
 	<meta name="author" content="Z K">
 
 	
-	<meta name="description" content="String类没有提供用于修改字符串的方法。String类对象为不可变字符串，如字符串string=&ldquo;HELLO"永远只包含HELLO这几个字母，而不能修改其中任何一个字符。当然可以修改字符串变量string的引用，让它引用另一个字符串。
-不可变字符串有一个优点： &hellip;">
+	<meta name="description" content="如果一个01串任意两个相邻位置的字符都是不一样的,我们就叫这个01串为交错01串。例如: &ldquo;1&rdquo;,&ldquo;10101&rdquo;,&ldquo;0101010"都是交错01串。
+小易现在有一个01串s,小易想找出一个最长的连续子串,并且这个子串是一个交错01串。 &hellip;">
 	
 	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
@@ -73,6 +73,53 @@
 		
 	
 	<div id="content" class="inner">
+
+
+    <article class="post">
+	<h2 class="title">
+		
+		<a href="/blog/2017/08/23/2dp/">
+		
+			两个相似的DP例子</a>
+	</h2>
+	<div class="entry-content">
+		<ul>
+<li><p>如果一个01串任意两个相邻位置的字符都是不一样的,我们就叫这个01串为交错01串。例如: &ldquo;1&rdquo;,&ldquo;10101&rdquo;,&ldquo;0101010"都是交错01串。
+小易现在有一个01串s,小易想找出一个最长的连续子串,并且这个子串是一个交错01串。小易需要你帮帮忙            求出最长的这样的子串的长度是多少。</p>
+
+<ul>
+<li>使用动态规划求解：<br>
+  设f(n)为以第n个位置结尾（包含第n个元素）的最长连续交错01串的长度，则f(n-1)为以第n-1个位置结尾的长度：当                s[n]==s[n-1]时，即第n个位置与第n-1个位置的值相同，那么f(n)应该放弃前面的长度，即f(n)=1;否则f(n)=f(n-1)+1.</li>
+</ul>
+</li>
+</ul>
+
+
+
+		
+		<a href="/blog/2017/08/23/2dp/" class="more-link">Read on &rarr;</a>
+	</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 23rd, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/algorithm/'>algorithm</a>
+
+
+</div>
+	
+	<div class="comments"><a href="/blog/2017/08/23/2dp/#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
 
 
     <article class="post">
@@ -554,63 +601,6 @@ Apr 22nd, 2017</div>
 </div>
 	
 	<div class="comments"><a href="/blog/2017/04/22/index/#disqus_thread">Comments</a></div>
-	
-</div>
-</article>
-
-
-    <article class="post">
-	<h2 class="title">
-		
-		<a href="/blog/2017/04/19/object/">
-		
-			Object详解</a>
-	</h2>
-	<div class="entry-content">
-		<ul>
-<li>Object类是所有类的父类，每个类都是由Object类扩展而来。如果没有明确指出父类，则默认为Object类为该类的父类。</li>
-<li>可以使用Object类型的变量引用任何类型的对象。</li>
-<li><p>在Java中，只有基本数据类型（数字，字符，布尔）不是对象。所有的数组类型，不管是对象数组还是基本类型的数组都扩展了Object类。</p>
-
-<pre><code>  int[] i=new int[5];
-  Object obj=i;
-</code></pre>
-
-<h3>equals()方法</h3></li>
-<li>在Object类中，该方法用于判断两个对象是否具有相同的引用。</li>
-<li><p>然而，经常需要检测两个对象的状态的相等性，所以一般需要覆写equals()方法。</p>
-
-<pre><code>  public class Test{
-             public boolean equals(Object otherObject){
-                  }
-         }
-</code></pre></li>
-<li>在子类中定义equals方法时，首先调用父类的equals方法。如果检测失败，则对象不可能相等。如果父类中的域都相等，就需要比较子类中的实例域。</li>
-</ul>
-
-
-
-		
-		<a href="/blog/2017/04/19/object/" class="more-link">Read on &rarr;</a>
-	</div>
-
-
-<div class="meta">
-	<div class="date">
-
-
-
-
-Apr 19th, 2017</div>
-	<div class="tags">
-
-
-	<a class='category' href='/blog/categories/javase/'>javase</a>
-
-
-</div>
-	
-	<div class="comments"><a href="/blog/2017/04/19/object/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

@@ -1,0 +1,255 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>两个相似的DP例子 - ZK</title>
+	<meta name="author" content="Z K">
+
+	
+	<meta name="description" content="如果一个01串任意两个相邻位置的字符都是不一样的,我们就叫这个01串为交错01串。例如: &ldquo;1&rdquo;,&ldquo;10101&rdquo;,&ldquo;0101010"都是交错01串。
+小易现在有一个01串s,小易想找出一个最长的连续子串,并且这个子串是一个交错01串。 &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="" rel="alternate" title="ZK" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">ZK</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com/" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:ttazk.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com/" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:ttazk.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">两个相似的DP例子</h2>
+	<div class="entry-content"><ul>
+<li><p>如果一个01串任意两个相邻位置的字符都是不一样的,我们就叫这个01串为交错01串。例如: &ldquo;1&rdquo;,&ldquo;10101&rdquo;,&ldquo;0101010"都是交错01串。
+小易现在有一个01串s,小易想找出一个最长的连续子串,并且这个子串是一个交错01串。小易需要你帮帮忙            求出最长的这样的子串的长度是多少。</p>
+
+<ul>
+<li>使用动态规划求解：<br>
+  设f(n)为以第n个位置结尾（包含第n个元素）的最长连续交错01串的长度，则f(n-1)为以第n-1个位置结尾的长度：当                s[n]==s[n-1]时，即第n个位置与第n-1个位置的值相同，那么f(n)应该放弃前面的长度，即f(n)=1;否则f(n)=f(n-1)+1.</li>
+</ul>
+</li>
+</ul>
+
+
+<!--more--> 
+
+
+<pre><code>        package test;
+
+        import java.util.Scanner;
+
+        public class MaxLengthOf01 {
+
+            public static void main(String[] args) {
+                 // TODO Auto-generated method stub
+                 Scanner in = new Scanner(System.in);
+
+                while (in.hasNext()) {
+                    String str = in.next();
+                    int n=str.length();
+                    if (n==0||str==null) {
+                         System.out.println(0);
+                         break;
+                     }
+                    int[] f=new int[n];//用于存储对应位置的最长01串的长度
+                 f[0]=1;
+                 for(int i=1;i&lt;n;i++){
+                     if (str.charAt(i)==str.charAt(i-1)) {
+                         f[i]=1;
+                     }
+                     else {
+                             f[i]=f[i-1]+1;
+                         }
+                 }
+                 //求出f[]中最大的值，即为最大子数组的和
+                 int max=f[0];
+                 for(int i=0;i&lt;n;i++){
+                     if (max&lt;f[i]) {
+                         max=f[i];
+                     }
+                 }
+                 System.out.println(max);
+                }
+            }
+
+        }
+</code></pre>
+
+<ul>
+<li><p>HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。你会不会被他忽悠住？(子向量的长度至少是1)</p>
+
+<ul>
+<li><p>动态规划求解：<br>
+  f(i)表示以第i个数字结尾的子数组的最大和，其中0&lt;=i&lt;n。当以第i-1个数字结尾的子数组的最大和小于0时，如果把这个负数与第i个数字相加，得到的结果比第i个数字要小，所以这种情况下，以第i个数字结尾的子数组最大和就是第i个数字本身；当以第i-1个数字结尾的子数组的最大和大于0时，与第i个数字累加，就得到以第i个数字结尾的子数组的最大和。</p>
+
+<pre><code>  package test;
+
+  public class FindGreatestSumOfSubArray {
+    //求连续子数组的最大和
+    public static int findGreatestSumOfSubArray(int[] array){
+    int n=array.length;
+    if (n==0||array==null) {
+    return 0;
+    }
+    int[] f=new int[n];//用于存储对应位置的最大子数组的和
+    f[0]=array[0];
+    for(int i=1;i&lt;n;i++){
+    if (f[i-1]&lt;0) {
+    f[i]=array[i];
+    }
+    if (f[i-1]&gt;=0) {
+    f[i]=f[i-1]+array[i];
+    }
+    }
+    //求出f[]中最大的值，即为最大子数组的和
+    int max=f[0];
+    for(int i=0;i&lt;n;i++){
+    if (max&lt;f[i]) {
+    max=f[i];
+    }
+    }
+    return max;
+    }
+    public static void main(String[] args) {
+    // TODO Auto-generated method stub
+    System.out.println(findGreatestSumOfSubArray(new int[]{1,-2,3,10,-4,7,2,-5}));
+    }
+
+  }
+</code></pre></li>
+</ul>
+</li>
+</ul>
+
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 23rd, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/algorithm/'>algorithm</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2017
+
+    Z K
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'zkatt';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ttazk.github.io/blog/2017/08/23/2dp/';
+        var disqus_url = 'http://ttazk.github.io/blog/2017/08/23/2dp/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>

@@ -4,7 +4,7 @@
   <title><![CDATA[ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-08-05T18:49:37+08:00</updated>
+  <updated>2017-08-23T23:21:04+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[两个相似的DP例子]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/23/2dp/"/>
+    <updated>2017-08-23T23:16:03+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/08/23/2dp</id>
+    <content type="html"><![CDATA[<ul>
+<li><p>如果一个01串任意两个相邻位置的字符都是不一样的,我们就叫这个01串为交错01串。例如: &ldquo;1&rdquo;,&ldquo;10101&rdquo;,&ldquo;0101010"都是交错01串。
+小易现在有一个01串s,小易想找出一个最长的连续子串,并且这个子串是一个交错01串。小易需要你帮帮忙            求出最长的这样的子串的长度是多少。</p>
+
+<ul>
+<li>使用动态规划求解：<br>
+  设f(n)为以第n个位置结尾（包含第n个元素）的最长连续交错01串的长度，则f(n-1)为以第n-1个位置结尾的长度：当                s[n]==s[n-1]时，即第n个位置与第n-1个位置的值相同，那么f(n)应该放弃前面的长度，即f(n)=1;否则f(n)=f(n-1)+1.</li>
+</ul>
+</li>
+</ul>
+
+
+<!--more--> 
+
+
+<pre><code>        package test;
+
+        import java.util.Scanner;
+
+        public class MaxLengthOf01 {
+
+            public static void main(String[] args) {
+                 // TODO Auto-generated method stub
+                 Scanner in = new Scanner(System.in);
+
+                while (in.hasNext()) {
+                    String str = in.next();
+                    int n=str.length();
+                    if (n==0||str==null) {
+                         System.out.println(0);
+                         break;
+                     }
+                    int[] f=new int[n];//用于存储对应位置的最长01串的长度
+                 f[0]=1;
+                 for(int i=1;i&lt;n;i++){
+                     if (str.charAt(i)==str.charAt(i-1)) {
+                         f[i]=1;
+                     }
+                     else {
+                             f[i]=f[i-1]+1;
+                         }
+                 }
+                 //求出f[]中最大的值，即为最大子数组的和
+                 int max=f[0];
+                 for(int i=0;i&lt;n;i++){
+                     if (max&lt;f[i]) {
+                         max=f[i];
+                     }
+                 }
+                 System.out.println(max);
+                }
+            }
+
+        }
+</code></pre>
+
+<ul>
+<li><p>HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。你会不会被他忽悠住？(子向量的长度至少是1)</p>
+
+<ul>
+<li><p>动态规划求解：<br>
+  f(i)表示以第i个数字结尾的子数组的最大和，其中0&lt;=i&lt;n。当以第i-1个数字结尾的子数组的最大和小于0时，如果把这个负数与第i个数字相加，得到的结果比第i个数字要小，所以这种情况下，以第i个数字结尾的子数组最大和就是第i个数字本身；当以第i-1个数字结尾的子数组的最大和大于0时，与第i个数字累加，就得到以第i个数字结尾的子数组的最大和。</p>
+
+<pre><code>  package test;
+
+  public class FindGreatestSumOfSubArray {
+    //求连续子数组的最大和
+    public static int findGreatestSumOfSubArray(int[] array){
+    int n=array.length;
+    if (n==0||array==null) {
+    return 0;
+    }
+    int[] f=new int[n];//用于存储对应位置的最大子数组的和
+    f[0]=array[0];
+    for(int i=1;i&lt;n;i++){
+    if (f[i-1]&lt;0) {
+    f[i]=array[i];
+    }
+    if (f[i-1]&gt;=0) {
+    f[i]=f[i-1]+array[i];
+    }
+    }
+    //求出f[]中最大的值，即为最大子数组的和
+    int max=f[0];
+    for(int i=0;i&lt;n;i++){
+    if (max&lt;f[i]) {
+    max=f[i];
+    }
+    }
+    return max;
+    }
+    public static void main(String[] args) {
+    // TODO Auto-generated method stub
+    System.out.println(findGreatestSumOfSubArray(new int[]{1,-2,3,10,-4,7,2,-5}));
+    }
+
+  }
+</code></pre></li>
+</ul>
+</li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[字符串讲解]]></title>
@@ -2703,106 +2813,6 @@ The child has been init !
 <li>执行实例构造器<init>()方法，把对象按照程序员的意愿初始化。这样一个对象便创建完成。</li>
 </ul>
 
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[虚拟机内存分配]]></title>
-    <link href="http://ttazk.github.io/blog/2017/02/08/jvm1/"/>
-    <updated>2017-02-08T15:51:45+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/02/08/jvm1</id>
-    <content type="html"><![CDATA[<p>Java运行时数据区分为：方法区，堆，虚拟机栈，本地方法栈，程序计数器。其中，方法区与堆为所有线程共享；虚拟机栈，本地方法栈与程序计数器为线程私有。</p>
-
-<h2>程序计数器：</h2>
-
-<ol>
-<li>所占内存空间比较小，可以看做当前线程所执行字节码的行号指数器。字节码解释器在工作时就是通过这个计数器的值来选取下一条需要执行的字节码指令。</li>
-<li>每个线程都有一个独立的程序计数器，各个线程的程序计数器互不影响，独立存储，为“线程私有”。</li>
-<li>如果线程正在执行的是Java方法，那么程序计数器的值就是虚拟机字节码指令的地址；如果执行的是Native方法，那么程序计数器的值为空。</li>
-<li>此内存区域是Java虚拟机运行规范中没有规定任何OutOfMemoryError情况的区域。</li>
-</ol>
-
-
-<!--more-->
-
-
-<h2>Java虚拟机栈：</h2>
-
-<ol>
-<li>与程序计数器一样，也是线程私有，它的生命周期与线程一样。</li>
-<li>Java虚拟机栈描述的是Java方法执行时的内存模型：每一个方法在执行时都会创建一个栈帧用于存储局部变量表，操作数栈，动态链接，方法出口等信息。</li>
-<li>局部变量表存放了在编译期可知的各种基本数据类型（int,short,long,double,float,boolean），对象引用类型（reference类型，可能指向对象起始地址的指针）和returnAddress类型（指向一条字节码指令的地址）。</li>
-<li>局部变量表的内存大小在编译期确定并完成分配，当进入一个方法时，这个方法需要在帧中分配的局部变量表的大小确定，并且在运行期不改变。</li>
-<li>Java虚拟机栈的内存大小是可以动态扩展的，在这个区域可能会发生两种异常：OutOfMemoryError与StackOverflowError。</li>
-</ol>
-
-
-<h2>本地方法栈：</h2>
-
-<ol>
-<li>与虚拟机栈的作用类似，只不过虚拟机栈是为虚拟机执行Java方法（也就是字节码）服务，而本地方法栈是为虚拟机使用到的Native方法服务。有的虚拟机（如HotSpot）直接把这两个合二为一。</li>
-<li>在这个区域可能会发生两种异常：OutOfMemoryError与StackOverflowError，与虚拟机栈相同。</li>
-</ol>
-
-
-<h2>Java堆：</h2>
-
-<ol>
-<li>Java堆是Java虚拟机所管理的内存最大的一块区域。</li>
-<li>Java堆是所有线程共享的一块区域，随着虚拟机的启动而创建。此区域的唯一目的就是存放对象的实例，几乎所有的对象实例都在这里分配内存。Java虚拟机规范描述的是：所有的对象实例及数组都在堆上分配。</li>
-<li>Java堆是垃圾收集器管理的主要区域。</li>
-<li>Java堆可以处在物理上连续的内存空间中，也可以处于不连续的内存空间中（只要是逻辑上连续即可）。在实现时，可以是固定大小的，也可以是可扩展的。</li>
-<li>当堆中没有内存完成实例分配时，且堆也无法扩展时，可能会发生的异常为：OutOfMemoryError。</li>
-</ol>
-
-
-<h2>方法区：</h2>
-
-<ol>
-<li>方法区与Java堆一样也是线程共享的，它用于存储已被虚拟机加载的类信息，常量，静态变量，即编译器编译后的代码（如被final static修饰，会在编译结束后放在常量池中）等数据。</li>
-<li>除了与Java堆一样可以不需要连续的内存，可以选择固定的大小或可扩展的外，还可以选择不实现垃圾收集。相对而言，垃圾收集在这里的行为很少（这一区域的回收主要是对常量池的回收和对类型的卸载）。</li>
-<li>当内存无法满足要求时，会抛出：OutOfMemoryError。</li>
-</ol>
-
-
-<h2>运行时常量池：</h2>
-
-<ol>
-<li>运行时常量池是方法区的一部分，Class文件中除了有类的版本，字段，方法，接口等描述信息外，还包括一项信息是常量池。</li>
-<li>常量池用于存放编译期生成的各种字面量和符号引用。</li>
-<li><p>字面量和符号引用量：字面量相当于Java语言层面常量的概念，如文本字符串，声明为final的常量值等，符号引用则属于编译原理方面的概念，包括了如下三种类型的常量：</p>
-
-<pre><code>    * 类和接口的全限定名
-    * 字段名称和描述符
-    * 方法名称和描述符
-</code></pre></li>
-<li><p>运行时常量池相对于CLass文件常量池的另外一个重要特征是具备动态性，Java语言并不要求常量一定只有编译期才能产生，也就是并非预置入CLass文件中常量池的内容才能进入方法区运行时常量池，运行期间也可能将新的常量放入池中，这种特性被开发人员利用比较多的就是String类的intern()方法。</p></li>
-<li>java中基本类型的包装类的大部分都实现了常量池技术，即（Byte,Short,Integer,Long,Character,Boolean）。类比于Integer类型在自动装箱时，如果值[-128,127]之间，那么就存储在常量池中。两种浮点数类型的包装类Float,Double并没有实现常量池技术。</li>
-<li>只有使用引号包含文本的方式创建的String对象之间使用“+”连接产生的新对象才会被加入字符串池中。</li>
-<li>对于所有包含new方式新建对象（包括null）的“+”连接表达式，它所产生的新对象都不会被加入字符串池中。</li>
-</ol>
-
-
-<p>*</p>
-
-<pre><code>     String string1="te";
-     String string2="st";
-     String string3="test";
-     String string4=string1+string2;
-     String string5="te"+"st";
-     String string6=new StringBuilder("test").toString();
- 　　String string7=new String("test").intern();
-
-
-    System.out.println(string3==string4);//false
-    System.out.println(string3==string5);//true
-    System.out.println(string4==string5);//false
-    System.out.println(string3==string6);//false
-    System.out.println(string3==string7);//true
-</code></pre>
-
-<p>　　 <br/>
-*</p>
 ]]></content>
   </entry>
   
