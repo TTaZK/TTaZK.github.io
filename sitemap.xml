@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 <url>
+<loc>http://ttazk.github.io/blog/2017/08/29/hashmap/</loc>
+<lastmod>2017-08-29T22:01:20+08:00</lastmod>
+</url>
+<url>
 <loc>http://ttazk.github.io/blog/2017/08/23/2dp/</loc>
 <lastmod>2017-08-23T23:16:03+08:00</lastmod>
 </url>

@@ -4,7 +4,7 @@
   <title><![CDATA[ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-08-26T22:02:52+08:00</updated>
+  <updated>2017-08-29T22:50:42+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HashMap及源码分析]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/29/hashmap/"/>
+    <updated>2017-08-29T22:01:20+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/08/29/hashmap</id>
+    <content type="html"><![CDATA[<h3>映射</h3>
+
+<ul>
+<li><p>映射用来存放键值对。如果提供了键，就可以查找到对应的值。</p>
+
+<ul>
+<li>Java类库为映射提供了两种通用的实现：<strong>TreeMap，HashMap</strong>。它们都实现了Map接口。</li>
+<li>散列映射对键进行散列。树映射用键的整体顺序对元素进行排序，并将其组织成搜索树。散列或比较函数只能作用于键，与键关联的值不能进行散列或比较。散列要比树快点。</li>
+<li>每当往映射中添加对象时，必须同时提供一个键。想要检索一个对象也必须使用键。</li>
+<li><p><strong>键必须是唯一的，不能对同一个键存放两个值</strong>。如果对同一个键两次调用put，第二个值就会取代第一个值。实际上，put 将返回用这个键参数存储的上一个值。</p>
+
+<pre><code>  V getOrDefault(Object key,V defaultValue)
+  获得与键关联的值，或者如果未在映射中找到这个键，则返回defaultValue.
+  V put(K key,V value)
+  将键值对插入，并返回键对应的旧值。如果这个键以前没有出现过，则返回null。
+  键可以为null,但值不可以为null。
+</code></pre></li>
+</ul>
+</li>
+<li><p>映射视图是实现了Collection接口或者其子接口的对象。有三种视图：<strong><em>键集(Set<K> keySet)，值集合(Collection<V> values)，键值对集(Set&lt;Map.Entry&lt;K,V>> entrySet)</em></strong>。需要说明的是，keySet不是hashSet或TreeSet，而是实现了Set接口的另外某个类的对象。
+      <table>
+      <tr>
+      <td>public interface Map&lt;K,V><br></td>
+      <td>将键映射到值的对象。一个映射不能包含重复的键；每个键最多只能映射到一个值</td>
+      </tr>
+      <tr>
+      <td>Set(Map.Entry&lt;K,V>) entrySet()</td>
+      <td>返回此映射中包含的映射关系的 Set 视图。该 set 受映射支持，所以对映射的更改可在此 set 中反映出来，反之亦然。如果对该 set 进行迭代的同时修改了映射（通过迭代器自己的 remove 操作，或者通过对迭代器返回的映射项执行 setValue 操作除外），则迭代结果是不确定的。<strong><em>set 支持元素移除，通过 Iterator.remove、Set.remove、removeAll、retainAll 和 clear 操作可从映射中移除相应的映射关系。它不支持 add 或 addAll 操作</em></strong>。</td>
+      </tr>
+      <tr>
+      <td>Set<K> keySet()</td>
+      <td>返回此映射中包含的键的 Set 视图。该 set 受映射支持，所以对映射的更改可在此 set 中反映出来，反之亦然。如果对该 set 进行迭代的同时修改了映射（通过迭代器自己的 remove 操作除外），则迭代结果是不确定的。<strong><em>set 支持元素移除，通过 Iterator.remove、Set.remove、removeAll、retainAll 和 clear 操作可从映射中移除相应的映射关系。它不支持 add 或 addAll 操作。</em></strong></td>
+      </tr>
+      <tr>
+      <td>Collection<V> values()</td>
+      <td>返回此映射中包含的值的 Collection 视图。该 collection 受映射支持，所以对映射的更改可在此 collection 中反映出来，反之亦然。如果对该 collection 进行迭代的同时修改了映射（通过迭代器自己的 remove 操作除外），则迭代结果是不确定的。<strong><em>collection 支持元素移除，通过 Iterator.remove、Collection.remove、removeAll、retainAll 和 clear 操作可从映射中移除相应的映射关系。它不支持 add 或 addAll 操作。</em></strong></td>
+      </tr>
+      </table></p>
+
+<ul>
+<li>如果在视图上调用迭代器的remove()方法，实际上会从映射中删除键值对。不过不能向视图中增加元素。</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>HashMap</h3>
+
+<h4>HashMap类</h4>
+
+<table>
+<tr>
+<td>
+public class HashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable
+</td>
+</tr>
+</table>
+
+
+<ul>
+<li>基于哈希表的 Map 接口的实现。此实现提供所有可选的映射操作，并允许使用 null 值和 null 键。（除了非同步和允许使用 null 之外，HashMap 类与 Hashtable 大致相同。）此类不保证映射的顺序，特别是它不保证该顺序恒久不变。</li>
+<li>此实现假定哈希函数将元素适当地分布在各桶之间，可为基本操作（get 和 put）提供稳定的性能。迭代 collection 视图所需的时间与 HashMap 实例的“容量”（桶的数量）及其大小（键-值映射关系数）成比例。所以，如果迭代性能很重要，则不要将初始容量设置得太高（或将加载因子设置得太低）。<br/></li>
+<li>HashMap 的实例有两个参数影响其性能：初始容量 和加载因子。容量 是哈希表中桶的数量，初始容量只是哈希表在创建时的容量。加载因子 是哈希表在其容量自动增加之前可以达到多满的一种尺度。当哈希表中的条目数超出了加载因子与当前容量的乘积时，则要对该哈希表进行 rehash 操作（即重建内部数据结构），从而哈希表将具有大约两倍的桶数。<br/></li>
+<li>通常，默认加载因子 (.75) 在时间和空间成本上寻求一种折衷。加载因子过高虽然减少了空间开销，但同时也增加了查询成本（在大多数 HashMap 类的操作中，包括 get 和 put 操作，都反映了这一点）。在设置初始容量时应该考虑到映射中所需的条目数及其加载因子，以便最大限度地减少 rehash 操作次数。如果初始容量大于最大条目数除以加载因子，则不会发生 rehash 操作。<br/></li>
+<li>如果很多映射关系要存储在 HashMap 实例中，则相对于按需执行自动的 rehash 操作以增大表的容量来说，使用足够大的初始容量创建它将使得映射关系能更有效地存储。<br/>
+
+<ul>
+<li>注意，此实现不是同步的。如果多个线程同时访问一个哈希映射，而其中至少一个线程从结构上修改了该映射，则它必须 保持外部同步。（结构上的修改是指添加或删除一个或多个映射关系的任何操作；仅改变与实例已经包含的键关联的值不是结构上的修改。）这一般通过对自然封装该映射的对象进行同步操作来完成。如果不存在这样的对象，则应该使用 Collections.synchronizedMap 方法来“包装”该映射。最好在创建时完成这一操作，以防止对映射进行意外的非同步访问，如下所示：<br>
+Map m = Collections.synchronizedMap(new HashMap(&hellip;));</li>
+</ul>
+</li>
+<li>由所有此类的“collection 视图方法”所返回的迭代器都是快速失败 的：在迭代器创建之后，如果从结构上对映射进行修改，除非通过迭代器本身的 remove 方法，其他任何时间任何方式的修改，迭代器都将抛出 ConcurrentModificationException。因此，面对并发的修改，迭代器很快就会完全失败，而不冒在将来不确定的时间发生任意不确定行为的风险。<br/>
+
+<ul>
+<li>注意，迭代器的快速失败行为不能得到保证，一般来说，存在非同步的并发修改时，不可能作出任何坚决的保证。快速失败迭代器尽最大努力抛出 ConcurrentModificationException。因此，编写依赖于此异常的程序的做法是错误的，正确做法是：迭代器的快速失败行为应该仅用于检测程序错误。
+
+<h4>HashMap源码</h4></li>
+</ul>
+</li>
+<li><p>HashMap中的属性</p>
+
+<pre><code>  private static final long serialVersionUID = 362498820763181265L;
+  //默认的初始容量，16        
+  static final int DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4; // aka 16
+  //最大容量
+  static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30;
+  //装载因子
+  static final float DEFAULT_LOAD_FACTOR = 0.75f;
+  static final int TREEIFY_THRESHOLD = 8;
+  static final int UNTREEIFY_THRESHOLD = 6;
+  static final int MIN_TREEIFY_CAPACITY = 64;
+
+  //存储Entry的table数组
+  transient Node&lt;K,V&gt;[] table;
+  transient Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet;
+  //map中保存的键值对的数量
+  transient int size;
+  //map结构被改变的次数
+  transient int modCount;
+  //需要调整大小的极限值（容量*装载因子）
+  int threshold;
+  //装载因子
+  final float loadFactor;
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[两个相似的DP例子]]></title>
@@ -2697,120 +2811,6 @@ Spring配置文件中不允许出现两个相同id的Bean，但是可以有相�
 <li>为什么A还要发送一次确认呢？为了防止已经失效的请求突然又传送到了B，因而产生错误。</li>
 </ul>
 </li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[虚拟机类加载机制]]></title>
-    <link href="http://ttazk.github.io/blog/2017/02/09/jvm2/"/>
-    <updated>2017-02-09T22:55:40+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/02/09/jvm2</id>
-    <content type="html"><![CDATA[<ul>
-<li>类的生命周期包括：加载&ndash;>连接&ndash;>初始化&ndash;>使用&ndash;>卸载，其中连接包括，验证&ndash;>准备&ndash;>解析。</li>
-<li>虚拟机把描述类的数据从Class文件中加载到内存，并对数据进行校验，转换，解析和初始化，最终形成可被虚拟机直接使用的Java类型。</li>
-<li>在Java中，类的加载，连接，初始化都是在运行期间完成的，这种策略与C++等不同，但是这也实现了Java语言的运行期动态加载与动态连接的特点。</li>
-</ul>
-
-
-<!--more-->
-
-
-<h2>类加载的过程：</h2>
-
-<ol>
-<li>加载</li>
-<li>加载是类加载的一个阶段。在加载时需要 完成以下几件事情：
-
-<ol>
-<li>通过类的全限定名称获取此类的二进制字节流</li>
-<li>将这个字节流所带表的静态存储结构转换为方法区的运行时数据结构</li>
-<li>在内存中生成代表这个类的java.lang.Class对象，作为方法区这个类的各种数据的访问入口</li>
-</ol>
-</li>
-<li>二进制字节流可以从Class文件中获取，也可以从网络中或者其他文件中获取。</li>
-<li>在加载阶段完成后，虚拟机外部的二进制字节流就转换为方法区中的数据结构，然后再在内存中实例化一个java.lang.Class对象，作为程序访问方法区中这些数据类型的接口。</li>
-<li>验证
-
-<ul>
-<li>为了确保Class文件中的字节流所包含的信息是符合当前虚拟机的要求。</li>
-</ul>
-</li>
-<li>准备</li>
-<li>准备阶段是正式为类变量设置初始值的阶段。这些变量所用的内存都将在方法区中分配。</li>
-<li>此时仅分配类变量，不包括实例变量。实例变量会随着对象实例化一起在Java堆中分配。</li>
-<li>这里说的初始值是数据的零值，null/false/0等。</li>
-<li>解析</li>
-<li>将常量池中的符号引用替换为直接引用。</li>
-<li>初始化</li>
-<li>在这个阶段，才是对类变量进行赋值操作。按照程序的主观计划去初始化类变量及其他资源。</li>
-<li>初始化是执行类构造器<clinit>()方法的过程，<clinit>()方法是由编译器自动收集类中所有类变量的赋值动作与静态语句块（static{}）中的语句合并。</li>
-<li>类构造器<clinit>()方法与类的构造函数（实例构造器<init>()方法）不同，它不需要显示地调用父类构造器，虚拟机会保证在子类的<clinit>()方法执行之前，父类的<clinit>()方法已经执行完毕。因此虚拟机中第一个被执行的<clinit>()方法的类肯定是java.lang.Object。</li>
-<li>由于父类的<clinit>()方法先执行，因此父类中定义的静态语句块要优先于子类的静态语句块。</li>
-<li>对于类来说并不是必须的，如果类中没有类变量，也没有静态语句块，那么便不需要<clinit>()方法。</li>
-<li>如果多个线程同时初始化一个类，那么只有一个线程会执行<clinit>()方法，其他线程阻塞等待。</li>
-</ol>
-
-
-<h2>虚拟机规范中严格定义了有且只有5中情况必须立即对类进行初始化（加载，验证，准备需要在此之前完成）</h2>
-
-<ol>
-<li>遇到new,getstatic,putstatic或者invokestatic这4条字节码指令时，如果类没有进行初始化，则需要对它进行初始化。生成这4条字节码指令的Java代码是：使用new关键字实例化对象，读取或者设置一个类的静态字段（被final修饰，已经在编译期就把结果放到常量池的静态字段除外），以及调用一个类的静态方法的时候。</li>
-<li>使用java.lang.reflect包中的方法对类进行反射调用的时候，如果类没有进行初始化，则需初始化。</li>
-<li>当初始化一个类的时候（注意是类，不是对象），如果发现父类没有被初始化，则先初始化其父类。</li>
-<li>当虚拟机启动时，用户需要指定一个要执行的主类（包含main()方法），虚拟机会先初始化这个主类。</li>
-<li>当使用jdk1.7的动态语言支持时，如果一个方法解析后句柄对应的类没有初始化，则先初始化。</li>
-</ol>
-
-
-<p>//当调用类中普通的静态变量时（没有被final修饰的），会对类进行初始化</p>
-
-<pre><code>public class InvokeStatic {
-public static int a=1;
-static{
-     System.out.println("the class has been init !");
-}
-public static void main(String[] args) {
-     // TODO Auto-generated method stub
-     int i=InvokeStatic.a;
-}
-}
-
-输出结果为：
-the class has been init !
-</code></pre>
-
-<p>//当初始化一个类的时候，如果发现父类还没有初始化，便先将其父类进行初始化</p>
-
-<pre><code>class Super{
-static{
-     System.out.println("The super has been init !");
-}
-}
-public class InvokeChildStatic extends Super {
-static int a=10;
-static{
-     System.out.println("The child has been init !");
-}
-public static void main(String[] args) {
-     // TODO Auto-generated method stub
-     System.out.println(InvokeChildStatic.a);
-}
-}
-输出结果为：
-The super has been init !
-The child has been init !
-10
-</code></pre>
-
-<h2>上面介绍的是对类进行加载及初始化，下面要介绍的是对象的创建：</h2>
-
-<ul>
-<li>当虚拟机遇到一个new指令时，首先检查这个指令的参数能否在常量池中定位一个符号引用，并且检查这个符号引用代表的类是否被加载，如果没有，便先加载这个类。</li>
-<li>类加载完成之后，虚拟机为新生对象在Java堆中分配内存（对象所需的内存大小在类加载完成后便确定）。</li>
-<li>接下来，虚拟机将分配的内存空间都初始化为零值（保证了实例字段在Java代码中可以不赋初值就能使用）。</li>
-<li>执行实例构造器<init>()方法，把对象按照程序员的意愿初始化。这样一个对象便创建完成。</li>
 </ul>
 
 ]]></content>

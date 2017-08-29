@@ -4,7 +4,7 @@
   <title><![CDATA[Category: javase | ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/javase/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-08-26T22:02:52+08:00</updated>
+  <updated>2017-08-29T22:50:42+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -12,6 +12,120 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[HashMap及源码分析]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/29/hashmap/"/>
+    <updated>2017-08-29T22:01:20+08:00</updated>
+    <id>http://ttazk.github.io/blog/2017/08/29/hashmap</id>
+    <content type="html"><![CDATA[<h3>映射</h3>
+
+<ul>
+<li><p>映射用来存放键值对。如果提供了键，就可以查找到对应的值。</p>
+
+<ul>
+<li>Java类库为映射提供了两种通用的实现：<strong>TreeMap，HashMap</strong>。它们都实现了Map接口。</li>
+<li>散列映射对键进行散列。树映射用键的整体顺序对元素进行排序，并将其组织成搜索树。散列或比较函数只能作用于键，与键关联的值不能进行散列或比较。散列要比树快点。</li>
+<li>每当往映射中添加对象时，必须同时提供一个键。想要检索一个对象也必须使用键。</li>
+<li><p><strong>键必须是唯一的，不能对同一个键存放两个值</strong>。如果对同一个键两次调用put，第二个值就会取代第一个值。实际上，put 将返回用这个键参数存储的上一个值。</p>
+
+<pre><code>  V getOrDefault(Object key,V defaultValue)
+  获得与键关联的值，或者如果未在映射中找到这个键，则返回defaultValue.
+  V put(K key,V value)
+  将键值对插入，并返回键对应的旧值。如果这个键以前没有出现过，则返回null。
+  键可以为null,但值不可以为null。
+</code></pre></li>
+</ul>
+</li>
+<li><p>映射视图是实现了Collection接口或者其子接口的对象。有三种视图：<strong><em>键集(Set<K> keySet)，值集合(Collection<V> values)，键值对集(Set&lt;Map.Entry&lt;K,V>> entrySet)</em></strong>。需要说明的是，keySet不是hashSet或TreeSet，而是实现了Set接口的另外某个类的对象。
+      <table>
+      <tr>
+      <td>public interface Map&lt;K,V><br></td>
+      <td>将键映射到值的对象。一个映射不能包含重复的键；每个键最多只能映射到一个值</td>
+      </tr>
+      <tr>
+      <td>Set(Map.Entry&lt;K,V>) entrySet()</td>
+      <td>返回此映射中包含的映射关系的 Set 视图。该 set 受映射支持，所以对映射的更改可在此 set 中反映出来，反之亦然。如果对该 set 进行迭代的同时修改了映射（通过迭代器自己的 remove 操作，或者通过对迭代器返回的映射项执行 setValue 操作除外），则迭代结果是不确定的。<strong><em>set 支持元素移除，通过 Iterator.remove、Set.remove、removeAll、retainAll 和 clear 操作可从映射中移除相应的映射关系。它不支持 add 或 addAll 操作</em></strong>。</td>
+      </tr>
+      <tr>
+      <td>Set<K> keySet()</td>
+      <td>返回此映射中包含的键的 Set 视图。该 set 受映射支持，所以对映射的更改可在此 set 中反映出来，反之亦然。如果对该 set 进行迭代的同时修改了映射（通过迭代器自己的 remove 操作除外），则迭代结果是不确定的。<strong><em>set 支持元素移除，通过 Iterator.remove、Set.remove、removeAll、retainAll 和 clear 操作可从映射中移除相应的映射关系。它不支持 add 或 addAll 操作。</em></strong></td>
+      </tr>
+      <tr>
+      <td>Collection<V> values()</td>
+      <td>返回此映射中包含的值的 Collection 视图。该 collection 受映射支持，所以对映射的更改可在此 collection 中反映出来，反之亦然。如果对该 collection 进行迭代的同时修改了映射（通过迭代器自己的 remove 操作除外），则迭代结果是不确定的。<strong><em>collection 支持元素移除，通过 Iterator.remove、Collection.remove、removeAll、retainAll 和 clear 操作可从映射中移除相应的映射关系。它不支持 add 或 addAll 操作。</em></strong></td>
+      </tr>
+      </table></p>
+
+<ul>
+<li>如果在视图上调用迭代器的remove()方法，实际上会从映射中删除键值对。不过不能向视图中增加元素。</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>HashMap</h3>
+
+<h4>HashMap类</h4>
+
+<table>
+<tr>
+<td>
+public class HashMap<K,V> extends AbstractMap<K,V> implements Map<K,V>, Cloneable, Serializable
+</td>
+</tr>
+</table>
+
+
+<ul>
+<li>基于哈希表的 Map 接口的实现。此实现提供所有可选的映射操作，并允许使用 null 值和 null 键。（除了非同步和允许使用 null 之外，HashMap 类与 Hashtable 大致相同。）此类不保证映射的顺序，特别是它不保证该顺序恒久不变。</li>
+<li>此实现假定哈希函数将元素适当地分布在各桶之间，可为基本操作（get 和 put）提供稳定的性能。迭代 collection 视图所需的时间与 HashMap 实例的“容量”（桶的数量）及其大小（键-值映射关系数）成比例。所以，如果迭代性能很重要，则不要将初始容量设置得太高（或将加载因子设置得太低）。<br/></li>
+<li>HashMap 的实例有两个参数影响其性能：初始容量 和加载因子。容量 是哈希表中桶的数量，初始容量只是哈希表在创建时的容量。加载因子 是哈希表在其容量自动增加之前可以达到多满的一种尺度。当哈希表中的条目数超出了加载因子与当前容量的乘积时，则要对该哈希表进行 rehash 操作（即重建内部数据结构），从而哈希表将具有大约两倍的桶数。<br/></li>
+<li>通常，默认加载因子 (.75) 在时间和空间成本上寻求一种折衷。加载因子过高虽然减少了空间开销，但同时也增加了查询成本（在大多数 HashMap 类的操作中，包括 get 和 put 操作，都反映了这一点）。在设置初始容量时应该考虑到映射中所需的条目数及其加载因子，以便最大限度地减少 rehash 操作次数。如果初始容量大于最大条目数除以加载因子，则不会发生 rehash 操作。<br/></li>
+<li>如果很多映射关系要存储在 HashMap 实例中，则相对于按需执行自动的 rehash 操作以增大表的容量来说，使用足够大的初始容量创建它将使得映射关系能更有效地存储。<br/>
+
+<ul>
+<li>注意，此实现不是同步的。如果多个线程同时访问一个哈希映射，而其中至少一个线程从结构上修改了该映射，则它必须 保持外部同步。（结构上的修改是指添加或删除一个或多个映射关系的任何操作；仅改变与实例已经包含的键关联的值不是结构上的修改。）这一般通过对自然封装该映射的对象进行同步操作来完成。如果不存在这样的对象，则应该使用 Collections.synchronizedMap 方法来“包装”该映射。最好在创建时完成这一操作，以防止对映射进行意外的非同步访问，如下所示：<br>
+Map m = Collections.synchronizedMap(new HashMap(&hellip;));</li>
+</ul>
+</li>
+<li>由所有此类的“collection 视图方法”所返回的迭代器都是快速失败 的：在迭代器创建之后，如果从结构上对映射进行修改，除非通过迭代器本身的 remove 方法，其他任何时间任何方式的修改，迭代器都将抛出 ConcurrentModificationException。因此，面对并发的修改，迭代器很快就会完全失败，而不冒在将来不确定的时间发生任意不确定行为的风险。<br/>
+
+<ul>
+<li>注意，迭代器的快速失败行为不能得到保证，一般来说，存在非同步的并发修改时，不可能作出任何坚决的保证。快速失败迭代器尽最大努力抛出 ConcurrentModificationException。因此，编写依赖于此异常的程序的做法是错误的，正确做法是：迭代器的快速失败行为应该仅用于检测程序错误。
+
+<h4>HashMap源码</h4></li>
+</ul>
+</li>
+<li><p>HashMap中的属性</p>
+
+<pre><code>  private static final long serialVersionUID = 362498820763181265L;
+  //默认的初始容量，16        
+  static final int DEFAULT_INITIAL_CAPACITY = 1 &lt;&lt; 4; // aka 16
+  //最大容量
+  static final int MAXIMUM_CAPACITY = 1 &lt;&lt; 30;
+  //装载因子
+  static final float DEFAULT_LOAD_FACTOR = 0.75f;
+  static final int TREEIFY_THRESHOLD = 8;
+  static final int UNTREEIFY_THRESHOLD = 6;
+  static final int MIN_TREEIFY_CAPACITY = 64;
+
+  //存储Entry的table数组
+  transient Node&lt;K,V&gt;[] table;
+  transient Set&lt;Map.Entry&lt;K,V&gt;&gt; entrySet;
+  //map中保存的键值对的数量
+  transient int size;
+  //map结构被改变的次数
+  transient int modCount;
+  //需要调整大小的极限值（容量*装载因子）
+  int threshold;
+  //装载因子
+  final float loadFactor;
+</code></pre></li>
+</ul>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[字符串讲解]]></title>
@@ -376,179 +490,6 @@
 </li>
 </ul>
 </li>
-</ul>
-
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Object详解]]></title>
-    <link href="http://ttazk.github.io/blog/2017/04/19/object/"/>
-    <updated>2017-04-19T20:07:37+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/04/19/object</id>
-    <content type="html"><![CDATA[<ul>
-<li>Object类是所有类的父类，每个类都是由Object类扩展而来。如果没有明确指出父类，则默认为Object类为该类的父类。</li>
-<li>可以使用Object类型的变量引用任何类型的对象。</li>
-<li><p>在Java中，只有基本数据类型（数字，字符，布尔）不是对象。所有的数组类型，不管是对象数组还是基本类型的数组都扩展了Object类。</p>
-
-<pre><code>  int[] i=new int[5];
-  Object obj=i;
-</code></pre>
-
-<h3>equals()方法</h3></li>
-<li>在Object类中，该方法用于判断两个对象是否具有相同的引用。</li>
-<li><p>然而，经常需要检测两个对象的状态的相等性，所以一般需要覆写equals()方法。</p>
-
-<pre><code>  public class Test{
-             public boolean equals(Object otherObject){
-                  }
-         }
-</code></pre></li>
-<li>在子类中定义equals方法时，首先调用父类的equals方法。如果检测失败，则对象不可能相等。如果父类中的域都相等，就需要比较子类中的实例域。</li>
-</ul>
-
-
-<!--  more -->
-
-
-<pre><code>         public class Test{
-                   public boolean equals(Object otherObject){
-                   if(!super.equals(otherObject)) return false;
-                    //接着比较子类中扩展的实例域    
-                   }
-               }        
-</code></pre>
-
-<ul>
-<li><p>Java规范要求equals方法具有下面的特性：</p>
-
-<ul>
-<li>自反性：对于非空引用 x,x.equals(x)应该返回true.</li>
-<li>对称性：如果x.equals(y)返回true,则y.equals(x)也应该返回true</li>
-<li>传递性：x.equals(y)返回true,y.equals(z)返回true，则x.equals(z)返回true</li>
-<li>一致性：如果x,y引用的对象没有发生改变，反复调用x.equals(y)返回相同的结果</li>
-<li>对于非空引用x，x.equals(null)应该返回false.<br/><br/></li>
-</ul>
-</li>
-<li><p>编写equals方法的步骤：</p>
-
-<ul>
-<li>显式参数命名为otherObject，稍后需将它转换成叫做other的变量</li>
-<li><p>检测this与otherObject是否引用同一个对象</p>
-
-<pre><code>  if(this==otherObject)
-  return true;
-</code></pre></li>
-<li><p>检测otherObject是否为null，如果为null，则返回false</p>
-
-<pre><code>   if(otherObject==null)  
-   return false;
-</code></pre></li>
-<li><p>比较this与otherObject是否属于同一个类</p>
-
-<pre><code>  if(this.getClass!==otherObject.getClass)  
-  return false;
-</code></pre></li>
-<li><p>将otherObject转换为相应的类类型变量</p>
-
-<pre><code>   ClassName other=(ClassName)otherObject
-</code></pre></li>
-<li><p>对所有需要比较的域进行比较。使用==比较基本类型域，使用equals比较对象域。如果所有的域都匹配则返回true,否则返回false.</p>
-
-<pre><code>  return field1==other.field&amp;&amp;Objects.equals(field,other.field)
-</code></pre>
-
-<br/><br/>
-
-<h3>hashCode()方法</h3></li>
-</ul>
-</li>
-<li>散列码(hash code)是由对象导出的一个整型值（可以是负数）。散列码没有规律，两个不同对象的散列码基本不同。</li>
-<li>在Object类中，hashCode()方法的返回值默认为对象的存储地址。</li>
-<li><p>String类型重写了hashCode()方法，字符串的散列码是由内容导出的。计算过程如下：</p>
-
-<pre><code>        int hash=0;
-        for(int i=0;i&lt;length();i++){
-             hash=31*hash+charAt(i);
-        }
-        //String str1="string";  String str2=new String("string");
-        //str1,str2的散列码值相同，因为其内容相同。
-</code></pre></li>
-<li>如果重新定义equals()方法，就必须重新定义hashCode()方法，以便用户可以将对象插入到散列表中。equals()方法与hashCode()方法的定义必须一致：如果x.equals(y)返回true,那么x.hashCode()的值必须与y.hashCode()值相等。</li>
-<li><p>如果存在数组类型的域，可以使用静态的Arrays.hashCode()方法计算一个散列码，这个散列码由数组元素的散列码组成。</p>
-
-<pre><code>  static int hashCode(type[] a)//数组类型可以是任意类型
-</code></pre>
-
-<br/><br/>
-
-<h3>toString()方法</h3></li>
-<li>该方法用于返回表示对象值的字符串。</li>
-<li>Object类中的toString()方法返回对象所属的类名及散列码。</li>
-<li>只要将对象与一个字符串通过"+&ldquo;相连，Java编译器就会自动调用toString()方法，以便获得这个对象的字符串表示。</li>
-<li>大部分类覆写了toString()方法，返回值为：类的名字，随后是一对方括号括起来的域值。</li>
-<li><p>数组类型继承了Object类的toString方法，如果直接输出数组，如：int[] arr={1,2,3};，会生成字符串：类型+hashCode。如果想要输出[1,2,3]，则需调用Arrays.toString()方法。</p>
-
-<pre><code>      static String toString(type[] a)            
-</code></pre>
-
-<br/><br/>
-
-<h3>getClass()方法</h3></li>
-<li>返回此 Object 的运行时类。返回的 Class 对象是由所表示类的 static synchronized 方法锁定的对象
-<br/><br/>
-
-<h3>protected Object clone()</h3></li>
-<li>创建并返回此对象的一个副本。“副本”的准确含义可能依赖于对象的类。这样做的目的是，对于任何对象 x表达式： x.clone() != x 为 true，表达式： x.clone().getClass() == x.getClass()也为 true，但这些并非必须要满足的要求。</li>
-<li>一般情况下： x.clone().equals(x)为 true，但这并非必须要满足的要求。</li>
-<li>按照惯例，返回的对象应该通过调用 super.clone 获得。如果一个类及其所有的超类（Object 除外）都遵守此约定，则 x.clone().getClass() == x.getClass()。</li>
-<li>按照惯例，此方法返回的对象应该独立于该对象（正被复制的对象）。要获得此独立性，在 super.clone 返回对象之前，有必要对该对象的一个或多个字段进行修改。这通常意味着要复制包含正在被复制对象的内部“深层结构”的所有可变对象，并使用对副本的引用替换对这些对象的引用。如果一个类只包含基本字段或对不变对象的引用，那么通常不需要修改 super.clone 返回的对象中的字段。</li>
-<li>Object 类的 clone 方法执行特定的复制操作。首先，如果此对象的类不能实现接口 Cloneable，则会抛出 CloneNotSupportedException。注意，所有的数组都被视为实现接口 Cloneable。否则，此方法会创建此对象的类的一个新实例，并像通过分配那样，严格使用此对象相应字段的内容初始化该对象的所有字段；这些字段的内容没有被自我复制。所以，此方法执行的是该对象的“浅表复制”，而不“深层复制”操作。</li>
-<li>Object 类本身不实现接口 Cloneable，所以在类为 Object 的对象上调用 clone 方法将会导致在运行时抛出异常。
-<br/><br/>
-
-<h3>public final void notify()</h3></li>
-<li>唤醒在此对象监视器上等待的单个线程。如果所有线程都在此对象上等待，则会选择唤醒其中一个线程。选择是任意性的，并在对实现做出决定时发生。线程通过调用其中一个 wait 方法，在对象的监视器上等待。</li>
-<li>直到当前线程放弃此对象上的锁定，才能继续执行被唤醒的线程。被唤醒的线程将以常规方式与在该对象上主动同步的其他所有线程进行竞争；例如，唤醒的线程在作为锁定此对象的下一个线程方面没有可靠的特权或劣势。</li>
-<li>此方法只应由作为此对象监视器的所有者的线程来调用。通过以下三种方法之一，线程可以成为此对象监视器的所有者：
-
-<ul>
-<li>通过执行此对象的同步实例方法。</li>
-<li>通过执行在此对象上进行同步的 synchronized 语句的正文。</li>
-<li>对于 Class 类型的对象，可以通过执行该类的同步静态方法。</li>
-</ul>
-</li>
-<li>一次只能有一个线程拥有对象的监视器。
-<br/><br/>
-
-<h3>public final void wait(long timeout)</h3></li>
-<li>此方法导致当前线程（称之为 T）将其自身放置在对象的等待集中，然后放弃此对象上的所有同步要求。出于线程调度目的，在发生以下四种情况之一前，线程 T 被禁用，且处于休眠状态：
-
-<ul>
-<li>其他某个线程调用此对象的 notify 方法，并且线程 T 碰巧被任选为被唤醒的线程。</li>
-<li>其他某个线程调用此对象的 notifyAll 方法。</li>
-<li>其他某个线程中断线程 T。</li>
-<li>大约已经到达指定的实际时间。但是，如果 timeout 为零，则不考虑实际时间，在获得通知前该线程将一直等待。</li>
-</ul>
-</li>
-<li>然后，从对象的等待集中删除线程 T，并重新进行线程调度。然后，该线程以常规方式与其他线程竞争，以获得在该对象上同步的权利；一旦获得对该对象的控制权，该对象上的所有其同步声明都将被恢复到以前的状态，这就是调用 wait 方法时的情况。然后，线程 T 从 wait 方法的调用中返回。所以，从 wait 方法返回时，该对象和线程 T 的同步状态与调用 wait 方法时的情况完全相同
-<br/><br/>
-
-<h3>protected void finalize()</h3></li>
-<li>当垃圾回收器确定不存在对该对象的更多引用时，由对象的垃圾回收器调用此方法。子类重写 finalize 方法，以配置系统资源或执行其他清除。</li>
-</ul>
-
-
-<h3>protected void finalize() throws Throwable</h3>
-
-<ul>
-<li>当垃圾回收器确定不存在对该对象的更多引用时，由对象的垃圾回收器调用此方法。子类重写 finalize 方法，以配置系统资源或执行其他清除。</li>
-<li>finalize 的常规协定是：当 JavaTM 虚拟机已确定尚未终止的任何线程无法再通过任何方法访问此对象时，将调用此方法，除非由于准备终止的其他某个对象或类的终结操作执行了某个操作。finalize 方法可以采取任何操作，其中包括再次使此对象对其他线程可用；不过，finalize 的主要目的是在不可撤消地丢弃对象之前执行清除操作。例如，表示输入/输出连接的对象的 finalize 方法可执行显式 I/O 事务，以便在永久丢弃对象之前中断连接。</li>
-<li>Object 类的 finalize 方法执行非特殊性操作；它仅执行一些常规返回。Object 的子类可以重写此定义。</li>
-<li>Java 编程语言不保证哪个线程将调用某个给定对象的 finalize 方法。但可以保证在调用 finalize 时，调用 finalize 的线程将不会持有任何用户可见的同步锁定。如果 finalize 方法抛出未捕获的异常，那么该异常将被忽略，并且该对象的终结操作将终止。</li>
-<li>在启用某个对象的 finalize 方法后，将不会执行进一步操作，直到 Java 虚拟机再次确定尚未终止的任何线程无法再通过任何方法访问此对象，其中包括由准备终止的其他对象或类执行的可能操作，在执行该操作时，对象可能被丢弃。</li>
-<li>对于任何给定对象，Java 虚拟机最多只调用一次 finalize 方法。</li>
-<li>finalize 方法抛出的任何异常都会导致此对象的终结操作停止，但可以通过其他方法忽略它。</li>
 </ul>
 
 ]]></content>
