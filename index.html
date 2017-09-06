@@ -508,45 +508,83 @@ Aug 2nd, 2017</div>
     <article class="post">
 	<h2 class="title">
 		
-		<a href="/blog/2017/08/02/question4/">
+		<a href="/blog/2017/08/02/jianzhioffer1/">
 		
-			剑指offer_Question4</a>
+			剑指offer——1</a>
 	</h2>
 	<div class="entry-content">
-		<pre><code>package test;
+		<h3>1.二维数组中的查找</h3>
 
-/*
- * 替换空格
- * 实现一个函数，将字符串中的空格替换成%20
- */
-public class Question4 {
+<p>   在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数,输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
 
-    public static String replaceBlank(String string){
-        /*
-         * 可以直接创建一个新的字符串/StringBuffer,然后对输入的字符串进行遍历，如果遇到字符，
-         * 则加在新字符串的末尾；如果遇到空格，就在新字符串的末尾加入%20,返回新的字符串即可。
-         */
-        StringBuffer stringBuffer=new StringBuffer();
-        for(int i=0;i&lt;string.length();i++){
-            if (string.charAt(i)==' ') {
-                stringBuffer.append("%20");
-            }else{
-                stringBuffer.append(string.charAt(i));
+<pre><code>        * 在一个二维数组中查找一个整数，数组是从左向右，从上向下递增
+        * 分析：
+        * 对于无序的数组，我们可以一行一行地进行比较，时间复杂度为O(n*n)
+        * 由于该数组有序，按照一般的比较思路，我们一般从左上角到又开始比较，如果当前数字比待查找值小，则向右或者
+        * 向下继续查找，这样的话便不容易进行选择。因此，我们可以尝试从右上角向左进行排查/从左下角向右进行排查，这样就不会像刚才一样
+        * 面临两种选择，从而使问题简化。
+        * 从左下角向右进行排查：如果当前数字比待查找值大，则向上进行查找（同时摈弃最下面一行，因为最下面一行的数字都比左下角的大）
+        * 如果当前数字比待查找值小，则向右进行查找（同时摈弃该列，因为该列往上的数字都比待查找值小）
+        *
+        public class Question3 {
+
+            //从左下角向右进行排查
+            public static boolean findInArray(int[][] array,int a){
+                if (array==null) {
+                    return false;
+                }
+                int row=array.length-1;
+                int column=array[0].length-1;
+
+
+                int i=row,j=0;
+                while(i&gt;=0&amp;&amp;j&lt;=column){
+                    if (array[i][j]&gt;a) {
+                        System.out.print(array[i][j]+" ");
+                        i--;//往上走
+                    }
+                    else if (array[i][j]&lt;a) {
+                        System.out.print(array[i][j]+" ");
+                        j++;//往右走
+                    }else {
+                        System.out.print(array[i][j]+" ");
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            public static void main(String[] args) {
+                int[][] array={.{1,2,3,4},{2,3,4,5},{3,4,5,6,},{4,5,6,7}.};
+                System.out.println(findInArray(array, 3));
+                //System.out.println(findInArray(array, 9));
+            }
+
+        }
+        --------------------------------------------------------------------------------------------
+        public class Solution {
+            public boolean Find(int target, int [][] array) {
+                int i=0;
+                int j=array[0].length-1;
+                while(i&lt;=array.length-1&amp;&amp;j&gt;=0){
+                    if (array[i][j]==target) {
+                        return true;
+                    }
+                    else if(target&gt;array[i][j]){
+                        i++;
+                    }
+                    else{
+                        j--;
+                    }
+                }
+                return false;
             }
         }
-        return stringBuffer.toString();
-    }
-
-    public static String replaceBlank2(String string){
-        /*
-         * 直接使用String.repalce(char old,char new)
-         * 返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。
-         * 该方法只能替换一个字符
 </code></pre>
 
 
 		
-		<a href="/blog/2017/08/02/question4/" class="more-link">Read on &rarr;</a>
+		<a href="/blog/2017/08/02/jianzhioffer1/" class="more-link">Read on &rarr;</a>
 	</div>
 
 
@@ -565,7 +603,7 @@ Aug 2nd, 2017</div>
 
 </div>
 	
-	<div class="comments"><a href="/blog/2017/08/02/question4/#disqus_thread">Comments</a></div>
+	<div class="comments"><a href="/blog/2017/08/02/jianzhioffer1/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

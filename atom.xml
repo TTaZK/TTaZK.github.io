@@ -4,7 +4,7 @@
   <title><![CDATA[ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-08-29T22:50:42+08:00</updated>
+  <updated>2017-09-06T23:28:00+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -539,96 +539,633 @@ public class Question3 {
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[剑指offer_Question4]]></title>
-    <link href="http://ttazk.github.io/blog/2017/08/02/question4/"/>
+    <title type="html"><![CDATA[剑指offer——1]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/02/jianzhioffer1/"/>
     <updated>2017-08-02T21:31:37+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/08/02/question4</id>
-    <content type="html"><![CDATA[<pre><code>package test;
+    <id>http://ttazk.github.io/blog/2017/08/02/jianzhioffer1</id>
+    <content type="html"><![CDATA[<h3>1.二维数组中的查找</h3>
 
-/*
- * 替换空格
- * 实现一个函数，将字符串中的空格替换成%20
- */
-public class Question4 {
+<p>   在一个二维数组中，每一行都按照从左到右递增的顺序排序，每一列都按照从上到下递增的顺序排序。请完成一个函数,输入这样的一个二维数组和一个整数，判断数组中是否含有该整数。</p>
 
-    public static String replaceBlank(String string){
-        /*
-         * 可以直接创建一个新的字符串/StringBuffer,然后对输入的字符串进行遍历，如果遇到字符，
-         * 则加在新字符串的末尾；如果遇到空格，就在新字符串的末尾加入%20,返回新的字符串即可。
-         */
-        StringBuffer stringBuffer=new StringBuffer();
-        for(int i=0;i&lt;string.length();i++){
-            if (string.charAt(i)==' ') {
-                stringBuffer.append("%20");
-            }else{
-                stringBuffer.append(string.charAt(i));
+<pre><code>        * 在一个二维数组中查找一个整数，数组是从左向右，从上向下递增
+        * 分析：
+        * 对于无序的数组，我们可以一行一行地进行比较，时间复杂度为O(n*n)
+        * 由于该数组有序，按照一般的比较思路，我们一般从左上角到又开始比较，如果当前数字比待查找值小，则向右或者
+        * 向下继续查找，这样的话便不容易进行选择。因此，我们可以尝试从右上角向左进行排查/从左下角向右进行排查，这样就不会像刚才一样
+        * 面临两种选择，从而使问题简化。
+        * 从左下角向右进行排查：如果当前数字比待查找值大，则向上进行查找（同时摈弃最下面一行，因为最下面一行的数字都比左下角的大）
+        * 如果当前数字比待查找值小，则向右进行查找（同时摈弃该列，因为该列往上的数字都比待查找值小）
+        *
+        public class Question3 {
+
+            //从左下角向右进行排查
+            public static boolean findInArray(int[][] array,int a){
+                if (array==null) {
+                    return false;
+                }
+                int row=array.length-1;
+                int column=array[0].length-1;
+
+
+                int i=row,j=0;
+                while(i&gt;=0&amp;&amp;j&lt;=column){
+                    if (array[i][j]&gt;a) {
+                        System.out.print(array[i][j]+" ");
+                        i--;//往上走
+                    }
+                    else if (array[i][j]&lt;a) {
+                        System.out.print(array[i][j]+" ");
+                        j++;//往右走
+                    }else {
+                        System.out.print(array[i][j]+" ");
+                        return true;
+                    }
+                }
+
+                return false;
+            }
+            public static void main(String[] args) {
+                int[][] array={.{1,2,3,4},{2,3,4,5},{3,4,5,6,},{4,5,6,7}.};
+                System.out.println(findInArray(array, 3));
+                //System.out.println(findInArray(array, 9));
+            }
+
+        }
+        --------------------------------------------------------------------------------------------
+        public class Solution {
+            public boolean Find(int target, int [][] array) {
+                int i=0;
+                int j=array[0].length-1;
+                while(i&lt;=array.length-1&amp;&amp;j&gt;=0){
+                    if (array[i][j]==target) {
+                        return true;
+                    }
+                    else if(target&gt;array[i][j]){
+                        i++;
+                    }
+                    else{
+                        j--;
+                    }
+                }
+                return false;
             }
         }
-        return stringBuffer.toString();
-    }
-
-    public static String replaceBlank2(String string){
-        /*
-         * 直接使用String.repalce(char old,char new)
-         * 返回一个新的字符串，它是通过用 newChar 替换此字符串中出现的所有 oldChar 得到的。
-         * 该方法只能替换一个字符
 </code></pre>
 
-<!--  more -->  
+<!-- more -->
 
 
-<pre><code>         * 
-         * replace(CharSequence target, CharSequence replacement) 
-         *使用指定的字面值替换序列替换此字符串所有匹配字面值目标序列的子字符串。
-         *该方法可以替换字符串
-         * 
-         *replaceAll(String regex, String replacement) 
-         *使用给定的 replacement 替换此字符串所有匹配给定的正则表达式的子字符串。。
-         */
-        return string.replace(" ","%20");
+<h3>2.替换空格</h3>
+
+<p>请实现一个函数，将一个字符串中的空格替换成“%20”。例如，当字符串为We Are Happy.则经过替换之后的字符串为We%20Are%20Happy。</p>
+
+<pre><code>        public class Solution {
+        //从后向前复制
+            public static String replaceSpace(StringBuffer stringBuffer){
+                 int oldIndex=stringBuffer.length()-1;
+                 int count=0;
+                 for (int i = 0; i &lt; stringBuffer.length(); i++) {
+                     if (stringBuffer.charAt(i)==' ') {
+                         count++;
+                     }
+                 }
+                 int newIndex=oldIndex+count*2;
+                 stringBuffer.setLength(newIndex+1);
+                 for(;oldIndex&gt;=0;oldIndex--){
+                     if (stringBuffer.charAt(oldIndex)==' ') {
+                         stringBuffer.setCharAt(newIndex--, '0');
+                         stringBuffer.setCharAt(newIndex--, '2');
+                         stringBuffer.setCharAt(newIndex--, '%');
+                     }else{
+                         stringBuffer.setCharAt(newIndex--, stringBuffer.charAt(oldIndex));
+                     }
+                 }
+                 return stringBuffer.toString();
+            }
+
+        }
+</code></pre>
+
+<h3>3.从尾到头打印链表</h3>
+
+<p>   输入一个链表，从尾到头打印链表每个节点的值。</p>
+
+<pre><code>package test;
+
+class Node{
+    private Node next;
+    private int value;
+    public Node getNext() {
+         return next;
+    }
+    public void setNext(Node next) {
+         this.next = next;
+    }
+    public int getValue() {
+         return value;
+    }
+    public void setValue(int value) {
+         this.value = value;
     }
 
-    public static String replaceBlank3(String string){
-        /*
-         * 使用类似于剑指offer中的方法，对原来字符串中的字符一个一个进行复制
-         * 先统计原本字符串中的空格个数x，则新的字符串的长度比原来字符串长2x
-         * 定义两个指针p1,p2,其中p1初始指向原来字符串的末尾位置，p2指向新字符串的末尾位置
-         * 当p1遇到的字符不是空格时，将该字符复制到新字符串，同时p1,p2向前移动一个位置
-         * 当p1遇到的字符为空格时，p1往前移动一个位置，p2往前移动三个位置，同时在这三个位置上添加%20
-         * 当p1,p2的索引相同时，说明前面没有空格了
-         * 
-         * 简易新建一个字符数组为新的字符串，以空间换时间
-         * 
-         */
-          int blankCount=0;
-          for(int i=0;i&lt;string.length();i++){
-           if (string.charAt(i)==' ') {
-            blankCount++;
-           }
-          }
-          char[] newString=new char[string.length()+blankCount*2];
-          int p1=string.length()-1,p2=newString.length-1;
-          while(p1&gt;=0&amp;&amp;p2&gt;=0){
-           if (string.charAt(p1)!=' ') {
-            //当前字符非空，则复制且两个指针都往前移一个
-            newString[p2]=string.charAt(p1);
-            p1--;
-            p2--;
-           }else if (string.charAt(p1)==' ') {
-            p1--;
-            newString[p2]='0';
-            p2--;
-            newString[p2]='2';
-            p2--;
-            newString[p2]='%';
-            p2--;
-           }
-          }
-        return String.valueOf(newString);
+}
+public class PrintFromTailToHead {
+    //可以使用栈来实现，访问一个节点时就入栈，根据栈的特点，输出时已经反向
+    //递归本身就相当于栈结构
+    //为了实现反向输出，每访问一个节点，先输出它的下一个节点，再输出自身
+    public static void printFromTailtoHead(Node node){
+         if (node!=null) {
+             printFromTailtoHead(node.getNext());
+             System.out.print(node.getValue()+" ");
+         }
     }
     public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         for (int i = 0; i &lt; 10; i++) {
+
+         }
+         Node node1=new Node();node1.setValue(4);
+         Node node2=new Node();node2.setValue(6);
+         Node node3=new Node();node3.setValue(12);
+         Node node4=new Node();node4.setValue(8);
+         Node node5=new Node();node5.setValue(1);
+         Node node6=new Node();node6.setValue(3);
+        node1.setNext(node2);node2.setNext(node3);node3.setNext(node4);node4.setNext(node5);node5.setNext(node6);node6.setNext(null);
+         printFromTailtoHead(node1);
+    }
+
+}
+</code></pre>
+
+<h3>4.重建二叉树</h3>
+
+<p>   输入某二叉树的前序遍历和中序遍历的结果，请重建出该二叉树。假设输入的前序遍历和中序遍历的结果中都不含重复的数字。例如输入前序遍历序列{1,2,4,7,3,5,6,8}和中序遍历序列{4,7,2,1,5,3,8,6}，则重建二叉树并返回。
+        package test;</p>
+
+<pre><code>    class TreeNode {
+         int val;
+         TreeNode left;
+         TreeNode right;
+         TreeNode(int x) { val = x; }
+         }
+    public class RebuildBinaryTree {
+         public TreeNode reConstructBinaryTree(int [] pre,int [] in) {
+                return reConstructBinaryTree(pre, 0, pre.length-1, in, 0, in.length-1);
+         }
+         public TreeNode reConstructBinaryTree(int[] pre,int preStart,int preEnd,int[] in,int inStart,int inEnd) {
+                if (preStart&gt;preEnd||inStart&gt;inEnd) {
+                     return null;
+                 }
+                TreeNode root=new TreeNode(pre[preStart]);//以先序遍历的第一个点构造根节点
+                //遍历中序数组，找到根节点的位置，根节点的左半部分为左子树，根节点的右半边为右子树
+                //再根据左右子树的长度将先序数组划分成两个数组，分别对应左右子树的先序遍历
+                for (int i = inStart; i &lt;= inEnd; i++) {
+                     if (in[i]==pre[preStart]) {//记录根节点在中序数组的位置
+                         root.left=reConstructBinaryTree(pre, preStart+1, preStart+i-inStart, in, inStart, i-1);
+                         root.right=reConstructBinaryTree(pre, preStart+i-inStart+1, preEnd, in, i+1, inEnd);
+                     }
+                 }
+                return root;
+            }
+        public static void main(String[] args) {
+             // TODO Auto-generated method stub
+
+        }
+
+    }
+</code></pre>
+
+<h3>5.用两个栈实现队列</h3>
+
+<p>   用两个栈来实现一个队列，完成队列的Push和Pop操作。 队列中的元素为int类型。</p>
+
+<pre><code>    package test;
+
+    import java.util.Stack;
+
+    public class StackToQueue {
+        //第一个栈用于压入，第二个栈用于弹出
+        static Stack&lt;Integer&gt; stack1=new Stack&lt;&gt;();
+        static Stack&lt;Integer&gt; stack2=new Stack&lt;&gt;();
+        public static void push(int node){
+             stack1.push(node);
+        }
+        public static int pop(){
+
+             if (!stack2.isEmpty()) {
+                 int first=stack2.pop();
+                 return first;
+             }else{
+                 while(!stack1.isEmpty()){
+                     int temp=stack1.pop();
+                     stack2.push(temp);
+                 }
+                 return pop();
+             }
+        }
+        public static void main(String[] args) {
+             // TODO Auto-generated method stub
+             push(1);push(2);push(3);
+             System.out.print(pop()+" ");
+             System.out.print(pop()+" ");
+             System.out.print(pop()+" ");
+        }
+
+    }
+</code></pre>
+
+<h3>6.旋转数组的最小数字</h3>
+
+<p>   把一个数组最开始的若干个元素搬到数组的末尾，我们称之为数组的旋转。 输入一个非递减排序的数组的一个旋转，输出旋转数组的最小元素。 例如数组{3,4,5,1,2}为{1,2,3,4,5}的一个旋转，该数组的最小值为1。 NOTE：给出的所有元素都大于0，若数组大小为0，请返回0。</p>
+
+<pre><code>import java.util.ArrayList;
+public class Solution {
+    public int minNumberInRotateArray(int [] array) {
+    int low=0;
+        int high=array.length-1;
+        while(low&lt;=high){
+            if (high-low==1) {
+                return array[high];
+            }
+            int mid=(low+high)/2;
+            if (array[mid]&lt;=array[high]) {
+                high=mid;
+            }
+            else if (array[mid]&gt;=array[high]) {
+                low=mid;
+            }
+        }
+        return -1;
+    }
+}
+</code></pre>
+
+<h3>7.斐波那契数</h3>
+
+<p>   大家都知道斐波那契数列，现在要求输入一个整数n，请你输出斐波那契数列的第n项。n&lt;=39</p>
+
+<pre><code>package test;
+
+public class Fibonacci {
+    //使用递归占用内存太大；计算也会出问题，所以应该选择循环
+    public static int fibonacci(int n) {
+        if(n==1||n==2){
+            return 1;
+        }
+        else if(n&gt;2){
+            return fibonacci(n-2)+fibonacci(n-1);
+        }
+        else
+            return 0;
+    }
+    public static int fibonacci_2(int n){
+        if (n==1||n==2) {
+            return 1;
+        }
+        else if (n&gt;2) {
+            int a=1,b=1,c=0;
+            for(int i=3;i&lt;=n;i++){
+                c=a+b;
+                a=b;
+                b=c;
+            }
+            return c;
+        }
+        else {
+            return 0;
+        }
+    }
+    //思考使用递归求解动态规划导致时间复杂度为指数的原因是子问题重叠，需要重复计算子问题
+    //那么动态规划自顶向下的思路是在递归的基础上添加备忘机制,所以这题也可以在递归的基础上添加备忘机制
+    //但是，也可以采用自底向上的思路，建立数组存储子问题的解，再求解原问题的解
+    public static int fibonacci3(int n){
+        int[] array=new int[n+1];
+        array[0]=0;
+        array[1]=1;
+        for(int i=2;i&lt;n+1;i++){
+            array[i]=array[i-1]+array[i-2];
+        }
+        return array[n];
+    }
+    public static void main(String[] args) {
+        System.out.println(fibonacci(10));
+        System.out.println(fibonacci_2(20));
+    }
+}
+</code></pre>
+
+<h3>8.跳台阶</h3>
+
+<p>一只青蛙一次可以跳上1级台阶，也可以跳上2级。求该青蛙跳上一个n级的台阶总共有多少种跳法。</p>
+
+<pre><code>    package test;
+
+    public class JumpFloor {
+        //青蛙跳n阶台阶，一次可以跳1,2,3,4...n阶，求有多少种跳法
+        //等同于斐波那契数
+        //f(n)=f(n-1)+f(n-2)
+        public static int jumpFloor(int target){
+            int[] array=new int[target+1];
+            array[0]=0;
+            array[1]=1;
+            for(int i=2;i&lt;target+1;i++){
+                array[i]=array[i-1]+array[i-2];
+            }
+            return array[n];
+
+             return array[target];
+        }
+        public static void main(String[] args) {
+             // TODO Auto-generated method stub
+             System.out.println(jumpFloor(4));
+        }
+
+    }
+</code></pre>
+
+<h3>9.变态跳台阶</h3>
+
+<p>一只青蛙一次可以跳上1级台阶，也可以跳上2级……它也可以跳上n级。求该青蛙跳上一个n级的台阶总共有多少种跳法。</p>
+
+<pre><code>package test;
+
+public class JumpFloor {
+    //青蛙跳n阶台阶，一次可以跳1,2,3,4...n阶，求有多少种跳法
+    //f(n)=f(n-1)+f(n-2)+...f(1)=2*f(n-1)
+    public static int jumpFloor(int target){
+         if (target==1) {
+             return 1;
+         }
+         int[] array=new int[target+1];//用来存储n的各个值的情况下的值
+         array[0]=1;
+         array[1]=1;
+         for (int i = 2; i &lt;=target; i++) {
+             array[i]=0;
+             //当前位置的值等于前面所有元素的和
+             for(int j=0;j&lt;i;j++){
+                 array[i]=array[i]+array[j];
+             }
+         }
+         return array[target];
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         System.out.println(jumpFloor(4));
+    }
+
+}
+</code></pre>
+
+<h3>10.矩形覆盖</h3>
+
+<p>我们可以用2<em>1的小矩形横着或者竖着去覆盖更大的矩形。请问用n个2</em>1的小矩形无重叠地覆盖一个2*n的大矩形，总共有多少种方法？</p>
+
+<pre><code>public class Solution {
+     //类似于斐波那契数，考虑第一步是竖着覆盖，还是横着覆盖
+    public int RectCover(int target) {
+        if(target==1){return 1;}
+        else if(target==2){return 2;}
+        else if(target&gt;=3){
+            return RectCover(target-2)+RectCover(target-1);
+        }
+        else{return 0;}
+    }
+}
+</code></pre>
+
+<h3>11.二进制中1的个数</h3>
+
+<p>输入一个整数，输出该数二进制表示中1的个数。其中负数用补码表示。</p>
+
+<pre><code>public class Solution {
+    public int NumberOf1(int n) {
+        int count=0;
+        while(n!=0){
+            n=n&amp;(n-1);
+            count++;
+        }
+        return count;
+    }
+}
+</code></pre>
+
+<h3>12.调整数组的顺序使奇数位于偶数之前</h3>
+
+<p>输入一个整数数组，实现一个函数来调整该数组中数字的顺序，使得所有的奇数位于数组的前半部分，所有的偶数位于位于数组的后半部分，并保证奇数和奇数，偶数和偶数之间的相对位置不变。</p>
+
+<pre><code>package test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+public class ReOrderArray {
+
+    public static void reOrderArray(int[] array){
+        int n=array.length;
+        //int[] array1=new int[n];
+        //int[] array2=new int[n];
+        ArrayList&lt;Integer&gt; arrayList1=new ArrayList&lt;&gt;();
+        ArrayList&lt;Integer&gt; arrayList2=new ArrayList&lt;&gt;();
+        for(int i=0;i&lt;n;i++){
+            if (array[i]%2!=0) {
+                arrayList1.add(array[i]);
+            }
+        }
+        for(int i=0;i&lt;n;i++){
+            if (array[i]%2==0) {
+                arrayList2.add(array[i]);
+            }
+        }
+        for (int i = 0; i &lt; arrayList1.size(); i++) {
+            array[i]=arrayList1.get(i);
+        }
+        for (int i = 0; i &lt; arrayList2.size(); i++) {
+            array[i+arrayList1.size()]=arrayList2.get(i);
+        }
+    }
+    //这种解法类似于快排,不太稳定
+    //这种方法没有保证奇数之间位置相对不变，如1,2,3,4,5,6,7
+    public static void reOrderArray2(int[] array){
+        int low=0;
+        int high=array.length-1;
+        while(low&lt;high){
+            while(array[low]%2!=0&amp;&amp;low&lt;array.length){
+                low++;
+            }
+            while(array[high]%2==0&amp;&amp;high&gt;=0){
+                high--;
+            }
+            if (low&lt;=high) {
+                int temp=array[low];
+                array[low]=array[high];
+                array[high]=temp;
+            }
+        }
+    }
+
+    public static void main(String[] args) {
         // TODO Auto-generated method stub
-        System.out.println(replaceBlank2("ni hao wo "));
+        int[] array=new int[]{1,2,3,4,5,6,7};
+        reOrderArray2(array);
+        System.out.println(Arrays.toString(array));
+
+    }
+
+}
+</code></pre>
+
+<h3>13.链表中倒数第k个节点</h3>
+
+<p>输入一个链表，输出该链表中倒数第k个结点。</p>
+
+<pre><code>package test;
+//输入一个链表，输出该链表中倒数第k个结点。
+class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}
+public class FindKthToTail {
+    public static ListNode findKthTail(ListNode head,int k){
+         //用于判断比较极端的情况
+         if (head==null||k&lt;=0) {
+             return null;
+         }
+         int count=0;
+         ListNode tail=head;
+         while(count&lt;k-1){
+             if (tail.next!=null) {
+                 tail=tail.next;//先找到从表头起，第k个节点
+                 count++;
+             }
+             else {
+                 return null;//如果链表的总节点数小于k，则退出
+             }
+         }
+         //两个指针同时往后移动，当后面的指针到末尾时，前面的指针正好位于倒数第k个节点的位置
+         while(tail.next!=null){
+             tail=tail.next;
+             head=head.next;
+         }
+         return head;
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+
+    }
+
+}
+</code></pre>
+
+<h3>14.反转链表</h3>
+
+<p>输入一个链表，反转链表后，输出链表的所有元素。</p>
+
+<pre><code>package test;
+//输入一个链表，反转链表后，输出链表的头结点
+//不是说直接反向输出链表（PrintFromTailtoHead）
+
+//ps:当我们用一个指针遍历链表不能解决问题时，可以尝试使用2,3个指针
+
+public class ReverList {
+    class ListNode {
+        int val;
+        ListNode next = null;
+
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    public static ListNode reverseList(ListNode head){
+         if (head==null) {
+             return null;
+         }
+         ListNode h,i,j;//用三个指针遍历链表，其中i代表当前正在遍历的节点，h,j分别代表前后的节点
+         h=null;i=head;j=null;
+         //前两个指针用来更新链表，后一个指针只是用来保存下个节点，防止链表断开，前两个节点才是用来更新链表
+         while(i!=null){
+             j=i.next;//先保存当前节点的下个节点，防止链表断开
+
+             i.next=h;//更改当前节点的下个节点，使链表翻转
+
+             //迭代更新当前节点与前一个节点
+             h=i;
+             i=j;
+
+         }
+         return h;
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+
+    }
+
+}
+</code></pre>
+
+<h3>15.合并两个排序的链表</h3>
+
+<p>输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。</p>
+
+<pre><code>package test;
+//输入两个单调递增的链表，输出两个链表合成后的链表，当然我们需要合成后的链表满足单调不减规则。
+public class MergeList {
+    class ListNode {
+        int val;
+        ListNode next = null;
+
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    //出现错误，返回的是合并之后的最后一个节点
+    public ListNode merge(ListNode list1,ListNode list2){
+         ListNode temp=null;
+         while(list1!=null||list2!=null){
+             if (list1==null) {
+                 temp.next=list2;
+                 list2=list2.next;
+             }
+             else if (list2==null) {
+                 temp.next=list1;
+                 list1=list1.next;
+             }
+             else if (list1.val&lt;list2.val) {
+                 temp.next=list1;
+                 list1=list1.next;
+             }
+             else {
+                 temp.next=list2;
+                 list2=list2.next;
+             }
+             temp=temp.next;
+         }
+         return temp;
+    }
+
+    public ListNode merge2(ListNode list1,ListNode list2){
+         ListNode temp=null;
+         if (list1==null) {
+             return list2;
+         }
+         if (list2==null) {
+             return list1;
+         }
+         if (list1.val&lt;list2.val) {
+             temp=list1;
+             temp.next=merge2(list1.next, list2);
+         }
+         else {
+             temp=list2;
+             temp.next=merge2(list1, list2.next);
+         }
+         return temp;
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
     }
 
 }
