@@ -452,35 +452,41 @@ Aug 2nd, 2017</div>
     <article class="post">
 	<h2 class="title">
 		
-		<a href="/blog/2017/08/02/question3/">
+		<a href="/blog/2017/08/02/sortanddp/">
 		
-			剑指offer_Question3</a>
+			常见排序及两个经典DP</a>
 	</h2>
 	<div class="entry-content">
-		<pre><code>/*
- * 在一个二维数组中查找一个整数，数组是从左向右，从上向下递增
- * 分析：
- * 对于无序的数组，我们可以一行一行地进行比较，时间复杂度为O(n*n)
- * 由于该数组有序，按照一般的比较思路，我们一般从左上角到又开始比较，如果当前数字比待查找值小，则向右或者
- * 向下继续查找，这样的话便不容易进行选择。因此，我们可以尝试从右上角向左进行排查/从左下角向右进行排查，这样就不会像刚才一样
- * 面临两种选择，从而使问题简化。
- * 从左下角向右进行排查：如果当前数字比待查找值大，则向上进行查找（同时摈弃最下面一行，因为最下面一行的数字都比左下角的大）
- * 如果当前数字比待查找值小，则向右进行查找（同时摈弃该列，因为该列往上的数字都比待查找值小）
- */
-public class Question3 {
+		<h3>1.插入排序</h3>
 
-    //从左下角向右进行排查
-    public static boolean findInArray(int[][] array,int a){
-        if (array==null) {
-            return false;
-        }
-        int row=array.length-1;
-        int column=array[0].length-1;
+<pre><code>package Sort;
+
+public class InsertSort {
+    //将后面的元素与前面的有序元素进行比较，找到合适的位置进行插入
+    public static void insertSort(int[] array){
+         for (int i = 0; i &lt; array.length-1; i++) {
+             for (int j = i+1; j &gt;0 &amp;&amp; array[j]&lt;array[j-1]; j--) {
+                 int temp=array[j];
+                 array[j]=array[j-1];
+                 array[j-1]=temp;
+             }
+         }
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         int[] array={2,4,1,667,32,5,90,66,12,9,31};
+         insertSort(array);
+         for(int a:array){
+             System.out.print(a+" ");
+         }
+    }
+
+}
 </code></pre>
 
 
 		
-		<a href="/blog/2017/08/02/question3/" class="more-link">Read on &rarr;</a>
+		<a href="/blog/2017/08/02/sortanddp/" class="more-link">Read on &rarr;</a>
 	</div>
 
 
@@ -499,7 +505,7 @@ Aug 2nd, 2017</div>
 
 </div>
 	
-	<div class="comments"><a href="/blog/2017/08/02/question3/#disqus_thread">Comments</a></div>
+	<div class="comments"><a href="/blog/2017/08/02/sortanddp/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>

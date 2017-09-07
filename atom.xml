@@ -4,7 +4,7 @@
   <title><![CDATA[ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-09-06T23:28:00+08:00</updated>
+  <updated>2017-09-07T09:04:44+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -482,55 +482,434 @@ Map m = Collections.synchronizedMap(new HashMap(&hellip;));</li>
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[剑指offer_Question3]]></title>
-    <link href="http://ttazk.github.io/blog/2017/08/02/question3/"/>
+    <title type="html"><![CDATA[常见排序及两个经典DP]]></title>
+    <link href="http://ttazk.github.io/blog/2017/08/02/sortanddp/"/>
     <updated>2017-08-02T21:32:12+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/08/02/question3</id>
-    <content type="html"><![CDATA[<pre><code>/*
- * 在一个二维数组中查找一个整数，数组是从左向右，从上向下递增
- * 分析：
- * 对于无序的数组，我们可以一行一行地进行比较，时间复杂度为O(n*n)
- * 由于该数组有序，按照一般的比较思路，我们一般从左上角到又开始比较，如果当前数字比待查找值小，则向右或者
- * 向下继续查找，这样的话便不容易进行选择。因此，我们可以尝试从右上角向左进行排查/从左下角向右进行排查，这样就不会像刚才一样
- * 面临两种选择，从而使问题简化。
- * 从左下角向右进行排查：如果当前数字比待查找值大，则向上进行查找（同时摈弃最下面一行，因为最下面一行的数字都比左下角的大）
- * 如果当前数字比待查找值小，则向右进行查找（同时摈弃该列，因为该列往上的数字都比待查找值小）
- */
-public class Question3 {
+    <id>http://ttazk.github.io/blog/2017/08/02/sortanddp</id>
+    <content type="html"><![CDATA[<h3>1.插入排序</h3>
 
-    //从左下角向右进行排查
-    public static boolean findInArray(int[][] array,int a){
-        if (array==null) {
-            return false;
-        }
-        int row=array.length-1;
-        int column=array[0].length-1;
-</code></pre>
+<pre><code>package Sort;
 
-<!--  more -->          
-
-
-<pre><code>        int i=row,j=0;
-        while(i&gt;=0&amp;&amp;j&lt;=column){
-            if (array[i][j]&gt;a) {
-                System.out.print(array[i][j]+" ");
-                i--;//往上走
-            }
-            else if (array[i][j]&lt;a) {
-                System.out.print(array[i][j]+" ");
-                j++;//往右走
-            }else {
-                System.out.print(array[i][j]+" ");
-                return true;
-            }
-        }
-
-        return false;
+public class InsertSort {
+    //将后面的元素与前面的有序元素进行比较，找到合适的位置进行插入
+    public static void insertSort(int[] array){
+         for (int i = 0; i &lt; array.length-1; i++) {
+             for (int j = i+1; j &gt;0 &amp;&amp; array[j]&lt;array[j-1]; j--) {
+                 int temp=array[j];
+                 array[j]=array[j-1];
+                 array[j-1]=temp;
+             }
+         }
     }
     public static void main(String[] args) {
-        int[][] array={.{1,2,3,4},{2,3,4,5},{3,4,5,6,},{4,5,6,7}.};
-        System.out.println(findInArray(array, 3));
-        //System.out.println(findInArray(array, 9));
+         // TODO Auto-generated method stub
+         int[] array={2,4,1,667,32,5,90,66,12,9,31};
+         insertSort(array);
+         for(int a:array){
+             System.out.print(a+" ");
+         }
+    }
+
+}
+</code></pre>
+
+<!--more-->
+
+
+<h3>2.归并排序</h3>
+
+<pre><code>package Sort;
+
+public class MergeSort {
+    private static int[] temp;//临时数组，长度与要排序的数组长度相同
+    public static void sort(int[] array){
+         temp=new int[array.length];
+         mergeSort(array, 0, array.length-1);
+    }
+    public static void mergeSort(int[] array,int low,int high){
+
+         if (low&gt;=high) {
+             return;
+         }
+         int mid=(high+low)/2;
+         mergeSort(array, low, mid);//对左半边进行排序
+         mergeSort(array, mid+1, high);//对右半边进行排序
+         merge(array, low, mid, high);//归并
+    }
+    //原地归并
+    public static  void merge(int[] array,int low,int mid,int high){
+         for(int i=low;i&lt;=high;i++){
+             temp[i]=array[i];//将待排序的元素复制到临时数组中
+         }
+         int m=low;int n=mid+1;//标记待归并的两个起始位置,这两个位置是在临时数组中的位置
+
+         for(int i=low;i&lt;=high;i++){
+             //将临时数组中的元素按顺序归并到原数组中
+             //前两个判断一定要放在后两个判断之前
+             if (m&gt;mid){
+                 array[i]=temp[n];
+                 n++;
+             }
+             else if(n&gt;high){
+                 array[i]=temp[m];
+                 m++;
+             }
+             else if(temp[m]&lt;temp[n]) {
+                 array[i]=temp[m];
+                 m++;
+             }
+             else{
+                 array[i]=temp[n];
+                 n++;
+             }
+
+         }
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         int[] array={23,4,1,67,32,5,90,66,12,9,31};
+         sort(array);
+         for(int a:array){
+             System.out.print(a+" ");
+         }
+    }
+
+}
+</code></pre>
+
+<h3>3.快速排序</h3>
+
+<pre><code>package Sort;
+
+public class QuickSort {
+
+    public static void sort(int[] array,int low,int high){
+         if (low&gt;=high) {
+             return;
+         }
+         int j=partition(array, low, high);//找出分界点
+         sort(array, low, j-1);//对左半边排序
+         sort(array, j+1, high);//对右半边排序
+    }
+    public static int partition(int[] array,int low,int high){
+         int i=low;
+         int j=high+1;
+         int a=array[low];
+         while(true){
+             while(array[++i]&lt;=a){
+                 if (i&gt;=high) {
+                     break;
+                 }
+             }
+             while(array[--j]&gt;=a){
+                 if (j&lt;=low) {
+                     break;
+                 }
+             }
+             //当两个元素相遇
+             if (i&gt;=j) {
+                 break;
+             }
+             swap(array, i, j);
+         }
+         swap(array, low, j);
+         return j;
+    }
+    public static void swap(int[] array,int i,int j){
+         int temp=array[i];
+         array[i]=array[j];
+         array[j]=temp;
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         int[] a={2,3,2,1,4,4,3,2,1,23,0,4,2};
+         sort(a, 0, a.length-1);
+         for (int i = 0; i &lt; a.length; i++) {
+             System.out.print(a[i]+" ");
+         }
+    }
+
+}
+</code></pre>
+
+<h3>4.选择排序</h3>
+
+<pre><code>package Sort;
+
+public class SelectSort {
+
+    public static void selectSort(int[] array){
+         int length=array.length;
+         for (int i = 0; i &lt; length; i++) {
+             int min=i;//用于记录最小值的位置
+             for (int j = i+1; j &lt; array.length; j++) {
+                 if (array[min]&gt;array[j]) {
+                     min=j;
+                 }
+             }
+             //将剩余数组的最小值与左边的元素交换
+             {
+                 int temp=array[i];
+                 array[i]=array[min];
+                 array[min]=temp;
+             }
+         }
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         int[] array={2,4,1,67,32,5,66,12,9,31};
+         selectSort(array);
+         for(int a:array){
+             System.out.print(a+" ");
+         }
+    }
+
+}
+</code></pre>
+
+<h3>5.希尔排序</h3>
+
+<pre><code>package Sort;
+
+public class ShellSort {
+    public static void shellsort(int[] array){
+         int h=1;
+         int n=array.length;
+         while(h&lt;n/3) h=3*h+1;//确定间隔
+         while(h&gt;=1){
+             for(int i=0;i&lt;n-h;i++){
+                 for(int j=i+h;j&gt;h-1 &amp;&amp; array[j]&lt;array[j-h];j=j-h){
+                     int temp=array[j];
+                     array[j]=array[j-h];
+                     array[j-h]=temp;
+                 }
+             }
+             h=h/3;//不断缩小间隔
+         }
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         int[] array={2,4,1,67,32,5,90,66,12,9,31};
+         shellsort(array);
+         for(int a:array){
+             System.out.print(a+" ");
+         }
+    }
+
+}
+</code></pre>
+
+<h3>6.实现堆</h3>
+
+<pre><code>package algorithm;
+
+import java.util.Arrays;
+
+public class Heap {
+    private int[] heap=new int[9];//假定堆长度不超过50
+    private int n=0;//用来记录堆的位置,存储数据时不使用heap[0]位置，从heap[1],heap[2]...heap[49]
+
+    public void swap(int[] heap,int a,int b){
+         int temp=heap[a];
+         heap[a]=heap[b];
+         heap[b]=temp;
+    }
+    public boolean isEmpty(){
+         return n==0;
+    }
+    //元素上浮
+    public void swim(int k){
+         //k表示元素的索引
+         while(k&gt;1){
+             if (heap[k]&gt;heap[k/2]) {
+                 //将元素与其父节点交换
+                 swap(heap, k, k/2);
+             }
+             k=k/2;
+         }
+    }
+    //元素下沉
+    public void sink(int k){
+         while(2*k&lt;=n){
+             int i=2*k;
+             if (heap[i]&lt;=heap[i+1]) {
+                 i++;//记录较大子节点的位置
+             }
+             if (heap[k]&gt;=heap[i]) {
+                 break;//要下沉的节点不比子节点小，退出
+             }
+             swap(heap, k, i);
+             k=i;
+         }
+    }
+    //向堆中插入元素
+    public void insert(int value){
+         n++;//增大堆的位置
+         heap[n]=value;//将要插入的值放在最后
+         swim(n);//将该元素上浮以维持堆
+    }
+    //删除最大元素
+    public int deleteMax(){
+         int max=heap[1];
+         swap(heap, 1, n);//将最大值与最后一个位置的值交换，即将最后一个元素放在首位
+         heap[n]=0;//删除最后一个元素
+         n--;
+         sink(1);
+         return max;
+    }
+
+    //堆排序,每次都将最大元素放到最后面，然后再维护堆
+    public void heapSort(int[] array){
+         for (int i = 0; i &lt; array.length; i++) {
+             insert(array[i]);//构造堆
+         }
+         while(n&gt;1){
+         swap(heap, 1, n);
+         n--;
+         sink(1);//不能使用这个方法
+         }
+         for (int i = 0; i &lt; array.length; i++) {
+             array[i]=heap[i+1];
+         }
+    }
+    public static void main(String[] args) {
+         Heap heap=new Heap();
+         heap.insert(3);
+        heap.insert(2);heap.insert(20);heap.insert(43);heap.insert(9);heap.insert(16);heap.insert(80);heap.insert(7);
+         while(!heap.isEmpty()){
+             System.out.print(heap.deleteMax()+" ");
+         }
+         int[] array={22,1,2,3,56,9,8,20};
+         heap.heapSort(array);
+        System.out.println(Arrays.toString(array));
+    }
+}
+</code></pre>
+
+<h3>7.最长公共子序列</h3>
+
+<pre><code>package algorithm;
+
+public class LCS {
+    public static int[][] lcs(String str1,String str2){
+         int i=str1.length();
+         int j=str2.length();
+         int[][] m=new int[i+1][j+1];//该数组表示最优解的情况下，子序列的长度
+         for(int a=0;a&lt;i+1;a++){
+             m[a][0]=0;
+         }
+         for(int b=0;b&lt;j+1;b++){
+             m[0][j]=0;
+         }
+         for(int a=1;a&lt;i+1;a++){
+             for(int b=1;b&lt;j+1;b++){
+                 if (str1.charAt(a-1)==str2.charAt(b-1)) {
+                     m[a][b]=m[a-1][b-1]+1;
+                 }
+                 else{
+                     if (m[a-1][b]&gt;=m[a][b-1]) {
+                          m[a][b]=m[a-1][b];
+                     }else {
+                          m[a][b]=m[a][b-1];
+                     }
+                 }
+             }
+         }
+         return m;
+    }
+    public static void print(int[][] m,String str1,String str2,int i,int j){
+         if (i==0||j==0) {
+             return;
+         }
+         if (str1.charAt(i-1)==str2.charAt(j-1)) {
+             print(m, str1, str2, i-1, j-1);
+             System.out.print(str1.charAt(i-1));
+         }
+         else {
+             if (m[i-1][j]&gt;=m[i][j-1]) {
+                 print(m, str1, str2, i-1, j);
+             }
+             else {
+                 print(m, str1, str2, i, j-1);
+             }
+         }
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         String str1="ABCBDAB";
+         String str2="BDCABA";
+         int[][] m=lcs(str1, str2);
+         for (int i = 0; i &lt; m.length; i++) {
+             for (int j = 0; j &lt; m[0].length; j++) {
+                 System.out.print(m[i][j]+" ");
+             }
+             System.out.println();
+         }
+         print(m, str1, str2, 7, 6);
+    }
+
+}
+</code></pre>
+
+<h3>8.01背包问题</h3>
+
+<pre><code>package algorithm;
+
+import java.util.Arrays;
+
+public class Package_01 {
+
+    public static int[][] package_01(int[] weight,int[] value,int c){
+         int n=weight.length;
+         int[][] m=new int[n+1][c+1];//作为记录的表格,其中的值表示最优解情况下价值的值
+         for (int k = 0; k &lt; n+1; k++) {
+             m[k][0]=0;//第一列置于0
+         }
+         for(int k=0;k&lt;c+1;k++){
+             m[0][k]=0;//第一行置于0
+         }
+         //注意，物品的编号是从0,1,2,,,n
+         for(int k=1;k&lt;n+1;k++){
+             for(int l=1;l&lt;c+1;l++){
+                 m[k][l]=m[k-1][l];//先假设第k件物品(weight[k-1],value[k-1])不放进去
+                 if (weight[k-1]&lt;=l) {
+                     //如果第k件物品(weight[k-1],value[k-1])能够放进去，考虑放进去与不放进去的比较，选择较大的
+                     if (value[k-1]+m[k-1][l-weight[k-1]]&gt;m[k-1][l]) {
+                         m[k][l]=value[k-1]+m[k-1][l-weight[k-1]];
+                     }
+                 }
+             }
+         }
+
+         return m;
+    }
+    public static int[] build(int[][] m,int c,int[] weight){
+         int[] x=new int[weight.length];
+         for(int i=weight.length;i&gt;=1;i--){
+             if (m[i][c]==m[i-1][c]) {
+                 x[i-1]=0;
+             }
+             else {
+                 x[i-1]=1;
+                 c=c-weight[i-1];
+             }
+         }
+         return x;
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         int[] w={2,3,4,5};
+         int[] v={3,4,5,7};
+         int c=9;
+         int[][] m=package_01(w, v, c);
+         for (int i = 0; i &lt; m.length; i++) {
+             for (int j = 0; j &lt; m[0].length; j++) {
+                 System.out.print(m[i][j]+" ");
+             }
+             System.out.println();
+         }
+         int[] a=build(m, c, w);
+         System.out.println(Arrays.toString(a));
     }
 
 }
