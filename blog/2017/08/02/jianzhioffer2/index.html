@@ -1,0 +1,965 @@
+
+<!DOCTYPE HTML>
+<html>
+<head>
+	<meta charset="utf-8">
+	<title>剑指Offer2 - ZK</title>
+	<meta name="author" content="Z K">
+
+	
+	<meta name="description" content="16.树的子结构 输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构） package test; //输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构） public class HasSubTree { class &hellip;">
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+
+	<link href="" rel="alternate" title="ZK" type="application/atom+xml">
+	<link rel="canonical" href="">
+	<link href="/favicon.png" rel="shortcut icon">
+	<link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+	<!--[if lt IE 9]><script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+	<script async="true" src="//ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	
+</head>
+
+
+<body>
+	<header id="header" class="inner"><h1><a href="/">ZK</a></h1>
+<nav id="main-nav"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</nav>
+<nav id="mobile-nav">
+	<div class="alignleft menu">
+		<a class="button">Menu</a>
+		<div class="container"><ul class="main">
+	<li><a href="/">Blog</a></li>
+	<li><a href="/blog/archives">Archives</a></li>
+</ul>
+</div>
+	</div>
+	<div class="alignright search">
+		<a class="button"></a>
+		<div class="container">
+			<form action="https://www.baidu.com/" method="get">
+				<input type="text" name="q" results="0">
+				<input type="hidden" name="q" value="site:ttazk.github.io">
+			</form>
+		</div>
+	</div>
+</nav>
+<nav id="sub-nav" class="alignright">
+	<div class="social">
+		
+		
+		
+		
+    
+		
+		
+		
+		
+		
+    
+	</div>
+	<form class="search" action="https://www.baidu.com/" method="get">
+		<input class="alignright" type="text" name="q" results="0">
+		<input type="hidden" name="q" value="site:ttazk.github.io">
+	</form>
+</nav>
+
+</header>
+	
+		
+	
+	<div id="content" class="inner"><article class="post">
+	<h2 class="title">剑指Offer2</h2>
+	<div class="entry-content"><h3>16.树的子结构</h3>
+
+<p>输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+    package test;
+    //输入两棵二叉树A，B，判断B是不是A的子结构。（ps：我们约定空树不是任意一个树的子结构）
+    public class HasSubTree {
+        class TreeNode {
+            int val = 0;
+            TreeNode left = null;
+            TreeNode right = null;</p>
+
+<pre><code>        public TreeNode(int val) {
+            this.val = val;
+        }
+    }
+    public static boolean hasSubtree(TreeNode root1,TreeNode root2){
+         boolean result=false;
+         if (root1.val==root2.val) {
+             if (root1==null) {
+                 return false;
+             }
+             if (root2==null) {
+                 return true;
+             }
+             result=hasSubtree(root1.left, root2.left)&amp;&amp;hasSubtree(root1.right, root2.right);
+         }
+         if (!result) {
+             result=hasSubtree(root1.left, root2);
+         }
+         if (!result) {
+             result=hasSubtree(root1.right, root2);
+         }
+         return result;
+    }
+
+    public boolean doesTree1hasTree2(TreeNode root1,TreeNode root2){
+         if (root1==null&amp;&amp;root2!=null) {
+             return false;
+         }
+         if (root2==null) {
+             return true;
+         }
+         if (root1.val!=root2.val) {
+             return false;
+         }
+         return doesTree1hasTree2(root1.left, root2.left)&amp;&amp;doesTree1hasTree2(root1.right, root2.right);
+    }
+    public boolean hasSubTree2(TreeNode root1,TreeNode root2){
+         boolean result=false;
+         if (root1!=null&amp;&amp;root2!=null) {
+             if (root1.val==root2.val) {
+                 result=doesTree1hasTree2(root1, root2);
+             }
+             if (!result) {
+                 result=hasSubTree2(root1.left, root2);
+             }
+             if (!result) {
+                 result=hasSubTree2(root1.right, root2);
+             }
+         }
+         return result;
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+
+    }
+
+}
+</code></pre>
+
+<h3>17.二叉树镜像</h3>
+
+<p>操作给定的二叉树，将其变换为源二叉树的镜像。
+    package test;
+    //操作给定的二叉树，将其变换为源二叉树的镜像
+    public class Mirror {
+        class TreeNode {
+            int val = 0;
+            TreeNode left = null;
+            TreeNode right = null;</p>
+
+<pre><code>        public TreeNode(int val) {
+            this.val = val;
+        }
+    }
+
+    public void mirror(TreeNode root) {
+         if (root!=null) {
+        if (root.left!=null||root.right!=null) {
+             TreeNode node1=root.left;
+             TreeNode node2=root.right;
+
+             root.left=node2;root.right=node1;
+
+         }
+        mirror(root.left);
+        mirror(root.right);
+         }
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+
+    }
+
+}
+</code></pre>
+
+<h3>18.栈的压入弹出序列</h3>
+
+<p>输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，序列4，5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。（注意：这两个序列的长度是相等的）
+    package test;</p>
+
+<pre><code>import java.util.Stack;
+
+//输入两个整数序列，第一个序列表示栈的压入顺序，请判断第二个序列是否为该栈的弹出顺序。
+//假设压入栈的所有数字均不相等。例如序列1,2,3,4,5是某栈的压入顺序，
+//序列4，5,3,2,1是该压栈序列对应的一个弹出序列，但4,3,5,1,2就不可能是该压栈序列的弹出序列。
+//（注意：这两个序列的长度是相等的）
+public class IsPopOrder {
+    public static boolean isPopOrder(int [] pushA,int [] popA) {
+          //boolean result=true;
+          int length=pushA.length;
+          Stack&lt;Integer&gt; stack=new Stack&lt;&gt;();
+          int index=0;
+          for (int i = 0; i &lt; length; i++) {
+        stack.push(pushA[i]);
+        //每次要判断栈顶元素与要出栈的元素是否相同，如果相同，出栈且出栈元素后移；
+        //当所有元素都入栈，且与出栈元素比较之后，栈为空，则是弹出序列
+            while(!stack.isEmpty()&amp;&amp;stack.peek()==popA[index]) {
+                 index++;
+                 stack.pop();
+             }
+          }
+          if (stack.isEmpty()) {
+             return true;
+         }else {
+             return false;
+         }
+    }
+    public static void main(String[] args) {
+         int[] a={1,2,3,4,5};
+         int[] b={4,5,3,2,1};
+         System.out.println(isPopOrder(a,b));
+    }
+}
+</code></pre>
+
+<h3>19.从上到下打印二叉树&mdash;广度遍历</h3>
+
+<p>从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+    package test;</p>
+
+<pre><code>import java.util.ArrayDeque;
+import java.util.ArrayList;
+import java.util.Queue;
+
+//从上往下打印出二叉树的每个节点，同层节点从左至右打印。
+public class PrintFromToptoBottom {
+    class TreeNode {
+        int val = 0;
+        TreeNode left = null;
+        TreeNode right = null;
+
+        public TreeNode(int val) {
+            this.val = val;
+        }
+    }
+
+    public ArrayList&lt;Integer&gt; printFromTopToBottom(TreeNode root) {
+        ArrayList&lt;Integer&gt; arrayList=new ArrayList&lt;&gt;();
+        Queue&lt;TreeNode&gt; queue=new ArrayDeque&lt;&gt;();
+        if (root!=null) {
+            queue.offer(root);
+            while (!queue.isEmpty()) {
+                TreeNode temp=queue.poll();
+                if (temp.left!=null) {
+                    queue.offer(temp.left);
+                }
+                if (temp.right!=null) {
+                    queue.offer(temp.right);
+                }
+                arrayList.add(temp.val);
+            }
+        }
+        return arrayList;
+    }
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+
+    }
+
+}
+</code></pre>
+
+<h3>20.二叉搜索树后序遍历序列</h3>
+
+<p>输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同。
+    package test;
+    //输入一个整数数组，判断该数组是不是某二叉搜索树的后序遍历的结果。
+    //如果是则输出Yes,否则输出No。假设输入的数组的任意两个数字都互不相同
+    public class VerifySquenceOfBST {
+        public boolean verifySquenceOfBST(int [] sequence) {
+            return verifySquenceOfBST(sequence,0,sequence.length-1);
+        }
+        public boolean verifySquenceOfBST(int [] sequence,int start,int last){
+             if (sequence.length&lt;=0) {
+                 return false;
+             }
+             //该情况是对应于，对于一个根节点来说，只有右子树，没有左子树
+             //如果只有左子树，没有右子树，则下面找不到分界点
+             if (last&lt;start) {
+                 return true;
+             }
+             int temp=sequence[last];
+             int index=start;//记录左右子树的分界点
+             for (int i = start; i &lt; last; i++) {
+                 if (sequence[i]>temp) {
+                     //用该种方法找到的分界点，说明该分界点的左半边都小于根节点
+                     //所以，只需要判断右子树是不是全部都大于根节点
+                     index=i;
+                     for(int j=i;j&lt;last;j++){
+                         if (sequence[j]&lt;=temp) {
+                              return false;
+                         }
+                     }
+                     return true;
+                 }
+             }
+             return verifySquenceOfBST(sequence, start, index-1)&amp;&amp;verifySquenceOfBST(sequence, index, last-1);
+        }
+        public static void main(String[] args) {
+             // TODO Auto-generated method stub</p>
+
+<pre><code>    }
+
+}
+</code></pre>
+
+<h3>21.二叉树中和为某一值的路径&mdash;-深度遍历</h3>
+
+<p>输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+    package test;</p>
+
+<pre><code>import java.util.ArrayList;
+//输入一颗二叉树和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+//路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径
+public class FindPath {
+    class TreeNode {
+        int val = 0;
+        TreeNode left = null;
+        TreeNode right = null;
+
+        public TreeNode(int val) {
+            this.val = val;
+        }
+    }
+    ArrayList&lt;ArrayList&lt;Integer&gt;&gt; lists=new ArrayList&lt;&gt;();//用于存储各条路径
+    ArrayList&lt;Integer&gt; list=new ArrayList&lt;&gt;();//只是临时存储各条路径
+    public ArrayList&lt;ArrayList&lt;Integer&gt;&gt; findPath(TreeNode root,int target) {
+        if (root==null) {
+             return lists;
+         }
+        list.add(root.val);//经过每个节点就将该节点保存在路径中
+        target=target-root.val;
+        //当遍历到根节点，且满足目标值时，将list添加到lists中
+        if (target==0&amp;&amp;root.left==null&amp;&amp;root.right==null) {
+             lists.add(new ArrayList&lt;&gt;(list));//用临时存储路径的列表构造新的列表，防止干扰
+         }
+        findPath(root.left, target);
+        findPath(root.right, target);
+        list.remove(list.size()-1);//对遍历到根节点却不满足条件的路径进行回退，返回其根节点
+        return lists;
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+
+    }
+
+}
+</code></pre>
+
+<h3>22.复杂链表的复制</h3>
+
+<p>输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，另一个特殊指针指向任意一个节点），返回结果为复制后复杂链表的head。（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+    package test;
+    //输入一个复杂链表（每个节点中有节点值，以及两个指针，一个指向下一个节点，
+    //另一个特殊指针指向任意一个节点），返回结果为复制后复杂链表的head。
+    //（注意，输出结果中请不要返回参数中的节点引用，否则判题程序会直接返回空）
+    public class Clone {
+        class RandomListNode {
+            int label;
+            RandomListNode next = null;
+            RandomListNode random = null;</p>
+
+<pre><code>        RandomListNode(int label) {
+            this.label = label;
+        }
+    }
+    public RandomListNode clone(RandomListNode pHead)
+    {
+        return pHead;
+    }
+    //先对链表中的每个节点进行复制，位于原节点的后面
+    public void cloneNode(RandomListNode pHead1){
+         RandomListNode pHead=pHead1;
+         while(pHead!=null){
+             RandomListNode clone=new RandomListNode(pHead.label);
+             RandomListNode temp=pHead.next;//保存下一个要复制的节点
+             clone.next=temp;
+             pHead.next=clone;
+
+             pHead=temp;//迭代要复制的节点
+         }
+    }
+    //为复制的节点指明对应的random节点
+    public void connectRandomNode(RandomListNode pHead1){
+         RandomListNode pHead=pHead1;
+         while(pHead!=null){
+             if (pHead.random!=null) {
+                 RandomListNode clone=pHead.next;
+                 RandomListNode random=pHead.random;
+                 clone.random=random.next;
+
+             }
+             pHead=pHead.next.next;//更新
+
+         }
+    }
+    //把链表拆分成两个链表
+    public RandomListNode reconnect(RandomListNode pHead1){
+         RandomListNode pHead=pHead1;
+         RandomListNode cloneHead=pHead.next;
+         RandomListNode head=cloneHead;
+         //同时更新两个链表的节点
+         while(pHead!=null){
+             pHead.next=pHead.next.next;
+             if (cloneHead.next!=null) {
+                 RandomListNode temp=cloneHead.next;
+                 cloneHead.next=temp.next;
+             }
+             pHead=pHead.next;
+             cloneHead=cloneHead.next;
+         }
+         return head;
+    }
+}
+</code></pre>
+
+<h3>22.二叉搜索树与双向链表</h3>
+
+<p> 输入一棵二叉搜索树，将该二叉搜索树转换成一个排序的双向链表。要求不能创建任何新的结点，只能调整树中结点指针的指向。
+    package test;</p>
+
+<pre><code>import java.util.ArrayList;
+
+public class Convert {
+    class TreeNode {
+        int val = 0;
+        TreeNode left = null;
+        TreeNode right = null;
+
+        public TreeNode(int val) {
+            this.val = val;
+        }
+    }
+    ArrayList&lt;TreeNode&gt; arrayList=new ArrayList&lt;&gt;();
+    public TreeNode convert(TreeNode pRootOfTree) {
+         if (pRootOfTree==null) {
+             return null;
+         }
+         ArrayList&lt;TreeNode&gt; al=inorder(pRootOfTree);
+         int length=al.size();
+         TreeNode hNode=al.get(0);
+         TreeNode tNode=al.get(al.size()-1);
+         TreeNode head=hNode;head.left=null;
+         TreeNode tail=tNode;tNode.right=null;
+
+         for (int i = 1; i &lt; length; i++) {
+             TreeNode temp=al.get(i);
+             head.right=temp;
+             head=temp;
+         }
+         for (int i = length-2; i &gt;=0; i--) {
+             TreeNode temp=al.get(i);
+             tail.left=temp;
+             tail=temp;
+         }
+         return hNode;
+    }
+    public ArrayList&lt;TreeNode&gt; inorder(TreeNode pRootOfTree){
+         if (pRootOfTree!=null) {
+             inorder(pRootOfTree.left);
+             arrayList.add(pRootOfTree);
+             inorder(pRootOfTree.right);
+         }
+         return arrayList;
+    }
+}
+</code></pre>
+
+<h3>23.字符串的全排列&mdash;回溯法</h3>
+
+<p>输入一个字符串,按字典序打印出该字符串中字符的所有排列。例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba
+    package test;</p>
+
+<pre><code>import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
+//输入一个字符串,按字典序打印出该字符串中字符的所有排列。
+//例如输入字符串abc,则打印出由字符a,b,c所能排列出来的所有字符串abc,acb,bac,bca,cab和cba。
+public class Permutation {
+
+    ArrayList&lt;String&gt; arrayList=new ArrayList&lt;&gt;();
+    public ArrayList&lt;String&gt; permutation(String str){
+        /*ArrayList&lt;String&gt; arrayList2=permutation(str.toCharArray(), 0);
+        //去除arrayList2中的重复元素，因为在排序的时候可能由于String中有相同的字符，所以在排序结果中产生重复的字符串
+        //如aaa,排序之后只有一个aaa
+        Set&lt;String&gt; set=new HashSet&lt;&gt;(arrayList2);
+        ArrayList&lt;String&gt; arrayList3=new ArrayList&lt;&gt;(set);
+        //Collections.sort(arrayList3);//对结果进行字典排序，因为有的题目可能要求
+        return arrayList3;*/
+         ArrayList&lt;String&gt; arrayList2=permutation(str.toCharArray(), 0);
+         Collections.sort(arrayList2);
+         return arrayList2;
+    }
+    public ArrayList&lt;String&gt; permutation(char[] chars,int index){
+        int length=chars.length;
+        //index代表将要交换的字符的位置,from 0 to length-1
+        if (index==length-1) {
+            arrayList.add(new String(chars));
+        }
+        else {
+            for(int i=index;i&lt;length;i++){
+                //当第index(index!=i)字符与第i个字符相同时，没必要交换
+                if (i!=index&amp;&amp;chars[i]==chars[index]) {
+                    continue;
+                }
+                //将字符串中第index位置的字符，分别与后面的第i个字符交换
+                char temp=chars[index];
+                chars[index]=chars[i];
+                chars[i]=temp;
+
+                //递归对新生成的字符串进行排序，交换的字符位置为index+1
+                permutation(chars, index+1);
+
+                //将刚才交换的字符再交换回来，使字符串恢复原样，便于与第i+1个字符交换
+                char temp1=chars[index];
+                chars[index]=chars[i];
+                chars[i]=temp1;
+            }
+        }
+        return arrayList;
+    }
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+
+    }
+
+}
+</code></pre>
+
+<h3>24.数组中出现次数超过一半的数字</h3>
+
+<p>数组中有一个数字出现的次数超过数组长度的一半，请找出这个数字。例如输入一个长度为9的数组{1,2,3,2,2,2,5,4,2}。由于数字2在数组中出现了5次，超过数组长度的一半，因此输出2。如果不存在则输出0。
+    package test;</p>
+
+<pre><code>import java.util.Arrays;
+import java.util.HashMap;
+
+public class MoreThanHalfNum {
+    public static int moreThanHalfNum(int[] array){
+        Arrays.sort(array);
+        int count=1;
+        for (int i = 1; i &lt; array.length; i++) {
+            int a=array[i];
+            if (array[i]==array[i-1]) {
+                count++;
+            }else {
+                count=1;
+            }
+            if (count&gt;array.length/2) {
+                return a;
+            }
+        }
+        return -1;
+    }
+    public static int moreThanHalfNum2(int[] array){
+        Arrays.sort(array);
+        int count=0;
+        for (int i = 0; i &lt; array.length; i++) {
+            if (array[i]==array[array.length/2]) {
+                count++;
+            }
+        }
+        if (count&gt;array.length/2) {
+            return array[array.length/2];
+        }
+        return -1;
+    }
+    //使用HashMap
+    public static int moreThanHalfNum3(int[] array){
+        HashMap&lt;Integer, Integer&gt; hashMap=new HashMap&lt;&gt;();
+        for (int i = 0; i &lt; array.length; i++) {
+            Integer count=hashMap.get(array[i]);
+            if (count==null) {
+                hashMap.put(array[i], 1);
+            }
+            else {
+                hashMap.put(array[i], count+1);
+            }
+            if (hashMap.get(array[i])&gt;array.length/2) {
+                return array[i];
+            }
+        }
+        return 0;
+    }
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        int[] array={1,2,3,4,3,3,3,0,0,0,0,0,3,3,3,3,33,3,3,3,3};
+        System.out.println(moreThanHalfNum3(array));
+        System.out.println(moreThanHalfNum(array));
+    }
+
+}
+</code></pre>
+
+<h3>25.最小的k个数</h3>
+
+<p>输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+    package test;</p>
+
+<pre><code>import java.util.ArrayList;
+import java.util.PriorityQueue;
+//输入n个整数，找出其中最小的K个数。例如输入4,5,1,6,2,7,3,8这8个数字，则最小的4个数字是1,2,3,4,。
+public class GetLeastNumbers {
+
+     public ArrayList&lt;Integer&gt; getLeastNumbers(int [] input, int k) {
+         if(k&gt;input.length||k&lt;=0){return new ArrayList&lt;Integer&gt;();}
+         PriorityQueue&lt;Integer&gt; priorityQueue=new PriorityQueue&lt;&gt;(k);
+         for(int i=0;i&lt;k;i++){
+             priorityQueue.add(input[i]);
+         }
+         for (int i = k; i &lt; input.length; i++) {
+            if (input[i]&lt;max(priorityQueue)) {
+                priorityQueue.remove(max(priorityQueue));
+                priorityQueue.add(input[i]);
+            }
+        }
+         ArrayList&lt;Integer&gt; arrayList=new ArrayList&lt;&gt;();
+         for(int i=0;i&lt;k;i++){
+             arrayList.add(priorityQueue.poll());
+         }
+         return arrayList;
+     }
+     public int max(PriorityQueue&lt;Integer&gt; priorityQueue){
+         Object[] array=priorityQueue.toArray();
+         int max=0;
+         for (int i = 0; i &lt; array.length; i++) {
+            if ((Integer)array[i]&gt;max) {
+                max=(Integer)array[i];
+            }
+        }
+         return max;
+     }
+}
+</code></pre>
+
+<h3>26.连续子数组最大和</h3>
+
+<p>HZ偶尔会拿些专业问题来忽悠那些非计算机专业的同学。今天测试组开完会后,他又发话了:在古老的一维模式识别中,常常需要计算连续子向量的最大和,当向量全为正数的时候,问题很好解决。但是,如果向量中包含负数,是否应该包含某个负数,并期望旁边的正数会弥补它呢？例如:{6,-3,-2,7,-15,1,2,2},连续子向量的最大和为8(从第0个开始,到第3个为止)。你会不会被他忽悠住？(子向量的长度至少是1)
+    package test;</p>
+
+<pre><code>import java.util.ArrayList;
+import java.util.Scanner;
+
+public class FindGreatestSumOfSubArray {
+    //求连续子数组的最大和
+    public static int findGreatestSumOfSubArray(int[] array){
+        int n=array.length;
+        if (n==0||array==null) {
+            return 0;
+        }
+        int[] f=new int[n];//用于存储对应位置的最大子数组的和
+        f[0]=array[0];
+        for(int i=1;i&lt;n;i++){
+            if (f[i-1]&lt;0) {
+                f[i]=array[i];
+            }
+            if (f[i-1]&gt;=0) {
+                f[i]=f[i-1]+array[i];
+            }
+        }
+        //求出f[]中最大的值，即为最大子数组的和
+        int max=f[0];
+        for(int i=0;i&lt;n;i++){
+            if (max&lt;f[i]) {
+                max=f[i];
+            }
+        }
+        return max;
+    }
+    public static void main(String[] args) {
+        // TODO Auto-generated method stub
+        System.out.println(findGreatestSumOfSubArray(new int[]{1,-2,3,10,-4,7,2,-5}));
+        Scanner scanner=new Scanner(System.in);
+        ArrayList&lt;Integer&gt; arrayList=new ArrayList&lt;&gt;();
+        while(scanner.hasNext()){
+            int num=scanner.nextInt();
+            arrayList.add(num);
+        }
+        int[] array=new int[arrayList.size()];
+        for (int i = 0; i &lt; arrayList.size(); i++) {
+            array[i]=arrayList.get(i);
+        }
+        System.out.println(findGreatestSumOfSubArray(array));
+    }
+
+}
+</code></pre>
+
+<h3>27.整数中1出现的次数</h3>
+
+<p>求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,但是对于后面问题他就没辙了。ACMer希望你们帮帮他,并把问题更加普遍化,可以很快的求出任意非负整数区间中1出现的次数。</p>
+
+<pre><code>package test;
+//求出1~13的整数中1出现的次数,并算出100~1300的整数中1出现的次数？
+//为此他特别数了一下1~13中包含1的数字有1、10、11、12、13因此共出现6次,但是对于后面问题他就没辙了。
+//ACMer希望你们帮帮他,并把问题更加普遍化,可以很快的求出任意非负整数区间中1出现的次数。
+public class NumberOf1Between1AndN {
+    public int numberOf1Between1AndN(int n) {
+        int sum=0;
+        for(int i=0;i&lt;=n;i++){
+        sum=sum+sumOfn(i);
+        }
+        return sum;
+    }
+    //先求每个整数中1的个数
+    public int sumOfn(int n){
+         int sum=0;
+         while(n&gt;0){
+             //对n的每一位进行判断，统计1的个数
+             if (n%10==1) {
+                 sum++;
+                 n=n/10;
+             }
+             else {
+                 n=n/10;
+             }
+         }
+         return sum;
+    }
+}
+</code></pre>
+
+<h3>28.把数组排成最小的数</h3>
+
+<p>输入一个正整数数组，把数组里所有数字拼接起来排成一个数，打印能拼接出的所有数字中最小的一个。例如输入数组{3，32，321}，则打印出这三个数字能排成的最小数字为321323。
+    //定义一种新的排序规则
+    package test;</p>
+
+<pre><code>//数组拼接的最小值
+public class PrintMinNumber {
+    public static boolean compare(int m,int n){
+         String m1=String.valueOf(m);
+         String n1=String.valueOf(n);
+         String str1=m1+n1;
+         String str2=n1+m1;
+         if (Long.valueOf(str1)&lt;Long.valueOf(str2)) {
+             return true;
+         }
+         return false;
+    }
+    public static void swap(int[] array,int m,int n){
+         int temp=array[m];
+         array[m]=array[n];
+         array[n]=temp;
+    }
+    public static String printMinNumber(int[] numbers){
+         //int[] temp=new int[numbers.length];
+         for (int i = 0; i &lt; numbers.length; i++) {
+             int min=i;
+             for (int j = i+1; j &lt; numbers.length; j++) {
+                 if (compare(numbers[j], numbers[min])) {
+                     min=j;
+                 }
+             }
+             swap(numbers, min, i);
+             //temp[i]=min;
+         }
+         StringBuffer stringBuffer=new StringBuffer();
+         for (int i = 0; i &lt; numbers.length; i++) {
+             stringBuffer.append(numbers[i]);
+
+         }
+         return stringBuffer.toString();
+    }
+    public static void main(String[] args) {
+         // TODO Auto-generated method stub
+         int[] numbers={3,32,321,1,4,1};
+        System.out.println(printMinNumber(numbers));
+    }
+
+}
+</code></pre>
+
+<h3>29.丑数</h3>
+
+<p>把只包含因子2、3和5的数称作丑数（Ugly Number）。例如6、8都是丑数，但14不是，因为它包含因子7。 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数。</p>
+
+<pre><code>package test;
+//把只包含素因子2、3和5的数称作丑数（Ugly Number）。
+//例如6、8都是丑数，但14不是，因为它包含因子7。 习惯上我们把1当做是第一个丑数。求按从小到大的顺序的第N个丑数
+public class GetUglyNumber {
+    //判断一个整数n是否只能被2整除，则将n连续除以2，如果最后结果为1，则只能被2整除
+    //同样，判断一个数是否只能被2,3,5整除，将其连续地除以2,3,5，如果结果为1，则只包含因子2,3,5
+    public boolean isUgly(int n){
+         while(n&gt;1){
+             while(n%2==0){
+                 n=n/2;
+             }
+             while(n%3==0){
+                 n=n/3;
+             }
+             while(n%5==0){
+                 n=n/5;
+             }
+         }
+         return n==1?true:false;
+    }
+    public int getUglyNumber(int index){
+         int count=0;
+         int i=0;
+         while(count&lt;index){
+             i++;
+             if(isUgly(i)){
+                 count++;
+                 /*if (count==index) {
+                     return i;
+                 }*/
+             }
+             //i++;
+         }
+         return i;
+    }
+    //上面的时间复杂度太大，下面使用DP来进行简化
+    //每个丑数都是由其他丑数乘以2,3,5得到的，现在将丑数按照顺序保存在数组中，
+    //在更新下个丑数时，由前面的丑数乘以2,3,5得到，所以关键是如何从前面的丑数中选取
+    public int getUglyNumber1(int index){
+         if (index&lt;=0) {
+             return 0;
+         }
+         if (index==1) {
+             return 1;
+         }
+         int[] dp=new int[index];//保存丑数的数组
+         dp[0]=1;
+         int t2=0,t3=0,t5=0;//t2,t3,t5用来记录当计算下一个丑数时，应该从前面选取的丑数的位置(可以乘2、乘3或乘5的最小丑数)
+         for(int i=1;i&lt;index;i++){
+             dp[i]=min(dp[t2]*2, min(dp[t3]*3, dp[t5]*5));//计算下一个丑数
+             //更新t2,t3,t5的位置
+             if (dp[i]==dp[t2]*2) {
+                 t2++;
+             }
+             if (dp[i]==dp[t3]*3) {
+                 t3++;
+             }
+             if (dp[i]==dp[t5]*5) {
+                 t5++;
+             }
+         }
+         return dp[index-1];
+    }
+    public int min(int a,int b){
+         return a&lt;b?a:b;
+    }
+}
+</code></pre>
+
+<h3>30.第一个只出现一次的字符</h3>
+
+<p>在一个字符串(1&lt;=字符串长度&lt;=10000，全部由字母组成)中找到第一个只出现一次的字符,并返回它的位置</p>
+
+<pre><code>import java.util.HashMap;
+public class Solution {
+    public int FirstNotRepeatingChar(String str) {
+        HashMap&lt;Character, Integer&gt; hashMap=new HashMap&lt;&gt;();
+        for (int i = 0; i &lt; str.length(); i++) {
+            hashMap.put(str.charAt(i), null);
+        }
+        for (int i = 0; i &lt; str.length(); i++) {
+            Integer count=hashMap.get(str.charAt(i));
+            if (count==null) {
+                count=1;
+                hashMap.put(str.charAt(i), count);
+            }
+            else {
+                count++;
+                hashMap.put(str.charAt(i), count);
+            }
+        }
+        int first = -1;
+        for (int i = 0; i &lt; str.length(); i++) {
+            int count=hashMap.get(str.charAt(i));
+            if (count==1) {
+                first=i;
+                break;
+            }
+        }
+        return first;
+    }
+}
+</code></pre>
+</div>
+
+
+<div class="meta">
+	<div class="date">
+
+
+
+
+Aug 2nd, 2017</div>
+	<div class="tags">
+
+
+	<a class='category' href='/blog/categories/algorithm/'>algorithm</a>
+
+
+</div>
+	
+	<div class="comments"><a href="#disqus_thread">Comments</a></div>
+	
+</div>
+</article>
+
+	<div class="share">
+	<div class="addthis_toolbox addthis_default_style ">
+		
+		
+		
+		
+	</div>
+	
+</div>
+
+
+
+<section id="comment">
+    <h2 class="title">Comments</h2>
+    <div id="disqus_thread" aria-live="polite"><noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+</div>
+</section>
+</div>
+	<footer id="footer" class="inner">Copyright &copy; 2017
+
+    Z K
+
+</footer>
+	<script src="/javascripts/slash.js"></script>
+<script src="/javascripts/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+(function($){
+	$('.fancybox').fancybox();
+})(jQuery);
+</script> <!-- Delete or comment this line to disable Fancybox -->
+
+
+<script type="text/javascript">
+      var disqus_shortname = 'zkatt';
+      
+        
+        // var disqus_developer = 1;
+        var disqus_identifier = 'http://ttazk.github.io/blog/2017/08/02/jianzhioffer2/';
+        var disqus_url = 'http://ttazk.github.io/blog/2017/08/02/jianzhioffer2/';
+        var disqus_script = 'embed.js';
+      
+    (function () {
+      var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+      dsq.src = '//go.disqus.com/' + disqus_script;
+      (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+    }());
+</script>
+
+
+
+
+
+</body>
+</html>
