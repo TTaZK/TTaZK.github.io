@@ -4,7 +4,7 @@
   <title><![CDATA[Category: algorithm | ZK]]></title>
   <link href="http://ttazk.github.io/blog/categories/algorithm/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-09-07T22:12:55+08:00</updated>
+  <updated>2017-09-07T22:16:46+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -20,35 +20,36 @@
     <id>http://ttazk.github.io/blog/2017/09/07/jianzhioffer3</id>
     <content type="html"><![CDATA[<h3>31.数组中的逆序对</h3>
 
-<p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007
-    package test;
-    //在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
-    //输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007
-    public class InversePairs {
-        //该种方法的时间复杂度为O(n<sup>2</sup>)，比较复杂
-        public static int inversePairs(int [] array) {
-            int length=array.length;
-            int count=0;
-            for(int i=0;i&lt;length;i++){
-             int temp=array[i];
-             for(int j=i;j&lt;length;j++){
-                 if (array[i]>array[j]) {
-                         count++;
-                     }
-             }
-            }
-            return count;
-        }
-        //下面的方法类似于归并排序，先将数组分开，分别统计子数组的逆序对，再合并统计子数组之间的逆序对
-        //时间复杂度为O(nlogn)
-        private int[] temp;//临时数组
-        public int inversePairs1(int[] array){
-             temp=new int[array.length];
-             return mergeInverse(array, 0, array.length-1)%1000000007;
-        }
-        public int mergeInverse(int[] array,int low,int high){</p>
+<p>在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007</p>
 
-<pre><code>         if (low&gt;=high) {
+<pre><code>package test;
+//在数组中的两个数字，如果前面一个数字大于后面的数字，则这两个数字组成一个逆序对。
+//输入一个数组,求出这个数组中的逆序对的总数P。并将P对1000000007取模的结果输出。 即输出P%1000000007
+public class InversePairs {
+    //该种方法的时间复杂度为O(n^2)，比较复杂
+    public static int inversePairs(int [] array) {
+        int length=array.length;
+        int count=0;
+        for(int i=0;i&lt;length;i++){
+         int temp=array[i];
+         for(int j=i;j&lt;length;j++){
+             if (array[i]&gt;array[j]) {
+                     count++;
+                 }
+         }
+        }
+        return count;
+    }
+    //下面的方法类似于归并排序，先将数组分开，分别统计子数组的逆序对，再合并统计子数组之间的逆序对
+    //时间复杂度为O(nlogn)
+    private int[] temp;//临时数组
+    public int inversePairs1(int[] array){
+         temp=new int[array.length];
+         return mergeInverse(array, 0, array.length-1)%1000000007;
+    }
+    public int mergeInverse(int[] array,int low,int high){
+
+         if (low&gt;=high) {
              return 0;
          }
          int mid=(high+low)/2;
