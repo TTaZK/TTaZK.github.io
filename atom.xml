@@ -4,7 +4,7 @@
   <title><![CDATA[ZK]]></title>
   <link href="http://ttazk.github.io/atom.xml" rel="self"/>
   <link href="http://ttazk.github.io/"/>
-  <updated>2017-09-07T22:16:46+08:00</updated>
+  <updated>2017-09-10T23:15:59+08:00</updated>
   <id>http://ttazk.github.io/</id>
   <author>
     <name><![CDATA[Z K]]></name>
@@ -2786,11 +2786,227 @@ public class MergeList {
   </entry>
   
   <entry>
-    <title type="html"><![CDATA[动态规划与贪心]]></title>
-    <link href="http://ttazk.github.io/blog/2017/07/30/algorithm/"/>
+    <title type="html"><![CDATA[动态规划讲解]]></title>
+    <link href="http://ttazk.github.io/blog/2017/07/30/DynamicProgramming/"/>
     <updated>2017-07-30T16:59:12+08:00</updated>
-    <id>http://ttazk.github.io/blog/2017/07/30/algorithm</id>
-    <content type="html"><![CDATA[
+    <id>http://ttazk.github.io/blog/2017/07/30/DynamicProgramming</id>
+    <content type="html"><![CDATA[<ul>
+<li><p><strong>动态规划与分治</strong></p>
+
+<ul>
+<li>动态规划与分治类似，都是通过组合子问题的解来求解原问题的解。（Dynamic Programming中Programming指的是一种表格法）</li>
+<li>分治法是将原问题划分为不相交的子问题，递归地求解子问题，再将子问题的解组合起来，求出原问题的解。</li>
+<li>动态规划用于子问题重叠的情况，即不同的子问题包含公共的子子问题（子问题的求解是递归进行的，将其划分为更小的子子问题）。在这种情况下，如果使用分治法来求解，会做出不必要的工作，它会反复地求解那些公共的子子问题。而动态规划算法对于每个子子问题只进行一次求解，将其保存在一个表格中，从而无需每次求解一个子子问题时都重新计算，避免了不必要的计算工作。</li>
+</ul>
+</li>
+<li><p>动态规划算法通常用来求解最优化问题。这类问题有很多可行解，每个解都有一个值，我们希望寻找其中的一个最优解。设计一个动态规划算法的步骤如下：</p>
+
+<ul>
+<li>1，<strong>刻画一个最优解的结构特征</strong>。</li>
+<li>2，<strong>递归地定义最优解</strong>。</li>
+<li>3，<strong>计算最优解的值，通常采用自底向上的方法</strong>。</li>
+<li>4，<strong>利用计算出来的信息构造一个最优解</strong>。</li>
+</ul>
+</li>
+</ul>
+
+
+<!--more-->
+
+
+<h3>钢条切割问题</h3>
+
+<ul>
+<li>钢条长度为n，价格表pi(i=1,2,3&hellip;n)，如何切割钢条使收益最大。
+
+<ul>
+<li>设Rn为长度为n的钢条的最大收益，所以对于长度为n 的钢条的收益，我们可以用更短的钢条的收益来描述它。Rn=max{pn,R1+Rn-1,R2+Rn-2&hellip;Rn-1+R1}，对于每个i,将钢条切割为长度为i和n-i的两段，接着求这两段的最大收益，再进行相加。由于无法预知哪种切割方案会获取最大的收益，所以我们要考虑所有的方案进行比较。</li>
+<li>注意到以上方法为了求解规模为n的原问题，我们先求解形式完全一样，但是规模更小的子问题。我们通过组合有关子问题的最优解，并在所有可能的两段切割方案中选取收益是最大的，从而构成原问题的最优解。这种结构称为<strong>最优子结构：问题的最优解由相关子问题的最优解组合而成，而这些子问题可以独立求解</strong>。</li>
+<li>除了上述求解方法外，还有一种相似，但是更简单的方法：将钢条从左边切下长度为i的一段，只对右边剩下的长度为n-i的一段进行继续切割（即递归求解）,对左边的一段不进行切割（即左边的价值为pi）。这样的话，原问题的最优解从包含两个相关子问题，变成只有一个相关子问题。公式为：Rn=max{pi+Rn-i}(1&lt;=i&lt;=n)</li>
+<li><p><strong>自定向下的递归实现</strong>：</p>
+
+<pre><code>     Cut-Rod(p,n)
+     if n==0  return 0
+     q=负无穷
+     for i =1 to n
+          q=max{q,p[i]+Cut-Rod(p,n-i)} 
+     return q
+</code></pre>
+
+<ul>
+<li>Cut-Rod会反复利用相同的参数对自身进行递归调用，即反复求解相同的子问题,如Cut-Rod （p,10-6）与Cut-Rod (p,9-5)。
+
+<ul>
+<li>运行时间T(n)=2的n次幂</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p><strong>使用动态规划进行求解</strong>：</p>
+
+<ul>
+<li>普通的递归求解效率之所以很低，是因为反复求解相同的子问题。动态规划会对每个子问题只进行一次求解，并将结果保存下来。如果随后再需要该子问题的解，只需要查找保存的结果，不必重新计算。因此，动态规划是使用空间换时间的时空权衡问题。</li>
+<li>动态规划有两种等价的实现方法：<strong>带备忘的自顶向下法与自底向上法</strong>。</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>动态规划的两种实现方法</h3>
+
+<ul>
+<li><strong>带备忘的自顶向下法</strong>
+
+<ul>
+<li>该方法仍然按照普通的递归形式进行编写，但是在其中的过程中会保存每个子问题的解（通常会保存在一个数组或者散列表中）。当需要一个子问题的解时，过程首先检查是否保存过此解，如果是则直接返回保存的值，节省了计算时间；否则就按照常规的计算方式进行计算。我么称这个递归过程是带备忘的，以为它记住了之前的解。</li>
+</ul>
+</li>
+<li><strong>自底向上法</strong>
+
+<ul>
+<li>该方法需要恰当地定义子问题的规模，使得任何子问题的求解都只依赖于更小的子问题的求解。因而我们可以将子问题进行排序 ，按照从小到大的顺序进行求解。这样的话，当求解某个子问题时，它所依赖的子问题都已经求解完毕并保存，每个子问题只进行一次求解。</li>
+</ul>
+</li>
+<li>两种方法具有相同的渐近运行时间，仅有的差异是在某些特殊情况下，<em>自顶向下算法并没有真正的递归考察所有的子问题。由于没有频繁地递归调用的开销，自底向上的方法具有更小的系数</em>。</li>
+<li><p>钢条切割问题的自底向上方法如下：</p>
+
+<pre><code>         Bottom-Up-Cut-Rod(p,n)
+         let r[0...n] be a new array
+         r[0]=0
+         for j=1 to n
+              q=负无穷
+              for i=1 to j
+                   q=max{q,p[i]+r[j-i]}
+              r[j]=q
+        return r[n]
+</code></pre>
+
+<ul>
+<li>该方法与Cut-Rod（p,n）采用的方法相同，只不过现在采用直接访问数组元素r[j-i]来获得规模为j-i的子问题的解。</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>动态规划原理</h3>
+
+<ul>
+<li>适用于动态规划求解的最优化问题应该具备两个要素：<strong>最优子结构和子问题重叠</strong>。</li>
+<li><p><strong>最优子结构</strong></p>
+
+<ul>
+<li>最优子结构：一个问题的最优解包含子问题的最优解</li>
+<li>对于不同领域，最优子结构的不同体现在两个方面：
+
+<ul>
+<li>1.<strong>原问题的最优解中涉及多少个子问题</strong></li>
+<li>2.<strong>在确定最优解使用哪些子问题时，我们需要考察多少种选择</strong></li>
+</ul>
+</li>
+<li>在钢条切割问题中，长度为n的钢条切割方案仅仅使用一个子问题（长度为n-i的钢条最优切割），但是我们必须考察i的n中不同取值，来确定哪一个会产生最优解。</li>
+<li>我们可以用子问题的总数与每个子问题需要考察多少种选择来粗略分析动态规划的运行时间</li>
+<li>在动态规划中，我们通常自底向上地使用最优子结构。也就是说，首先求得子问题的最优解，然后求解原问题的最优解。在求解原问题中，我们需要在涉及的子问题中做出选择，选出能得到原问题最优解的子问题。原问题最优解的代价通常是子问题最优解的代价加上由此次选择直接产生的代价。例如，对于钢条切割，做出选择产生的代价就是pi。</li>
+<li><strong>贪心算法与动态规划的不同是：动态规划是先求解子问题，找到子问题的最优解，然后在其中进行一次选择；贪心算法首先做出一次贪心选择（在当时看来是最优的选择），然后求解选出的子问题，从而不必求解所有可能相关的子问题。即动态规划是先求解子问题，再进行选择；贪心算法是先进行选择，再求解子问题。</strong></li>
+<li>无权最短路径具有最优子结构，无权最长路径不具有最优子结构。子问题无关：同一个原问题的子问题的解不影响另一个子问题的解。</li>
+</ul>
+</li>
+<li><p><strong>子问题重叠</strong></p>
+
+<ul>
+<li> 问题的递归算法会反复求解相同的子问题，而不是一直生成新的子问题，则具有子问题重叠的性质。</li>
+</ul>
+</li>
+</ul>
+
+
+<h3>最长公共子序列</h3>
+
+<ul>
+<li>给定两个序列X=[x1,x2,x3&hellip;xm]，Y=[y1,y2,y3&hellip;yn]，求X和Y的最长公共子序列（一个给定序列的子序列就是将给定序列中零个或者多个元素去掉之后得到的结果）。</li>
+<li>求解步骤
+
+<ul>
+<li><strong>刻画最长公共子序列的特征</strong>
+
+<ul>
+<li>分析，如果使用暴力法的话，需要将两个序列的所有子序列求解出来进行比较，结果将是指数运行时间。从而引入前缀的定义：给定序列X=[x1,x2,x3&hellip;xm]，对于i=0,1,2&hellip;m，定义X的第i前缀为Xi=[x1,x2&hellip;xi]。</li>
+<li>LCS的最优子结构：X=[x1,x2,x3&hellip;xm]，Y=[y1,y2,y3&hellip;yn]为给定的两个序列，Z=[z1,z2,z3&hellip;zk]为X,Y的任意LCS。
+
+<ol>
+<li><em>如果xm=yn，则zk=xm=yn，且Z(k-1)是X(m-1),Y(n-1)的LCS</em>。</li>
+<li><em>如果xm!=yn，则zk!=xm，zk=yn，意味着Z是X(m-1),Y的LCS</em>。</li>
+<li><em>如果xm!=yn，则zk!=yn，zk=xm，意味着Z是X,Y(n-1)的LCS</em>。</li>
+</ol>
+</li>
+<li>其最优子结构体现了原问题的最优解与子问题的最优解之间的关系。</li>
+</ul>
+</li>
+<li><p><strong>一个递归解</strong></p>
+
+<ul>
+<li>定义c[i,j]表示Xi,Yj的LCS长度。如果i=0/j=0，即其中一个序列的长度为0，那么LCS的长度也为0.根据LCS的最优子结构的性质，得到如下公式：
+          <table/>      <br/>
+          <tr/><td/></td><td/>            0</td>      <td>如果i=0/j=0</td> </tr>
+          <tr><td/>c[i,j]  =</td><td/>c[i-1,j-1]+1</td><td/>如果i>0,j>0，且xi=yj</td> <tr/>
+          <tr/><td/></td><td/>max{c[i-1,j],c[i,j-1]}</td><td/>如果i>0,j>0，且xi!=yj</td></tr>
+          <table></li>
+</ul>
+</li>
+<li><p><strong>计算LCS的长度</strong></p>
+
+<pre><code>      public static int[][] lcs(String str1,String str2){
+               int i=str1.length();
+               int j=str2.length();
+               int[][] m=new int[i+1][j+1];//该数组表示最优解的情况下，子序列的长度
+               for(int a=0;a&lt;i+1;a++){
+                   m[a][0]=0;
+               }
+               for(int b=0;b&lt;j+1;b++){
+                   m[0][j]=0;
+               }
+               for(int a=1;a&lt;i+1;a++){
+                   for(int b=1;b&lt;j+1;b++){
+                       if (str1.charAt(a-1)==str2.charAt(b-1)) {
+                           m[a][b]=m[a-1][b-1]+1;
+                       }
+                       else{
+                           if (m[a-1][b]&gt;=m[a][b-1]) {
+                                m[a][b]=m[a-1][b];
+                           }else {
+                                m[a][b]=m[a][b-1];
+                           }
+                       }
+                   }
+               }
+               return m;
+          } 
+</code></pre></li>
+<li><h5>构造LCS</h5>
+
+<pre><code>  public static void print(int[][] m,String str1,String str2,int i,int j){
+           if (i==0||j==0) {
+               return;
+           }
+           if (str1.charAt(i-1)==str2.charAt(j-1)) {
+               print(m, str1, str2, i-1, j-1);
+               System.out.print(str1.charAt(i-1));
+           }
+           else {
+               if (m[i-1][j]&gt;=m[i][j-1]) {
+                   print(m, str1, str2, i-1, j);
+               }
+               else {
+                   print(m, str1, str2, i, j-1);
+               }
+           }
+      }
+</code></pre></li>
+</ul>
+</li>
+</ul>
+
 ]]></content>
   </entry>
   

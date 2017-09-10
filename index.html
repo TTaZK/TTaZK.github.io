@@ -781,15 +781,35 @@ Aug 2nd, 2017</div>
     <article class="post">
 	<h2 class="title">
 		
-		<a href="/blog/2017/07/30/algorithm/">
+		<a href="/blog/2017/07/30/DynamicProgramming/">
 		
-			动态规划与贪心</a>
+			动态规划讲解</a>
 	</h2>
 	<div class="entry-content">
-		
+		<ul>
+<li><p><strong>动态规划与分治</strong></p>
+
+<ul>
+<li>动态规划与分治类似，都是通过组合子问题的解来求解原问题的解。（Dynamic Programming中Programming指的是一种表格法）</li>
+<li>分治法是将原问题划分为不相交的子问题，递归地求解子问题，再将子问题的解组合起来，求出原问题的解。</li>
+<li>动态规划用于子问题重叠的情况，即不同的子问题包含公共的子子问题（子问题的求解是递归进行的，将其划分为更小的子子问题）。在这种情况下，如果使用分治法来求解，会做出不必要的工作，它会反复地求解那些公共的子子问题。而动态规划算法对于每个子子问题只进行一次求解，将其保存在一个表格中，从而无需每次求解一个子子问题时都重新计算，避免了不必要的计算工作。</li>
+</ul>
+</li>
+<li><p>动态规划算法通常用来求解最优化问题。这类问题有很多可行解，每个解都有一个值，我们希望寻找其中的一个最优解。设计一个动态规划算法的步骤如下：</p>
+
+<ul>
+<li>1，<strong>刻画一个最优解的结构特征</strong>。</li>
+<li>2，<strong>递归地定义最优解</strong>。</li>
+<li>3，<strong>计算最优解的值，通常采用自底向上的方法</strong>。</li>
+<li>4，<strong>利用计算出来的信息构造一个最优解</strong>。</li>
+</ul>
+</li>
+</ul>
+
+
 
 		
-		
+		<a href="/blog/2017/07/30/DynamicProgramming/" class="more-link">Read on &rarr;</a>
 	</div>
 
 
@@ -808,7 +828,7 @@ Jul 30th, 2017</div>
 
 </div>
 	
-	<div class="comments"><a href="/blog/2017/07/30/algorithm/#disqus_thread">Comments</a></div>
+	<div class="comments"><a href="/blog/2017/07/30/DynamicProgramming/#disqus_thread">Comments</a></div>
 	
 </div>
 </article>
